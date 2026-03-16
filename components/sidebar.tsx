@@ -59,7 +59,7 @@ export default function Sidebar() {
         {/* Header */}
         <div>
           <div className="flex items-center justify-between p-6">
-            <h1 className="text-2xl font-bold text-teal-600">JobsifyAI</h1>
+            <h1 className="text-2xl font-bold text-teal-600">ResumeIQ</h1>
 
             <button
               className="md:hidden"
