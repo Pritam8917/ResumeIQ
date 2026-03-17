@@ -3,17 +3,16 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
 import {
   LayoutDashboard,
   FileSearch,
   Wrench,
   Briefcase,
-  ClipboardCheck,
   FileText,
   User,
   LogOut,
   Menu,
-  X,
 } from "lucide-react";
 
 export default function Sidebar() {
@@ -21,23 +20,44 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   const menuItems = [
-    { name: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
-    { name: "Analysis", icon: FileSearch, href: "/analysis" },
-    { name: "Technical Arsenal", icon: Wrench, href: "/technical-arsenal" },
-    { name: "Jobs", icon: Briefcase, href: "/jobs" },
-    { name: "Assessments", icon: ClipboardCheck, href: "/assessments" },
-    { name: "Cover Letter", icon: FileText, href: "/cover-letter" },
-    { name: "Profile", icon: User, href: "/profile" },
+    {
+      name: "Dashboard",
+      icon: LayoutDashboard,
+      href: "/dashboard-content/dashboard",
+    },
+    { name: "Analysis", icon: FileSearch, href: "/dashboard-content/analysis" },
+    {
+      name: "Technical Arsenal",
+      icon: Wrench,
+      href: "/dashboard-content/technical-arsenal",
+    },
+    { name: "Jobs", icon: Briefcase, href: "/dashboard-content/jobs" },
+    // {
+    //   name: "Assessments",
+    //   icon: ClipboardCheck,
+    //   href: "/dashboard-content/assessments",
+    // },
+    {
+      name: "Cover Letter",
+      icon: FileText,
+      href: "/dashboard-content/cover-letter",
+    },
+    { name: "Profile", icon: User, href: "/dashboard-content/profile" },
   ];
 
   return (
     <>
       {/* Mobile Navbar */}
-      <div className="md:hidden flex items-center justify-between p-4 border-b bg-white">
-        <h1 className="text-xl font-bold text-teal-600">JobsifyAI</h1>
+      <div className="md:hidden flex items-center justify-between px-4 py-4 border-b bg-white sticky top-0 z-50 ">
+        <h1 className="text-lg font-semibold text-teal-600 hidden md:block">
+          ResumeIQ
+        </h1>
 
-        <button onClick={() => setOpen(true)}>
-          <Menu size={28} />
+        <button
+          className="cursor-pointer text-gray-800 bg-gray-200 rounded-md p-1"
+          onClick={() => setOpen(true)}
+        >
+          <Menu size={20} />
         </button>
       </div>
 
@@ -51,59 +71,59 @@ export default function Sidebar() {
 
       {/* Sidebar */}
       <div
-        className={`fixed md:static top-0 left-0 h-screen w-64 bg-white border-r z-50
+        className={`fixed top-0 left-0 h-screen w-64 md:w-74 bg-white border-r border-slate-200 z-50
         transform ${open ? "translate-x-0" : "-translate-x-full"}
-        md:translate-x-0 transition-transform duration-300
-        flex flex-col justify-between`}
+        md:translate-x-0 transition-transform duration-300 shadow-lg
+        flex flex-col`}
       >
-        {/* Header */}
-        <div>
-          <div className="flex items-center justify-between p-6">
-            <h1 className="text-2xl font-bold text-teal-600">ResumeIQ</h1>
+        {/* Logo */}
+        <div className="flex items-center justify-between px-5 py-5 border-b border-slate-200">
+          <div className="flex items-center gap-1 text-2xl font-bold">
+            <span className="bg-linear-to-r from-blue-500 to-teal-500 bg-clip-text text-transparent">
+              Resume
+            </span>
 
-            <button
-              className="md:hidden"
-              onClick={() => setOpen(false)}
-            >
-              <X />
-            </button>
-          </div>
-
-          {/* Menu */}
-          <div className="px-3 space-y-2">
-            {menuItems.map((item, index) => {
-              const Icon = item.icon;
-
-              const isActive =
-                pathname === item.href ||
-                pathname.startsWith(item.href + "/");
-
-              return (
-                <Link
-                  key={index}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className={`flex items-center gap-3 w-full p-3 rounded-lg transition
-                    ${
-                      isActive
-                        ? "bg-teal-50 text-teal-600 font-semibold"
-                        : "hover:bg-gray-100 text-gray-700"
-                    }`}
-                >
-                  <Icon size={20} />
-                  <span>{item.name}</span>
-                </Link>
-              );
-            })}
+            <span className="bg-linear-to-r from-cyan-500 to-blue-600 bg-clip-text text-transparent">
+              IQ
+            </span>
           </div>
         </div>
 
-        {/* Logout */}
-        <div className="p-4 border-t">
+        {/* Menu */}
+        <div className="flex-1 overflow-y-auto px-2 py-5 space-y-1">
+          {menuItems.map((item, index) => {
+            const Icon = item.icon;
+
+            const isActive =
+              pathname === item.href || pathname.startsWith(item.href + "/");
+
+            return (
+              <Link
+                key={index}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                className={`flex items-center gap-3 px-4 py-5 rounded-lg text-sm transition font-semibold
+                  
+                ${
+                  isActive
+                    ? "bg-teal-50 text-teal-600 font-semibold border-l-4 border-teal-600"
+                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                }`}
+              >
+                <Icon size={20} />
+
+                <span>{item.name}</span>
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Bottom Logout */}
+        <div className="p-3 border-t border-slate-200">
           <Link
             href="/logout"
             onClick={() => setOpen(false)}
-            className="flex items-center gap-3 w-full p-3 rounded-lg text-red-500 hover:bg-red-50"
+            className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-red-400 font-semibold hover:bg-red-50 transition"
           >
             <LogOut size={20} />
             Logout

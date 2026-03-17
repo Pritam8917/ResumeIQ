@@ -20,9 +20,9 @@ export default function WhatYouGet() {
             
             WHAT YOU GET
           </span>
-          <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mt-4">
+          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mt-4 leading-tight">
             
-            Everything you need to improve your
+            Everything you need to improve your {""}
             <span className="bg-linear-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
               
               job readiness

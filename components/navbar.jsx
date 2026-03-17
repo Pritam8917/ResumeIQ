@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Sun, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 
@@ -42,7 +42,7 @@ export default function Navbar() {
 
         {/* Right Side Desktop */}
         <div className="hidden md:flex items-center gap-3">
-          <button className="px-5 py-1 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100">
+          <button className="px-5 py-1 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100" onClick={() => router.push("/dashboard-content/dashboard")}>
             Login
           </button>
 
@@ -50,9 +50,9 @@ export default function Navbar() {
             Get Started →
           </button>
 
-          <button className="p-2 rounded-full border border-blue-200 text-blue-600 hover:bg-blue-50 transition">
+          {/* <button className="p-2 rounded-full border border-blue-200 text-blue-600 hover:bg-blue-50 transition">
             <Sun size={16} />
-          </button>
+          </button> */}
         </div>
         {/* Mobile Menu Button */}
         <button
@@ -108,7 +108,7 @@ export default function Navbar() {
               </Link>
 
               <div className="flex flex-col gap-3 pt-2">
-                <button className="w-full py-2 rounded-full border border-gray-300 hover:bg-gray-100 transition"onClick={() => setOpen(false)}>
+                <button className="w-full py-2 rounded-full border border-gray-300 hover:bg-gray-100 transition"onClick={() => router.push("/dashboard-content/dashboard")}>
                   Login
                 </button>
 

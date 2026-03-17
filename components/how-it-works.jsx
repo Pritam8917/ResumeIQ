@@ -62,11 +62,11 @@ export default function HowItWorks() {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <span className="text-blue-700 font-semibold text-xl">
+          <span className="text-blue-700 font-bold text-xl leading-tight ">
             HOW IT WORKS
           </span>
 
-          <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mt-4">
+          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mt-4 leading-tight">
             Simple Steps to
             <span className="bg-linear-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
               {" "}Improve Your Resume
