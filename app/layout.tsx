@@ -1,5 +1,10 @@
-import "./globals.css";import type { Metadata } from "next";
+"use client";
+import "./globals.css";
+import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { useEffect } from "react";
+import { initAuth } from "@/lib/initAuth";
+import { initResume } from "@/lib/initResume";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -15,10 +20,43 @@ export const metadata: Metadata = {
   description:
     "Analyze your resume, match jobs, generate cover letters, and ace interviews with AI-powered tools. Optimize your career with personalized insights and recommendations.",
 };
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  useEffect(() => {
+    async function init() {
+      await initAuth(); // get user
+      await initResume(); // get resume data
+    }
+
+    init();
+  }, []);
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white`}>{children}</body>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white`}
+      >
+        {children}
+      </body>
     </html>
   );
 }
+/* I use Supabase for persistent storage and rehydrate Zustand state on app load to ensure data consistency after refresh. */
+
+/*
+Final flow after refresh:
+
+Refresh
+   ↓
+initAuth() → user restored
+   ↓
+initResume() → resume restored
+   ↓
+Zustand updated again
+   ↓
+UI works normally
+
+On refresh, I rehydrate application state by fetching user session from Supabase and restoring resume data into Zustand.
+*/

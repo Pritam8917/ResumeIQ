@@ -49,17 +49,11 @@ export default function Navbar() {
           <button className="px-5 py-1 rounded-full bg-linear-to-r from-blue-500 via-indigo-500 to-cyan-500 text-white font-semibold hover:opacity-90 transition flex items-center gap-2 shadow-sm">
             Get Started →
           </button>
-
-          {/* <button className="p-2 rounded-full border border-blue-200 text-blue-600 hover:bg-blue-50 transition">
-            <Sun size={16} />
-          </button> */}
         </div>
         {/* Mobile Menu Button */}
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden flex items-center justify-center w-10 h-10 
-  rounded-md bg-white border border-gray-200 shadow-sm 
-  hover:bg-gray-50 transition-all duration-300 cursor-pointer"
+          className="md:hidden flex items-center justify-center w-10 h-10 rounded-md bg-white border border-gray-200 shadow-sm  hover:bg-gray-50 transition-all duration-300 cursor-pointer"
         >
           <motion.div
             animate={{ rotate: open ? 180 : 0 }}

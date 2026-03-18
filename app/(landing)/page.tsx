@@ -2,12 +2,24 @@
 
 import { ArrowRight, FileText, Shield, Zap } from "lucide-react";
 import { motion } from "framer-motion";
+import { useAuthStore } from "@/store/authStore";
+import { useRouter } from "next/navigation";
 
 export default function Hero() {
+  const router = useRouter();
+  const user = useAuthStore((s) => s.user);
+
+  const handleUploadClick = () => {
+    if (!user) {
+      router.push("/login");
+    } else {
+      router.push("/upload");
+    }
+  };
+
   return (
     <section className="w-full py-16 md:py-24 px-6 md:px-12 lg:px-20 bg-linear-to-b from-white to-blue-50">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center">
-
         {/* LEFT CONTENT */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -23,9 +35,10 @@ export default function Hero() {
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight text-gray-900 mb-6">
             Understand your
             <span className="bg-linear-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
-              {" "}career potential
-            </span>
-            {" "}before applying for jobs.
+              {" "}
+              career potential
+            </span>{" "}
+            before applying for jobs.
           </h1>
 
           {/* Description */}
@@ -45,6 +58,7 @@ export default function Hero() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={handleUploadClick}
               className="flex items-center justify-center gap-2 bg-linear-to-r from-blue-600 to-cyan-500 text-white px-6 py-3 rounded-xl hover:opacity-90 transition shadow-md hover:shadow-lg cursor-pointer font-bold"
             >
               Upload Resume <ArrowRight size={18} />
@@ -78,7 +92,6 @@ export default function Hero() {
 
           {/* Info Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-5 mt-4">
-
             {/* Privacy Card */}
             <motion.div
               whileHover={{ y: -5 }}
@@ -114,7 +127,6 @@ export default function Hero() {
                 </p>
               </div>
             </motion.div>
-
           </div>
         </motion.div>
 
@@ -125,7 +137,6 @@ export default function Hero() {
           transition={{ duration: 0.7 }}
           className="bg-white border border-gray-200 rounded-3xl shadow-xl p-5 sm:p-6 w-full max-w-md md:max-w-none mx-auto"
         >
-
           {/* Header */}
           <div className="flex justify-between items-center mb-6">
             <div className="flex gap-1">
@@ -148,9 +159,7 @@ export default function Hero() {
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
                 92
               </h2>
-              <p className="text-sm text-gray-500">
-                Strong for senior roles
-              </p>
+              <p className="text-sm text-gray-500">Strong for senior roles</p>
             </div>
 
             <button className="border border-gray-200 px-3 py-2 rounded-full text-xs sm:text-sm text-gray-600">
@@ -194,9 +203,7 @@ export default function Hero() {
           {/* Market Insights */}
           <div className="border border-gray-200 rounded-2xl p-4 mb-5">
             <div className="flex justify-between mb-2">
-              <p className="font-semibold text-gray-800">
-                Market Insights
-              </p>
+              <p className="font-semibold text-gray-800">Market Insights</p>
 
               <span className="border border-gray-200 px-3 py-1 rounded-full text-xs text-gray-500">
                 Premium
@@ -211,9 +218,7 @@ export default function Hero() {
           {/* AI Interview */}
           <div className="border border-gray-200 rounded-2xl p-4 mb-5">
             <div className="flex justify-between mb-2">
-              <p className="font-semibold text-gray-800">
-                AI Interview
-              </p>
+              <p className="font-semibold text-gray-800">AI Interview</p>
 
               <span className="border border-gray-200 px-3 py-1 rounded-full text-xs text-gray-500">
                 Text-based
@@ -243,9 +248,7 @@ export default function Hero() {
               Get report
             </button>
           </div>
-
         </motion.div>
-
       </div>
     </section>
   );
