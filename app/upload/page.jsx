@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 import { supabase } from "@/lib/supabase";
 import { extractTextFromPDF } from "@/lib/pdf";
-import { analyzeResume } from "@/lib/puter";
-import { resumePrompt } from "@/lib/prompts";
+import { analyzeResume } from "@/lib/analyze";
+import { resumePrompt } from "@/lib/prompt";
 import { useResumeStore } from "@/store/resumeStore";
 
 export default function UploadPage() {
@@ -23,25 +23,26 @@ export default function UploadPage() {
   }, [user, loadingAuth, router]);
 
   const handleUpload = async (e) => {
+    if (typeof window === "undefined") return;
     const file = e.target.files[0];
     if (!file) return;
+    const filePath = `${user.id}/resume.pdf`;
     setUploading(true);
 
     try {
-      // 1. Upload to Supabase Storage
-      const filePath = `${user.id}/${Date.now()}-${file.name}`;
-      const { error: uploadError } = await supabase.storage
-        .from("resumes")
-        .upload(filePath, file);
-      if (uploadError) throw uploadError;
+      console.log("STEP 1: Uploading file");
 
-      // 2.Extract text from PDF
       const text = await extractTextFromPDF(file);
+      console.log("STEP 2: Extracted text", text);
 
-      // 3. Analyze with AI
       const aiResult = await analyzeResume(text, resumePrompt);
-      // 4. Save analysis result in Supabase DB
-      await supabase.from("resumes").insert({
+      console.log("STEP 3: AI RESULT:", aiResult);
+
+      if (!aiResult) throw new Error("AI returned null");
+
+      console.log("STEP 4: Before DB insert");
+
+      const { error } = await supabase.from("resumes").insert({
         user_id: user.id,
         file_path: filePath,
         score: aiResult.score,
@@ -49,14 +50,19 @@ export default function UploadPage() {
         missing: aiResult.missing,
         suggestions: aiResult.suggestions,
       });
-      // 5. Save in Zustand
+
+      if (error) {
+        console.error("SUPABASE ERROR:", error);
+        throw error;
+      }
+
+      console.log("STEP 5: After DB insert");
+
       setData(aiResult);
 
-      // 6. Redirect to dashboard
       router.push("/dashboard-content/dashboard");
     } catch (error) {
-      console.error("Upload error:", error);
-      alert("Failed to upload resume. Please try again.");
+      console.error("❌ FULL ERROR:", error);
     }
     setUploading(false);
   };

@@ -17,15 +17,28 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
 
-    const { data, error } = await supabase.auth.signInWithPassword({
+    let { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) {
-      alert(error.message);
-      setLoading(false);
-      return;
+      // try signup automatically
+      const signupRes = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (signupRes.error) {
+        console.error(signupRes.error.message);
+        return;
+      }
+
+      // login after signup
+      await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
     }
 
     // 🔥 Save user in Zustand

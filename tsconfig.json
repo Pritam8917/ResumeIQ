@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "app/dashboard-content/layout.tsx", "app/dashboard-content/dashboard/page.jsx", "app/dashboard-content/technical-arsenal/page.jsx"  ],
+, "app/dashboard-content/layout.tsx", "app/dashboard-content/dashboard/page.jsx", "app/dashboard-content/technical-arsenal/page.jsx", "components/sidebar.jsx", "components/clientInit.jsx"  ],
   "exclude": ["node_modules"]
 }

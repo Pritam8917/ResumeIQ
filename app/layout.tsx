@@ -1,10 +1,8 @@
-"use client";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { useEffect } from "react";
-import { initAuth } from "@/lib/initAuth";
-import { initResume } from "@/lib/initResume";
+import ClientInit from "@/components/clientInit";
+import Script from "next/script";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -25,20 +23,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  useEffect(() => {
-    async function init() {
-      await initAuth(); // get user
-      await initResume(); // get resume data
-    }
-
-    init();
-  }, []);
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white`}
       >
+        <ClientInit />
         {children}
+        <Script src="https://js.puter.com/v2/" strategy="afterInteractive" />
       </body>
     </html>
   );
