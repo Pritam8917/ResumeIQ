@@ -41,12 +41,12 @@ export default function LoginPage() {
       });
     }
 
-    // 🔥 Save user in Zustand
+    // Save user in Zustand
     setUser(data.user);
 
     setLoading(false);
 
-    // 🔥 Redirect to upload
+    // Redirect to upload
     router.push("/upload");
   };
 

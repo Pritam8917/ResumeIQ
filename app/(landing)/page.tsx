@@ -47,8 +47,6 @@ export default function Hero() {
             — including ATS score, skill gaps, role matching, and interview
             readiness.
           </p>
-
-          {/* Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
