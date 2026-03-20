@@ -3,21 +3,23 @@
 import { useEffect } from "react";
 import { initAuth } from "@/lib/initAuth";
 import { initResume } from "@/lib/initResume";
+import { useAuthStore } from "@/store/authStore";
 
 export default function ClientInit() {
+  const user = useAuthStore((s) => s.user);
+
+  // Init auth once
   useEffect(() => {
-    async function init() {
-      const user = await initAuth(); // ✅ get user
-
-      if (user) {
-        await initResume(user.id); // ✅ pass user id
-      } else {
-        return;
-      }
-    }
-
-    init();
+    console.log("initAuth running after refresh")
+    initAuth();
   }, []);
+
+  // Run when user is available
+  useEffect(() => {
+    if (!user?.id) return;
+    console.log("User ready:", user.id);
+    initResume(user.id);
+  }, [user]);
 
   return null;
 }

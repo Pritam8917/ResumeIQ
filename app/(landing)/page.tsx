@@ -2,19 +2,15 @@
 
 import { ArrowRight, FileText, Shield, Zap } from "lucide-react";
 import { motion } from "framer-motion";
-import { useAuthStore } from "@/store/authStore";
-import { useRouter } from "next/navigation";
-
+// import { useAuthStore } from "@/store/authStore";
+// import { useRouter } from "next/navigation";
+import UploadResumeModal from "@/components/UploadResumeModal";
+import { useState } from "react";
 export default function Hero() {
-  const router = useRouter();
-  const user = useAuthStore((s) => s.user);
+  const [openModal, setOpenModal] = useState(false);
 
   const handleUploadClick = () => {
-    if (!user) {
-      router.push("/login");
-    } else {
-      router.push("/upload");
-    }
+    setOpenModal(true);
   };
 
   return (
@@ -53,6 +49,7 @@ export default function Hero() {
             transition={{ delay: 0.4, duration: 0.5 }}
             className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start mb-10"
           >
+            {/* Upload Button */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -62,6 +59,7 @@ export default function Hero() {
               Upload Resume <ArrowRight size={18} />
             </motion.button>
 
+            {/* Sample Report */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               className="flex items-center justify-center gap-2 border border-blue-200 text-blue-700 px-6 py-3 rounded-xl hover:bg-blue-50 transition cursor-pointer font-bold"
@@ -248,6 +246,10 @@ export default function Hero() {
           </div>
         </motion.div>
       </div>
+      <UploadResumeModal
+        isOpen={openModal}
+        onClose={() => setOpenModal(false)}
+      />
     </section>
   );
 }

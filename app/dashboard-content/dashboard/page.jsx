@@ -1,223 +1,264 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-
 import {
   Brain,
   Briefcase,
-  ClipboardList,
   TrendingUp,
   Clock,
   AlertCircle,
   CheckCircle,
   FileText,
   User,
+  Wrench,
 } from "lucide-react";
+import { useResumeStore } from "@/store/resumeStore";
+import { useState } from "react";
 
 export default function Dashboard() {
   const router = useRouter();
+  const data = useResumeStore((s) => s.data);
+  const [visibleCount, setVisibleCount] = useState(6);
 
-  return (
-    <div className="space-y-6 md:space-y-8 ml-0 md:ml-8">
-      {/* WELCOME SECTION */}
-      <div className="bg-white border border-slate-100 shadow-sm rounded-xl p-4 md:p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h2 className="text-lg md:text-xl font-semibold text-slate-800">
-            Welcome back, Pritam 👋
+  if (!data) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[70vh] gap-6 bg-linear-to-br from-slate-50 to-white">
+        <div className="relative">
+          <div className="w-16 h-16 rounded-full bg-teal-100 flex items-center justify-center animate-pulse">
+            <Brain className="text-teal-600" size={28} />
+          </div>
+
+          <div className="absolute inset-0 rounded-full border-4 border-teal-500 border-t-transparent animate-spin"></div>
+        </div>
+        <div className="text-center space-y-2">
+          <h2 className="text-lg font-semibold text-slate-800">
+            Analyzing Your Resume
           </h2>
-
-          <p className="text-sm text-slate-500 mt-1">
-            Here’s an overview of your resume performance and career insights.
+          <p className="text-sm text-slate-500 animate-pulse">
+            AI is reviewing your skills, experience, and job fit...
           </p>
         </div>
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 bg-teal-500 rounded-full animate-bounce"></span>
+          <span className="w-2 h-2 bg-teal-500 rounded-full animate-bounce delay-150"></span>
+          <span className="w-2 h-2 bg-teal-500 rounded-full animate-bounce delay-300"></span>
+        </div>
       </div>
+    );
+  }
+
+  const allSkills = [
+    ...(data.skill_gaps?.missing || []).map((s) => ({
+      name: s,
+      status: "Missing",
+      color: "text-red-600",
+      priority: 1,
+    })),
+    ...(data.skill_gaps?.improving || []).map((s) => ({
+      name: s,
+      status: "Improve",
+      color: "text-amber-600",
+      priority: 2,
+    })),
+    ...(data.skill_gaps?.strong || []).map((s) => ({
+      name: s,
+      status: "Strong",
+      color: "text-emerald-600",
+      priority: 3,
+    })),
+  ].sort((a, b) => a.priority - b.priority);
+
+  const visibleSkills = allSkills.slice(0, visibleCount);
+
+  const previewJobs = data.job_recommendations?.slice(0, 4);
+
+  return (
+    <div className="space-y-6 md:space-y-8 ml-0 md:ml-8 bg-slate-50 p-4 md:p-6 rounded-xl">
+      {/* WELCOME */}
+      <div className="bg-linear-to-r from-teal-50 via-white to-indigo-50 border border-slate-200 rounded-2xl p-6">
+        <h2 className="text-lg font-semibold text-slate-800">
+          Welcome back 👋
+        </h2>
+        <p className="text-sm text-slate-500 mt-1">
+          Here’s your AI-powered career insights.
+        </p>
+      </div>
+
       {/* ANALYTICS */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-        <div className="bg-white shadow-sm border border-slate-100 rounded-xl p-4 md:p-6">
-          <div className="flex justify-between mb-2 md:mb-3">
-            <p className="text-xs md:text-sm text-slate-600">Resume Score</p>
-
-            <TrendingUp className="text-teal-600" size={18} />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-9">
+        {/* SCORE */}
+        <div className="bg-linear-to-br from-teal-50 to-white border border-teal-100 rounded-2xl p-6 shadow-sm">
+          <div className="flex justify-between mb-2">
+            <p className="text-sm text-slate-800 ">Resume Score</p>
+            <TrendingUp className="text-teal-600 " size={18} />
           </div>
-
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900">82</h2>
-
-          <p className="text-xs text-slate-400">ATS optimization score</p>
+          <h2 className="text-3xl font-bold text-black">{data.score}</h2>
+          <p className="text-xs text-slate-500">{data.grade}</p>
         </div>
 
-        <div className="bg-white shadow-sm border border-slate-100 rounded-xl p-4 md:p-6">
-          <div className="flex justify-between mb-2 md:mb-3">
-            <p className="text-xs md:text-sm text-slate-600">Skills Detected</p>
-
+        {/* SKILLS */}
+        <div className="bg-linear-to-br from-indigo-50 to-white border border-indigo-100 rounded-2xl p-6 shadow-sm">
+          <div className="flex justify-between mb-2">
+            <p className="text-sm text-slate-800">Skills</p>
             <Brain className="text-indigo-600" size={18} />
           </div>
-
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900">18</h2>
-
-          <p className="text-xs text-slate-400">Extracted from resume</p>
+          <h2 className="text-3xl font-bold text-black">
+            {data.skills_summary?.total}
+          </h2>
+          <p className="text-xs text-slate-500">Detected</p>
         </div>
 
-        <div className="bg-white shadow-sm border border-slate-100 rounded-xl p-4 md:p-6">
-          <div className="flex justify-between mb-2 md:mb-3">
-            <p className="text-xs md:text-sm text-slate-600">Assessments</p>
-
+        {/* ASSESSMENTS (STATIC for now) */}
+        {/* <div className="bg-white rounded-xl p-6">
+          <div className="flex justify-between mb-2">
+            <p className="text-sm text-slate-600">Assessments</p>
             <ClipboardList className="text-purple-600" size={18} />
           </div>
+          <h2 className="text-3xl font-bold">4</h2>
+          <p className="text-xs text-slate-400">Completed</p>
+        </div> */}
 
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900">4</h2>
-
-          <p className="text-xs text-slate-400">Completed tests</p>
-        </div>
-
-        <div className="bg-white shadow-sm border border-slate-100 rounded-xl p-4 md:p-6">
-          <div className="flex justify-between mb-2 md:mb-3">
-            <p className="text-xs md:text-sm text-slate-600">Job Matches</p>
-
+        {/* JOB MATCH */}
+        <div className="bg-linear-to-br from-orange-50 to-white border border-orange-100 rounded-2xl p-6 shadow-sm">
+          <div className="flex justify-between mb-2">
+            <p className="text-sm text-slate-800">Job Matches</p>
             <Briefcase className="text-orange-500" size={18} />
           </div>
-
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900">12</h2>
-
-          <p className="text-xs text-slate-400">Recommended roles</p>
+          <h2 className="text-3xl font-bold text-black">
+            {data.total_job_matches}
+          </h2>
+          <p className="text-xs text-slate-400">Recommended</p>
         </div>
       </div>
 
       {/* INSIGHTS */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* SKILL GAP */}
-        <div className="bg-white shadow-sm border border-slate-100 rounded-xl p-4 md:p-6">
-          <h2 className="text-base md:text-lg font-semibold text-slate-800 mb-4">
+      <div className="grid lg:grid-cols-2 gap-6">
+        {/* SKILL GAPS */}
+        <div className="bg-white rounded-xl p-6 border border-slate-300 shadow-md">
+          <h2 className="font-semibold text-slate-800 mb-4">
             Skill Gap Insights
           </h2>
 
-          <p className="text-sm text-slate-500 mb-6">
-            Improve these skills to increase job match score.
-          </p>
-
           <div className="space-y-3">
-            <div className="flex justify-between border border-slate-200 rounded-lg p-3">
-              <span className="text-slate-700">System Design</span>
+            {visibleSkills.map((skill, i) => (
+              <div
+                key={i}
+                className="flex justify-between items-center border border-slate-200 p-3 rounded-xl hover:bg-slate-50 hover:shadow-sm transition"
+              >
+                <span className="font-medium text-gray-500">{skill.name}</span>
+                <span
+                  className={`text-xs px-2 py-1 rounded-full bg-slate-100 border border-slate-200 ${skill.color}`}
+                >
+                  {skill.status}
+                </span>
+              </div>
+            ))}
 
-              <span className="text-red-500 text-sm font-medium">Missing</span>
-            </div>
-
-            <div className="flex justify-between border border-slate-200 rounded-lg p-3">
-              <span className="text-slate-700">Cloud Architecture</span>
-
-              <span className="text-amber-500 text-sm font-medium">
-                Improve
-              </span>
-            </div>
-
-            <div className="flex justify-between border border-slate-200 rounded-lg p-3">
-              <span className="text-slate-700">Docker</span>
-
-              <span className="text-emerald-600 text-sm font-medium">
-                Strong
-              </span>
-            </div>
+            {/* + More Button */}
+            {visibleCount < allSkills.length && (
+              <button
+                onClick={() => setVisibleCount((prev) => prev + 6)}
+                className="text-sm text-teal-600 font-semibold hover:text-teal-700 transition cursor-pointer"
+              >
+                + Show More
+              </button>
+            )}
           </div>
         </div>
 
-        {/* JOB MATCHES */}
-        <div className="bg-white shadow-sm border border-slate-100 rounded-xl p-4 md:p-6">
-          <h2 className="text-base md:text-lg font-semibold text-slate-800 mb-4">
+        {/* JOBS */}
+        <div className="bg-white rounded-xl p-6 border border-slate-300 shadow-md">
+          <h2 className="font-semibold text-slate-800 mb-4">
             Recommended Jobs
           </h2>
 
-          <p className="text-sm text-slate-500 mb-6">
-            Based on your resume profile.
-          </p>
-
           <div className="space-y-4">
-            <div className="border border-slate-200 rounded-lg p-4 flex justify-between items-center">
-              <div>
-                <h3 className="font-semibold text-slate-800">
-                  Full Stack Developer
-                </h3>
-
-                <p className="text-sm text-slate-500">Match Score: 91%</p>
+            {previewJobs.map((job, i) => (
+              <div
+                key={i}
+                className="border border-slate-200 rounded-xl p-4 flex justify-between items-center hover:bg-slate-50 hover:shadow-sm transition"
+              >
+                <div>
+                  <h3 className="font-semibold text-gray-700">{job.role}</h3>
+                  <p className="text-sm text-slate-500">
+                    Match Score: {job.match_percentage}%
+                  </p>
+                </div>
+                <Briefcase className="text-teal-600" />
               </div>
-
-              <Briefcase className="text-teal-600" />
-            </div>
-
-            <div className="border border-slate-200 rounded-lg p-4 flex justify-between items-center">
-              <div>
-                <h3 className="font-semibold text-slate-800">
-                  Backend Engineer
-                </h3>
-
-                <p className="text-sm text-slate-500">Match Score: 86%</p>
-              </div>
-
-              <Briefcase className="text-teal-600" />
-            </div>
+            ))}
           </div>
+
+          {/* View All Button */}
+          {data.job_recommendations?.length > 4 && (
+            <button
+              onClick={() => router.push("/dashboard-content/jobs")}
+              className="mt-4 w-full border border-slate-200 rounded-xl py-2 text-sm font-medium hover:bg-gray-100 transition cursor-pointer text-gray-500 shadow-md"
+            >
+              View All Jobs →
+            </button>
+          )}
         </div>
       </div>
 
       {/* ACTIVITY */}
-      <div className="bg-white shadow-sm border border-slate-100 rounded-xl p-4 md:p-6">
-        <h2 className="text-base md:text-lg font-semibold text-slate-800 mb-6">
-          Recent Activity
-        </h2>
+      <div className="bg-white rounded-xl p-6 shadow-md">
+        <h2 className="font-semibold text-slate-800 mb-4">Recent Activity</h2>
 
-        <div className="space-y-4 text-sm text-slate-700">
-          <div className="flex gap-3 items-center">
+        <div className="space-y-3 text-sm">
+          <div className="flex gap-3 items-center text-gray-600">
             <Clock className="text-teal-600" size={18} />
             Resume analyzed successfully
           </div>
 
-          <div className="flex gap-3 items-center">
-            <CheckCircle className="text-emerald-600" size={18} />
-            JavaScript assessment completed
-          </div>
+          {data.skill_gaps?.missing?.length > 0 && (
+            <div className="flex gap-3 items-center text-gray-600">
+              <AlertCircle className="text-amber-500" size={18} />
+              Skill gaps detected
+            </div>
+          )}
 
-          <div className="flex gap-3 items-center">
-            <AlertCircle className="text-amber-500" size={18} />
-            Skill gap detected in System Design
+          <div className="flex gap-3 items-center text-gray-600">
+            <CheckCircle className="text-emerald-600" size={18} />
+            AI insights generated
           </div>
         </div>
       </div>
 
       {/* QUICK TOOLS */}
-      <div className="bg-white shadow-sm border border-slate-100 rounded-xl p-4 md:p-6">
-        <h2 className="text-base md:text-lg font-semibold text-slate-800 mb-6">
-          AI Career Tools
-        </h2>
+      <div className="bg-white rounded-xl p-6 shadow-md">
+        <h2 className="font-semibold text-slate-800 mb-4">AI Career Tools</h2>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 ">
           <button
-            className="border border-slate-200 rounded-lg p-4 hover:bg-teal-50 flex flex-col items-center gap-2 transition text-slate-700 font-medium"
+            className="border p-4 rounded-lg  cursor-pointer"
             onClick={() => router.push("/dashboard-content/analysis")}
           >
-            <FileText className="text-teal-600" />
-            Resume Analysis
+            <FileText className="text-teal-600 mx-auto" />
+            <span className="text-gray-600">Resume Analysis</span>
           </button>
 
           <button
-            className="border border-slate-200 rounded-lg p-4 hover:bg-indigo-50 flex flex-col items-center gap-2 transition text-slate-700 font-medium"
-            onClick={() => router.push("/dashboard-content/assessment")}
-          >
-            <ClipboardList className="text-indigo-600" />
-            Skill Assessment
-          </button>
-
-          <button
-            className="border border-slate-200 rounded-lg p-4 hover:bg-orange-50 flex flex-col items-center gap-2 transition text-slate-700 font-medium"
+            className="border p-4 rounded-lg cursor-pointer"
             onClick={() => router.push("/dashboard-content/jobs")}
           >
-            <Briefcase className="text-orange-500" />
-            Find Jobs
+            <Briefcase className="text-orange-500 mx-auto" />
+            <span className="text-gray-600">Jobs</span>
           </button>
 
           <button
-            className="border border-slate-200 rounded-lg p-4 hover:bg-purple-50 flex flex-col items-center gap-2 transition text-slate-700 font-medium"
+            className="border p-4 rounded-lg cursor-pointer"
+            onClick={() => router.push("/dashboard-content/technical-arsenal")}
+          >
+            <Wrench className="text-purple-600 mx-auto" />
+            <span className="text-gray-600">Technical Arsenal</span>
+          </button>
+          <button
+            className="border p-4 rounded-lg cursor-pointer"
             onClick={() => router.push("/dashboard-content/profile")}
           >
-            <User className="text-purple-600" />
-            Update Profile
+            <User className="text-purple-600 mx-auto" />
+            <span className="text-gray-600">Profile</span>
           </button>
         </div>
       </div>
