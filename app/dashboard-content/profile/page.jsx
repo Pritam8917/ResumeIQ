@@ -1,156 +1,204 @@
 "use client";
 
-import { Edit, MapPin, Briefcase, Mail, FileText } from "lucide-react";
+import { useResumeStore } from "@/store/resumeStore";
+import { User, Star, Brain, TrendingUp } from "lucide-react";
 
 export default function ProfilePage() {
-  const skills = [
-    "React",
-    "Next.js",
-    "Node.js",
-    "Tailwind",
-    "MongoDB",
-    "Python",
-  ];
+  const data = useResumeStore((s) => s.data);
 
-  return (
-    <div className="max-w-6xl mx-auto space-y-10">
-      {/* -------- PROFILE HEADER -------- */}
-
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 flex justify-between items-center shadow-sm">
-        <div className="flex items-center gap-5">
-          {/* Avatar */}
-          <div className="w-14 h-14 rounded-full bg-linear-to-r from-teal-500 to-cyan-500 text-white flex items-center justify-center text-lg font-semibold">
-            P
+  if (!data) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[70vh] gap-8 bg-linear-to-br from-slate-50 via-white to-slate-100">
+        {/* AI ICON + RING */}
+        <div className="relative">
+          <div className="w-20 h-20 rounded-full bg-teal-100 flex items-center justify-center shadow-inner">
+            <Brain className="text-teal-600 animate-pulse" size={32} />
           </div>
 
-          {/* Info */}
-          <div>
-            <h2 className="text-xl font-semibold text-slate-800">Pritam Das</h2>
+          {/* Outer spinning ring */}
+          <div className="absolute inset-0 rounded-full border-4 border-teal-500 border-t-transparent animate-spin"></div>
 
-            <p className="text-sm text-slate-500">Full Stack Developer</p>
-
-            <div className="flex gap-4 text-xs text-slate-400 mt-1">
-              <span className="flex items-center gap-1">
-                <MapPin size={12} /> India
-              </span>
-              <span className="flex items-center gap-1">
-                <Briefcase size={12} /> Fresher
-              </span>
-            </div>
-          </div>
+          {/* Glow */}
+          <div className="absolute -inset-2 rounded-full bg-teal-200 opacity-20 blur-xl"></div>
         </div>
 
-        {/* Button */}
-        <button className="border border-slate-200 px-4 py-2 rounded-lg text-sm hover:bg-slate-50 flex items-center gap-2">
-          <Edit size={16} /> Edit
-        </button>
+        {/* HEADING */}
+        <div className="text-center space-y-2">
+          <h2 className="text-xl font-semibold text-slate-800">
+            Building Your Profile
+          </h2>
+
+          <p className="text-sm text-slate-500">
+            AI is analyzing your resume and generating insights...
+          </p>
+        </div>
+
+        {/* PROGRESS STEPS */}
+        <div className="space-y-2 text-xs text-slate-500 text-center">
+          <p className="animate-pulse">🔍 Extracting skills & experience</p>
+          <p className="animate-pulse delay-150">📊 Calculating match scores</p>
+          <p className="animate-pulse delay-300">
+            🤖 Generating career insights
+          </p>
+        </div>
+
+        {/* DOT LOADER */}
+        <div className="flex items-center gap-2 mt-2">
+          <span className="w-2 h-2 bg-teal-500 rounded-full animate-bounce"></span>
+          <span className="w-2 h-2 bg-teal-500 rounded-full animate-bounce delay-150"></span>
+          <span className="w-2 h-2 bg-teal-500 rounded-full animate-bounce delay-300"></span>
+        </div>
+      </div>
+    );
+  }
+
+  const skillsScore = data.resume_breakdown?.skills_score || 0;
+  const presentationScore = data.resume_breakdown?.presentation_score || 0;
+
+  return (
+    <div className="max-w-6xl mx-auto px-4 py-10 space-y-10">
+      {/* HERO HEADER */}
+      <div className="relative overflow-hidden rounded-2xl p-6 bg-linear-to-br from-teal-500 to-cyan-600 text-white shadow-lg">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center backdrop-blur">
+              <User />
+            </div>
+
+            <div>
+              <h1 className="text-xl font-semibold">Your AI Profile</h1>
+              <p className="text-sm opacity-80">
+                Smart insights powered by ResumeIQ
+              </p>
+            </div>
+          </div>
+
+          <div className="text-right">
+            <p className="text-sm opacity-80">Overall Score</p>
+            <p className="text-3xl font-bold">{data.score || 0}</p>
+          </div>
+        </div>
       </div>
 
-      {/* -------- STATS (MODERN CARDS) -------- */}
-
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {/* STATS */}
+      <div className="grid md:grid-cols-3 gap-6">
         {[
-          { label: "Score", value: "82" },
-          { label: "Skills", value: "16" },
-          { label: "Matches", value: "12" },
-          { label: "Progress", value: "75%" },
+          {
+            label: "Skills",
+            value: skillsScore,
+            icon: Star,
+            color: "teal",
+          },
+          {
+            label: "Presentation",
+            value: presentationScore,
+            icon: Brain,
+            color: "orange",
+          },
+          {
+            label: "Job Matches",
+            value: data.total_job_matches || 0,
+            icon: TrendingUp,
+            color: "green",
+          },
         ].map((item, i) => (
           <div
             key={i}
-            className="bg-white border border-slate-200 rounded-xl p-4 text-center hover:shadow-md transition"
+            className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition"
           >
-            <p className="text-xs text-slate-500">{item.label}</p>
-            <h2 className="text-xl font-semibold text-slate-800 mt-1">
+            <div className="flex justify-between items-center">
+              <p className="text-sm text-slate-600">{item.label}</p>
+              <item.icon className={`text-${item.color}-500`} size={18} />
+            </div>
+
+            <h2 className="text-3xl font-bold text-slate-800 mt-2">
               {item.value}
             </h2>
+
+            <div className="h-2 bg-slate-200 rounded-full mt-4">
+              <div
+                className={`h-2 rounded-full bg-${item.color}-500`}
+                style={{ width: `${item.value}%` }}
+              ></div>
+            </div>
           </div>
         ))}
       </div>
 
-      {/* -------- MAIN GRID -------- */}
+      {/* INSIGHT */}
+      <div className="bg-linear-to-r from-slate-50 to-white border border-slate-200 rounded-xl p-6 shadow-sm">
+        <h2 className="font-semibold text-slate-800 mb-2">🧠 Expert Insight</h2>
 
-      <div className="grid md:grid-cols-3 gap-6">
-        {/* LEFT SIDE */}
+        <p className="text-sm text-slate-600 leading-relaxed">
+          {data.resume_breakdown?.overall_insight ||
+            "Your profile shows a balanced combination of technical skills and presentation."}
+        </p>
+      </div>
 
-        <div className="space-y-6">
-          {/* CONTACT */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5">
-            <h3 className="text-sm font-semibold text-slate-700 mb-4">
-              Contact
-            </h3>
+      {/*  STRENGTHS + SUGGESTIONS */}
+      <div className="grid md:grid-cols-2 gap-6">
+        {/* STRENGTHS */}
+        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+          <h2 className="font-semibold text-slate-800 mb-4">💪 Strengths</h2>
 
-            <div className="space-y-3 text-sm text-slate-600">
-              <div className="flex items-center gap-2">
-                <Mail size={14} /> pritam@email.com
-              </div>
-
-              <div className="flex items-center gap-2">
-                <MapPin size={14} /> India
-              </div>
-            </div>
-          </div>
-
-          {/* RESUME */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5">
-            <h3 className="text-sm font-semibold text-slate-700 mb-4">
-              Resume
-            </h3>
-
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-3">
-                <div className="bg-slate-100 p-2 rounded-lg">
-                  <FileText size={16} />
+          <div className="space-y-3">
+            {data.strengths?.length > 0 ? (
+              data.strengths.map((item, i) => (
+                <div
+                  key={i}
+                  className="bg-green-50 border border-green-100 p-3 rounded-lg text-sm text-green-700"
+                >
+                  {item}
                 </div>
-
-                <div>
-                  <p className="text-sm font-medium text-slate-800">
-                    resume.pdf
-                  </p>
-                  <p className="text-xs text-slate-400">Updated recently</p>
-                </div>
-              </div>
-
-              <button className="text-sm text-teal-600">View</button>
-            </div>
+              ))
+            ) : (
+              <p className="text-slate-500">No strengths detected yet.</p>
+            )}
           </div>
         </div>
 
-        {/* RIGHT SIDE */}
+        {/* SUGGESTIONS */}
+        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+          <h2 className="font-semibold text-slate-800 mb-4">⚡ Suggestions</h2>
 
-        <div className="md:col-span-2 space-y-6">
-          {/* SKILLS */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-sm font-semibold text-slate-700">Skills</h3>
-
-              <button className="text-xs text-teal-600">Manage</button>
-            </div>
-
-            <div className="flex flex-wrap gap-2">
-              {skills.map((skill, i) => (
-                <span
+          <div className="space-y-3">
+            {data.suggestions?.length > 0 ? (
+              data.suggestions.map((item, i) => (
+                <div
                   key={i}
-                  className="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs"
+                  className="bg-orange-50 border border-orange-100 p-3 rounded-lg text-sm text-orange-700"
                 >
-                  {skill}
-                </span>
-              ))}
-            </div>
+                  {item}
+                </div>
+              ))
+            ) : (
+              <p className="text-slate-500">No suggestions available.</p>
+            )}
           </div>
+        </div>
+      </div>
 
-          {/* CTA (MODERN) */}
-          <div className="bg-linear-to-r from-teal-600 to-cyan-600 rounded-xl p-6 text-white flex justify-between items-center">
-            <div>
-              <h3 className="font-semibold">Improve your profile</h3>
-              <p className="text-xs opacity-80">
-                Add projects & skills to boost job matches
+      {/* SKILLS SUMMARY */}
+      <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+        <h2 className="font-semibold text-slate-800 mb-4">Skills Summary</h2>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+          {[
+            { label: "Total", value: data.skills_summary?.total },
+            { label: "Job Ready", value: data.skills_summary?.job_ready },
+            { label: "Developing", value: data.skills_summary?.developing },
+            { label: "To Learn", value: data.skills_summary?.to_learn },
+          ].map((item, i) => (
+            <div
+              key={i}
+              className="p-4 rounded-xl bg-slate-50 border border-slate-200"
+            >
+              <p className="text-xl font-bold text-teal-600">
+                {item.value || 0}
               </p>
+              <p className="text-xs text-slate-500">{item.label}</p>
             </div>
-
-            <button className="bg-white text-teal-600 px-4 py-2 rounded-lg text-sm">
-              Update
-            </button>
-          </div>
+          ))}
         </div>
       </div>
     </div>

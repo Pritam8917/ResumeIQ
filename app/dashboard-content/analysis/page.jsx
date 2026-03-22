@@ -45,6 +45,92 @@ export default function ResumeAnalysisPage() {
     );
   }
   const roles = data.career_roadmap || [];
+
+  const getSkillLabel = (score) => {
+    if (score >= 9) return "Expert";
+    if (score >= 7) return "Strong";
+    if (score >= 5) return "Developing";
+    return "Beginner";
+  };
+  const getSkillStyles = (score) => {
+    if (score >= 85) {
+      return {
+        card: "bg-green-50 border-green-200",
+        badge: "bg-green-600 text-white",
+        text: "text-green-700",
+        progress: "bg-green-600",
+      };
+    } else if (score >= 70) {
+      return {
+        card: "bg-teal-50 border-teal-200",
+        badge: "bg-teal-600 text-white",
+        text: "text-teal-700",
+        progress: "bg-teal-600",
+      };
+    } else if (score >= 50) {
+      return {
+        card: "bg-orange-50 border-orange-200",
+        badge: "bg-orange-500 text-white",
+        text: "text-orange-700",
+        progress: "bg-orange-500",
+      };
+    } else {
+      return {
+        card: "bg-red-50 border-red-200",
+        badge: "bg-red-500 text-white",
+        text: "text-red-700",
+        progress: "bg-red-500",
+      };
+    }
+  };
+
+  const score = data.resume_breakdown?.skills_score || 0;
+  const styles = getSkillStyles(score);
+
+  const getPresentationLabel = (score) => {
+    if (score >= 85) return "ATS Optimized";
+    if (score >= 70) return "Well Structured";
+    if (score >= 50) return "Needs Improvement";
+    return "Poor Format";
+  };
+  const getPresentationStyles = (score) => {
+    if (score >= 85) {
+      return {
+        card: "bg-green-50 border-green-200",
+        badge: "bg-green-600 text-white",
+        text: "text-green-700",
+        progress: "bg-green-600",
+      };
+    } else if (score >= 70) {
+      return {
+        card: "bg-teal-50 border-teal-200",
+        badge: "bg-teal-600 text-white",
+        text: "text-teal-700",
+        progress: "bg-teal-600",
+      };
+    } else if (score >= 50) {
+      return {
+        card: "bg-orange-50 border-orange-200",
+        badge: "bg-orange-500 text-white",
+        text: "text-orange-700",
+        progress: "bg-orange-500",
+      };
+    } else {
+      return {
+        card: "bg-red-50 border-red-200",
+        badge: "bg-red-500 text-white",
+        text: "text-red-700",
+        progress: "bg-red-500",
+      };
+    }
+  };
+  const presentationScore = data.resume_breakdown?.presentation_score || 0;
+
+  const presentationStyles = getPresentationStyles(presentationScore);
+  const skillScore = data.resume_breakdown?.skills_score || 0;
+
+  const skillStyles = getSkillStyles(skillScore);
+
   return (
     <div className="space-y-10 ml-0 md:ml-8">
       {/* ---------------- RESUME INTELLIGENCE ---------------- */}
@@ -121,36 +207,40 @@ export default function ResumeAnalysisPage() {
             <div className="grid md:grid-cols-2 gap-6">
               {/* SKILLS CARD */}
 
-              <div className="border border-teal-200 rounded-xl p-5 bg-teal-50">
+              <div className={`border rounded-xl p-5 ${styles.card}`}>
                 <div className="flex justify-between items-start">
                   <div>
                     <h4 className="font-semibold text-slate-800">
                       Skills
-                      <span className="ml-2 text-xs bg-teal-600 text-white px-2 py-1 rounded-full">
-                        TOP
+                      <span
+                        className={`ml-2 text-xs px-2 py-1 rounded-full ${styles.badge}`}
+                      >
+                        {getSkillLabel(score)}
                       </span>
                     </h4>
 
                     <p className="text-sm text-slate-600 mt-2">
-                      {data.summary?.skills_insight ||
+                      {data.resume_breakdown?.skills_insight ||
                         "Skill analysis based on your resume."}
                     </p>
                   </div>
 
-                  <span className="text-xl font-bold text-teal-700">
-                    {data.resume_breakdown?.skills_score || 0}
+                  <span className={`text-xl font-bold ${styles.text}`}>
+                    {score}
                   </span>
                 </div>
 
-                <div className="h-2 bg-slate-200 rounded-full mt-4">
+                {/* Progress Bar */}
+                <div className="h-2 bg-slate-200 rounded-full mt-4 overflow-hidden">
                   <div
-                    className="h-2 bg-teal-600 rounded-full"
+                    className={`h-2 rounded-full transition-all duration-500 ${styles.progress}`}
                     style={{
-                      width: `${data.resume_breakdown?.skills_score || 0}%`,
+                      width: `${score}%`,
                     }}
                   ></div>
                 </div>
 
+                {/* Button */}
                 <button
                   className="mt-4 flex items-center gap-2 border border-slate-300 rounded-lg px-4 py-2 text-[12px] bg-slate-100 text-gray-800 cursor-pointer hover:bg-slate-200 transition w-full justify-center"
                   onClick={() =>
@@ -164,35 +254,47 @@ export default function ResumeAnalysisPage() {
 
               {/* PRESENTATION CARD */}
 
-              <div className="border border-orange-200 rounded-xl p-5 bg-orange-50">
+              <div
+                className={`border rounded-xl p-5 ${presentationStyles.card}`}
+              >
                 <div className="flex justify-between items-start">
                   <div>
                     <h4 className="font-semibold text-slate-800">
                       Presentation
-                      <span className="ml-2 text-xs bg-orange-500 text-white px-2 py-1 rounded-full">
-                        FOCUS
+                      <span
+                        className={`ml-2 text-xs px-2 py-1 rounded-full ${presentationStyles.badge}`}
+                      >
+                        {getPresentationLabel(presentationScore)}
                       </span>
                     </h4>
 
                     <p className="text-sm text-slate-600 mt-2">
-                      {data.summary?.presentation_insight ||
-                        "Resume formatting and structure feedback."}
+                      {data.resume_breakdown?.presentation_insight ||
+                        "Presentation analysis based on ATS and readability."}
                     </p>
                   </div>
 
-                  <span className="text-xl font-bold text-orange-600">
-                    {data.resume_breakdown?.presentation_score || 0}
+                  <span
+                    className={`text-xl font-bold ${presentationStyles.text}`}
+                  >
+                    {presentationScore}
                   </span>
                 </div>
 
-                <div className="h-2 bg-slate-200 rounded-full mt-4">
+                {/* Progress Bar */}
+                <div className="h-2 bg-slate-200 rounded-full mt-4 overflow-hidden">
                   <div
-                    className="h-2 bg-orange-500 rounded-full"
+                    className={`h-2 rounded-full transition-all duration-500 ${presentationStyles.progress}`}
                     style={{
-                      width: `${data.resume_breakdown?.presentation_score || 0}%`,
+                      width: `${presentationScore}%`,
                     }}
                   ></div>
                 </div>
+
+                {/* Optional Button */}
+                <button className="mt-4 flex items-center gap-2 border border-slate-300 rounded-lg px-4 py-2 text-[12px] bg-slate-100 text-gray-800 cursor-pointer hover:bg-slate-200 transition w-full justify-center">
+                  Improve Resume Format
+                </button>
               </div>
             </div>
 
@@ -232,20 +334,31 @@ export default function ResumeAnalysisPage() {
 
             <div className="grid md:grid-cols-2 gap-6">
               {/* SKILLS IMPROVEMENT */}
-
-              <div className="border border-slate-200 rounded-xl p-5">
+              <div className={`border rounded-xl p-5 ${skillStyles.card}`}>
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="bg-teal-100 text-teal-700 px-2 py-1 rounded">
-                    {data.resume_breakdown?.skills_score || 0}
+                  <span className={`px-2 py-1 rounded ${skillStyles.badge}`}>
+                    {skillScore}
                   </span>
 
                   <h4 className="font-semibold text-slate-800">Skills</h4>
                 </div>
 
-                <p className="text-sm text-slate-600 mb-4">
-                  {data.recommendations?.skills ||
-                    "Improve your technical depth and projects."}
-                </p>
+                {/* LIST */}
+                <ul className="space-y-2 text-sm text-slate-700 mb-4">
+                  {(data.resume_breakdown?.skills_improvement || []).length >
+                  0 ? (
+                    data.resume_breakdown.skills_improvement.map((item, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <span className="mt-1 w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+                        {item}
+                      </li>
+                    ))
+                  ) : (
+                    <p className="text-slate-500">
+                      Improve your technical depth and projects.
+                    </p>
+                  )}
+                </ul>
 
                 <div className="flex gap-3">
                   <button className="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm">
@@ -259,22 +372,69 @@ export default function ResumeAnalysisPage() {
               </div>
 
               {/* PRESENTATION IMPROVEMENT */}
-
-              <div className="border border-slate-200 rounded-xl p-5">
+              <div
+                className={`border rounded-xl p-5 ${presentationStyles.card}`}
+              >
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="bg-orange-100 text-orange-700 px-2 py-1 rounded">
-                    {data.resume_breakdown?.presentation_score || 0}
+                  <span
+                    className={`px-2 py-1 rounded ${presentationStyles.badge}`}
+                  >
+                    {presentationScore}
                   </span>
 
                   <h4 className="font-semibold text-slate-800">Presentation</h4>
                 </div>
 
-                <p className="text-sm text-slate-600">
-                  {data.recommendations?.presentation ||
-                    "Improve formatting and bullet clarity."}
-                </p>
+                {/* LIST */}
+                <ul className="space-y-2 text-sm text-slate-700">
+                  {(data.resume_breakdown?.presentation_improvement || [])
+                    .length > 0 ? (
+                    data.resume_breakdown.presentation_improvement.map(
+                      (item, i) => (
+                        <li key={i} className="flex items-start gap-2">
+                          <span className="mt-1 w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+                          {item}
+                        </li>
+                      ),
+                    )
+                  ) : (
+                    <p className="text-slate-500">
+                      Improve formatting and bullet clarity.
+                    </p>
+                  )}
+                </ul>
               </div>
             </div>
+
+            {/* GLOBAL ACTIONS (FROM API) */}
+            {data.actions?.length > 0 && (
+              <div className="space-y-4">
+                <h4 className="font-semibold text-slate-800">
+                  Recommended Actions
+                </h4>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  {data.actions.map((action, i) => (
+                    <div
+                      key={i}
+                      className="border border-slate-200 rounded-lg p-4 bg-white hover:shadow-md transition"
+                    >
+                      <h5 className="text-sm font-semibold text-slate-800">
+                        {action.title}
+                      </h5>
+
+                      <p className="text-xs text-slate-600 mt-1">
+                        {action.description}
+                      </p>
+
+                      <span className="inline-block mt-2 text-[10px] px-2 py-1 bg-slate-100 text-slate-600 rounded">
+                        {action.type}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -353,15 +513,12 @@ export default function ResumeAnalysisPage() {
             </h3>
 
             <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 text-sm text-slate-700">
-              <span className="font-medium">Career Impact:</span> With a strong
-              role fit you are closer than most candidates. Closing a few skill
-              gaps will significantly improve shortlisting chances.
+              <span className="font-semibold text-black">Career Impact:</span>{" "}
+              {roles[activeRole]?.career_impact}
             </div>
 
             <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 text-sm text-slate-600">
-              Based on your resume, you already have a solid foundation in
-              front-end and back-end technologies. Strengthening architecture
-              and cloud skills can further improve your role readiness.
+              {roles[activeRole]?.why_this_role}
             </div>
           </div>
 
@@ -383,16 +540,6 @@ export default function ResumeAnalysisPage() {
                   {skill}
                 </span>
               ))}
-
-              {/* Improving Skills */}
-              {/* {data.skill_gaps?.improving?.slice(0, 2).map((skill, i) => (
-                <span
-                  key={i}
-                  className="text-xs px-3 py-1 rounded-full bg-amber-50 text-amber-600 border border-amber-200"
-                >
-                  {skill}
-                </span>
-              ))} */}
             </div>
 
             {/* Optional CTA */}

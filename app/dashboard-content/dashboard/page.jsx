@@ -70,7 +70,7 @@ export default function Dashboard() {
 
   const visibleSkills = allSkills.slice(0, visibleCount);
 
-  const previewJobs = data.job_recommendations?.slice(0, 4);
+  const previewJobs = data.job_recommendations?.slice(0, 2);
 
   return (
     <div className="space-y-6 md:space-y-8 ml-0 md:ml-8 bg-slate-50 p-4 md:p-6 rounded-xl">
@@ -176,24 +176,68 @@ export default function Dashboard() {
             {previewJobs.map((job, i) => (
               <div
                 key={i}
-                className="border border-slate-200 rounded-xl p-4 flex justify-between items-center hover:bg-slate-50 hover:shadow-sm transition"
+                className="border border-slate-200 rounded-xl p-4 hover:bg-slate-50 hover:shadow-sm transition"
               >
-                <div>
-                  <h3 className="font-semibold text-gray-700">{job.role}</h3>
-                  <p className="text-sm text-slate-500">
-                    Match Score: {job.match_percentage}%
-                  </p>
+                <div className="flex justify-between items-start">
+                  {/* LEFT */}
+                  <div>
+                    <h3 className="font-semibold text-gray-800">{job.role}</h3>
+
+                    <p className="text-sm text-slate-500">
+                      {job.company || "Unknown Company"}
+                    </p>
+
+                    <div className="flex flex-wrap gap-3 text-xs text-slate-500 mt-2">
+                      <span>📍 {job.location || "Remote"}</span>
+                      <span>💼 {job.type || "N/A"}</span>
+                    </div>
+                  </div>
+
+                  {/* MATCH BADGE */}
+                  <span
+                    className={`text-xs px-2 py-1 rounded-full font-medium
+              ${
+                job.match_percentage >= 80
+                  ? "bg-green-100 text-green-700"
+                  : job.match_percentage >= 60
+                    ? "bg-teal-100 text-teal-700"
+                    : "bg-orange-100 text-orange-700"
+              }`}
+                  >
+                    {job.match_percentage}% Match
+                  </span>
                 </div>
-                <Briefcase className="text-teal-600" />
+
+                {/* SKILL COVERAGE BAR */}
+                <div className="mt-3">
+                  <div className="flex justify-between text-xs text-slate-500 mb-1">
+                    <span>Skill Coverage</span>
+                    <span>{job.skill_coverage_percentage || 0}%</span>
+                  </div>
+
+                  <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-linear-to-r from-teal-500 to-cyan-500"
+                      style={{
+                        width: `${job.skill_coverage_percentage || 0}%`,
+                      }}
+                    ></div>
+                  </div>
+                </div>
+
+                {/* REASON (AI Insight) */}
+                <p className="text-xs text-slate-500 mt-3 line-clamp-2">
+                  {job.reason}
+                </p>
               </div>
             ))}
           </div>
 
-          {/* View All Button */}
+          {/* VIEW ALL BUTTON */}
           {data.job_recommendations?.length > 4 && (
             <button
               onClick={() => router.push("/dashboard-content/jobs")}
-              className="mt-4 w-full border border-slate-200 rounded-xl py-2 text-sm font-medium hover:bg-gray-100 transition cursor-pointer text-gray-500 shadow-md"
+              className="mt-4 w-full border border-slate-200 rounded-xl py-2 text-sm font-medium hover:bg-gray-100 transition cursor-pointer text-gray-600"
             >
               View All Jobs →
             </button>

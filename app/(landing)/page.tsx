@@ -2,8 +2,6 @@
 
 import { ArrowRight, FileText, Shield, Zap } from "lucide-react";
 import { motion } from "framer-motion";
-// import { useAuthStore } from "@/store/authStore";
-// import { useRouter } from "next/navigation";
 import UploadResumeModal from "@/components/UploadResumeModal";
 import { useState } from "react";
 export default function Hero() {

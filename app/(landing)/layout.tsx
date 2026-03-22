@@ -4,7 +4,6 @@ import Navbar from "@/components/navbar";
 import WhatYouGet from "@/components/features";
 import HowItWorks from "@/components/how-it-works";
 import FAQ from "@/components/faq";
-import CTA from "@/components/cta-section";
 import Footer from "@/components/footer";
 
 export default function RootLayout({
@@ -22,7 +21,6 @@ export default function RootLayout({
         <WhatYouGet />
         <HowItWorks />
         <FAQ />
-        <CTA />
         <Footer />
       </body>
     </html>

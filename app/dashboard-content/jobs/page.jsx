@@ -2,130 +2,55 @@
 
 import { useState } from "react";
 import { Search, MapPin, Briefcase } from "lucide-react";
-import { Star, Zap, Target, Grid, Funnel } from "lucide-react";
+import { Star, Zap, Target, Grid, Funnel, Brain } from "lucide-react";
+import { useResumeStore } from "@/store/resumeStore";
 export default function JobsPage() {
   const [query, setQuery] = useState("");
   const [minMatch, setMinMatch] = useState(0);
+  const data = useResumeStore((s) => s.data);
+  if (!data) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[70vh] gap-6 bg-linear-to-br from-slate-50 to-white">
+        {/* Animated Logo / Icon */}
+        <div className="relative">
+          <div className="w-16 h-16 rounded-full bg-teal-100 flex items-center justify-center animate-pulse">
+            <Brain className="text-teal-600" size={28} />
+          </div>
 
-  const jobs = [
-    {
-      title: "Data Science & ML Intern",
-      company: "JobsifyAI",
-      location: "Remote",
-      match: 54,
-      coverage: 37,
-      type: "Full-time",
-      exp: "0-1 years",
-    },
-    {
-      title: "Full Stack Developer",
-      company: "Atlas Systems",
-      location: "Bangalore",
-      match: 47,
-      coverage: 36,
-      type: "Full-time",
-      exp: "1+ years",
-    },
-    {
-      title: "Data Science & ML Intern",
-      company: "JobsifyAI",
-      location: "Remote",
-      match: 54,
-      coverage: 37,
-      type: "Full-time",
-      exp: "0-1 years",
-    },
-    {
-      title: "Full Stack Developer",
-      company: "Atlas Systems",
-      location: "Bangalore",
-      match: 47,
-      coverage: 36,
-      type: "Full-time",
-      exp: "1+ years",
-    },
-    {
-      title: "Data Science & ML Intern",
-      company: "JobsifyAI",
-      location: "Remote",
-      match: 54,
-      coverage: 37,
-      type: "Full-time",
-      exp: "0-1 years",
-    },
-    {
-      title: "Full Stack Developer",
-      company: "Atlas Systems",
-      location: "Bangalore",
-      match: 47,
-      coverage: 36,
-      type: "Full-time",
-      exp: "1+ years",
-    },
-    {
-      title: "Data Science & ML Intern",
-      company: "JobsifyAI",
-      location: "Remote",
-      match: 54,
-      coverage: 37,
-      type: "Full-time",
-      exp: "0-1 years",
-    },
-    {
-      title: "Full Stack Developer",
-      company: "Atlas Systems",
-      location: "Bangalore",
-      match: 47,
-      coverage: 36,
-      type: "Full-time",
-      exp: "1+ years",
-    },
-    {
-      title: "Data Science & ML Intern",
-      company: "JobsifyAI",
-      location: "Remote",
-      match: 54,
-      coverage: 37,
-      type: "Full-time",
-      exp: "0-1 years",
-    },
-    {
-      title: "Full Stack Developer",
-      company: "Atlas Systems",
-      location: "Bangalore",
-      match: 47,
-      coverage: 36,
-      type: "Full-time",
-      exp: "1+ years",
-    },
-    {
-      title: "Data Science & ML Intern",
-      company: "JobsifyAI",
-      location: "Remote",
-      match: 54,
-      coverage: 37,
-      type: "Full-time",
-      exp: "0-1 years",
-    },
-    {
-      title: "Full Stack Developer",
-      company: "Atlas Systems",
-      location: "Bangalore",
-      match: 47,
-      coverage: 36,
-      type: "Full-time",
-      exp: "1+ years",
-    },
-  ];
+          {/* Spinning Ring */}
+          <div className="absolute inset-0 rounded-full border-4 border-teal-500 border-t-transparent animate-spin"></div>
+        </div>
+
+        {/* Heading */}
+        <div className="text-center space-y-2">
+          <h2 className="text-lg font-semibold text-slate-800">
+            Analyzing Your Resume
+          </h2>
+
+          <p className="text-sm text-slate-500 animate-pulse">
+            AI is reviewing your skills, experience, and job fit...
+          </p>
+        </div>
+
+        {/* Progress Steps */}
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 bg-teal-500 rounded-full animate-bounce"></span>
+          <span className="w-2 h-2 bg-teal-500 rounded-full animate-bounce delay-150"></span>
+          <span className="w-2 h-2 bg-teal-500 rounded-full animate-bounce delay-300"></span>
+        </div>
+      </div>
+    );
+  }
+  const jobs = data.job_recommendations || [];
 
   const filteredJobs = jobs.filter(
     (job) =>
-      job.title.toLowerCase().includes(query.toLowerCase()) &&
-      job.match >= minMatch,
+      job.role.toLowerCase().includes(query.toLowerCase()) &&
+      job.match_percentage >= minMatch,
   );
-  const bestMatch = Math.max(...jobs.map((j) => j.match));
+  const bestMatch = Math.max(...jobs.map((j) => j.match_percentage));
   const avgMatch = Math.round(
-    jobs.reduce((a, b) => a + b.match, 0) / jobs.length,
+    jobs.reduce((a, b) => a + b.match_percentage, 0) / jobs.length,
   );
   return (
     <div className="space-y-6 ">
@@ -354,7 +279,7 @@ export default function JobsPage() {
                   {/* LEFT CONTENT */}
                   <div>
                     <h3 className="font-semibold text-slate-800 group-hover:text-teal-600 transition">
-                      {job.title}
+                      {job.role}
                     </h3>
 
                     <p className="text-sm text-slate-500">{job.company}</p>
@@ -368,14 +293,14 @@ export default function JobsPage() {
                         <Briefcase size={12} /> {job.type}
                       </span>
 
-                      <span>{job.exp}</span>
+                      <span>{job.required_experience} years</span>
                     </div>
                   </div>
 
                   {/* MATCH BADGE */}
                   <div className="text-right">
                     <div className="px-3 py-1 rounded-full text-xs font-medium bg-teal-50 text-teal-700">
-                      {job.match}% Match
+                      {job.match_percentage}% Match
                     </div>
                   </div>
                 </div>
@@ -385,13 +310,13 @@ export default function JobsPage() {
                 <div className="mt-4">
                   <div className="flex justify-between text-xs text-slate-500 mb-1">
                     <span>Skill Coverage</span>
-                    <span>{job.coverage}%</span>
+                    <span>{job.skill_coverage_percentage}%</span>
                   </div>
 
                   <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                     <div
                       className="h-2 bg-linear-to-r from-teal-500 to-cyan-500 rounded-full"
-                      style={{ width: `${job.coverage}%` }}
+                      style={{ width: `${job.skill_coverage_percentage}%` }}
                     ></div>
                   </div>
                 </div>

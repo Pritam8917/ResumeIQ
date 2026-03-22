@@ -9,16 +9,37 @@ import {
   FileSearch,
   Wrench,
   Briefcase,
-  FileText,
+  // FileText,
   User,
   LogOut,
   Menu,
 } from "lucide-react";
+// lib/supabase.js
+import { createClient } from "@supabase/supabase-js";
+import { useResumeStore } from "@/store/resumeStore";
+export const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+);
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const handleLogout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
 
+      if (error) throw error;
+
+      // optional: clear Zustand
+      useResumeStore.getState().clearData?.();
+
+      // redirect
+      window.location.href = "/";
+    } catch (err) {
+      console.error("Logout error:", err);
+    }
+  };
   const menuItems = [
     {
       name: "Dashboard",
@@ -37,11 +58,11 @@ export default function Sidebar() {
     //   icon: ClipboardCheck,
     //   href: "/dashboard-content/assessments",
     // },
-    {
-      name: "Cover Letter",
-      icon: FileText,
-      href: "/dashboard-content/cover-letter",
-    },
+    // {
+    //   name: "Cover Letter",
+    //   icon: FileText,
+    //   href: "/dashboard-content/cover-letter",
+    // },
     { name: "Profile", icon: User, href: "/dashboard-content/profile" },
   ];
 
@@ -120,14 +141,18 @@ export default function Sidebar() {
 
         {/* Bottom Logout */}
         <div className="p-3 border-t border-slate-200">
-          <Link
-            href="/logout"
-            onClick={() => setOpen(false)}
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-red-400 font-semibold hover:bg-red-50 transition"
+          <button
+            onClick={handleLogout}
+            className="group flex items-center justify-between w-full px-4 py-3 rounded-xl text-sm font-semibold text-red-600 bg-red-50 hover:bg-red-100 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
           >
-            <LogOut size={20} />
-            Logout
-          </Link>
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-red-100 group-hover:bg-red-200 transition">
+                <LogOut size={18} className="text-red-600" />
+              </div>
+
+              <span>Logout</span>
+            </div>
+          </button>
         </div>
       </div>
     </>
