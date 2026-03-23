@@ -13,6 +13,8 @@ import {
   Wrench,
 } from "lucide-react";
 import { useResumeStore } from "@/store/resumeStore";
+import SkillDonutChart from "@/components/charts/SkillDonutChart";
+import JobBarChart from "@/components/charts/JobBarChart";
 import { useState } from "react";
 
 export default function Dashboard() {
@@ -131,6 +133,11 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {/* 🔥 NEW: CHART SECTION */}
+      <div className="grid lg:grid-cols-2 gap-6">
+        <SkillDonutChart data={data.skill_gaps} />
+        <JobBarChart jobs={data.job_recommendations} />
+      </div>
       {/* INSIGHTS */}
       <div className="grid lg:grid-cols-2 gap-6">
         {/* SKILL GAPS */}

@@ -56,7 +56,7 @@ export default function ProfilePage() {
   const presentationScore = data.resume_breakdown?.presentation_score || 0;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10 space-y-10">
+    <div className="max-w-6xl mx-auto px-4 py-10 space-y-10 border rounded-xl shadow-md">
       {/* HERO HEADER */}
       <div className="relative overflow-hidden rounded-2xl p-6 bg-linear-to-br from-teal-500 to-cyan-600 text-white shadow-lg">
         <div className="flex justify-between items-center">
@@ -108,7 +108,7 @@ export default function ProfilePage() {
           >
             <div className="flex justify-between items-center">
               <p className="text-sm text-slate-600">{item.label}</p>
-              <item.icon className={`text-${item.color}-500`} size={18} />
+              <item.icon className={`text-${item.color}-600`} size={18} />
             </div>
 
             <h2 className="text-3xl font-bold text-slate-800 mt-2">

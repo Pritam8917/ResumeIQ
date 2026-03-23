@@ -5,19 +5,21 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { useAuthStore } from "@/store/authStore";
+// import { useAuthStore } from "@/store/authStore";
+import UploadResumeModal from "@/components/UploadResumeModal";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+
   const router = useRouter();
-  const user  = useAuthStore((state) => state.user);
-  const handleOnClick = () => {
-    if(user) {
-      router.push("/upload");
-    } else {
-      router.push("/login");
-    }
-  }
+  // const user  = useAuthStore((state) => state.user);
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleUploadClick = () => {
+    setOpenModal(true);
+  };
+
   return (
     <nav className="w-full bg-[#f3f4f6] border-b border-gray-200 shadow-sm sticky top-0 z-50">
       <div className="max-w-8xl mx-auto md:px-15 px-7 py-3 flex items-center justify-between">
@@ -51,7 +53,7 @@ export default function Navbar() {
 
         {/* Right Side Desktop */}
         <div className="hidden md:flex items-center gap-3">
-          <button onClick={handleOnClick} className="px-5 py-1 rounded-full bg-linear-to-r from-blue-500 via-indigo-500 to-cyan-500 text-white font-semibold hover:opacity-90 transition flex items-center gap-2 shadow-sm">
+          <button onClick={handleUploadClick} className="px-5 py-1 rounded-full bg-linear-to-r from-blue-500 via-indigo-500 to-cyan-500 text-white font-semibold hover:opacity-90 transition flex items-center gap-2 shadow-sm cursor-pointer">
             Get Started →
           </button>
         </div>
@@ -107,7 +109,8 @@ export default function Navbar() {
               </Link>
 
               <div className="flex flex-col gap-3 pt-2">
-                <button className="w-full py-2 rounded-full bg-linear-to-r from-blue-500 via-indigo-500 to-cyan-500 text-white font-semibold shadow-md hover:opacity-90 transition"onClick={() => setOpen(false)}>
+                <button className="w-full py-2 rounded-full bg-linear-to-r from-blue-500 via-indigo-500 to-cyan-500 text-white font-semibold shadow-md hover:opacity-90 transition cursor-pointer"
+                onClick={handleUploadClick}>
                   Get Started →
                 </button>
               </div>
@@ -115,6 +118,10 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+            <UploadResumeModal
+              isOpen={openModal}
+              onClose={() => setOpenModal(false)}
+            />
     </nav>
   );
 }
