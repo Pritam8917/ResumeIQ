@@ -110,16 +110,6 @@ export default function Dashboard() {
           <p className="text-xs text-slate-500">Detected</p>
         </div>
 
-        {/* ASSESSMENTS (STATIC for now) */}
-        {/* <div className="bg-white rounded-xl p-6">
-          <div className="flex justify-between mb-2">
-            <p className="text-sm text-slate-600">Assessments</p>
-            <ClipboardList className="text-purple-600" size={18} />
-          </div>
-          <h2 className="text-3xl font-bold">4</h2>
-          <p className="text-xs text-slate-400">Completed</p>
-        </div> */}
-
         {/* JOB MATCH */}
         <div className="bg-linear-to-br from-orange-50 to-white border border-orange-100 rounded-2xl p-6 shadow-sm">
           <div className="flex justify-between mb-2">
