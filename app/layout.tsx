@@ -14,10 +14,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Resume Analyzer - AI-Powered Career Tools",
-  description:
-    "Analyze your resume, match jobs, generate cover letters, and ace interviews with AI-powered tools. Optimize your career with personalized insights and recommendations.",
+title: "ResumeIQ - Smart AI Resume Analysis & Career Optimization",
+description:
+  "Boost your career with ResumeIQ. Analyze resumes, get ATS scores, optimize content, and receive AI-powered insights to land your dream job faster.",
 };
+
 export default function RootLayout({
   children,
 }: {
