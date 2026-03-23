@@ -210,7 +210,7 @@ export default function UploadResumeModal({ isOpen, onClose }) {
           className="w-full flex justify-center items-center gap-2 bg-linear-to-r from-teal-600 to-cyan-600 text-white py-3 rounded-lg cursor-pointer"
         >
           {loading && <span className="animate-spin">⏳</span>}
-          {loading ? "Processing..." : "Continue"}
+          {loading ? "Analyzing your resume..." : "Continue"}
         </button>
       </div>
     </div>
