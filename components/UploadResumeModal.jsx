@@ -7,7 +7,6 @@ import { useAuthStore } from "@/store/authStore";
 import { useResumeStore } from "@/store/resumeStore";
 import { extractTextFromPDF } from "@/lib/pdf";
 import { analyzeResume } from "@/lib/analyze";
-// import { resumePrompt } from "@/lib/prompt";
 
 export default function UploadResumeModal({ isOpen, onClose }) {
   const router = useRouter();
@@ -115,14 +114,14 @@ export default function UploadResumeModal({ isOpen, onClose }) {
             onChange={() => setAgree(!agree)}
             className="cursor-pointer"
           />
-          <span className="text-gray-500">I agree to Terms & Privacy</span>
+          <span className="text-gray-800">I agree to Terms & Privacy</span>
         </div>
 
         {/* Email */}
         <input
           type="email"
           placeholder="Enter your email"
-          className="w-full border p-3 rounded-lg text-gray-300"
+          className="w-full border p-3 rounded-lg text-gray-800"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -131,14 +130,14 @@ export default function UploadResumeModal({ isOpen, onClose }) {
         <input
           type="password"
           placeholder="Password"
-          className="w-full border p-3 rounded-lg text-gray-300"
+          className="w-full border p-3 rounded-lg text-gray-800"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
         {/* Upload */}
         <div
-          className="relative border-2 border-dashed border-gray-300 hover:border-cyan-500 transition rounded-xl p-6 text-center bg-gray-50 hover:bg-white cursor-pointer"
+          className="relative border-2 border-dashed border-gray-400 hover:border-cyan-500 transition rounded-xl p-6 text-center bg-gray-50 hover:bg-white cursor-pointer"
           onDragOver={(e) => e.preventDefault()}
           onDrop={(e) => {
             e.preventDefault();
@@ -204,14 +203,23 @@ export default function UploadResumeModal({ isOpen, onClose }) {
         {error && <p className="text-red-500 text-sm">{error}</p>}
 
         {/* Button */}
-        <button
-          onClick={handleSubmit}
-          disabled={loading}
-          className="w-full flex justify-center items-center gap-2 bg-linear-to-r from-teal-600 to-cyan-600 text-white py-3 rounded-lg cursor-pointer"
-        >
-          {loading && <span className="animate-spin">⏳</span>}
-          {loading ? "Analyzing your resume..." : "Continue"}
-        </button>
+        <div className="w-full flex flex-col items-center">
+          <button
+            onClick={handleSubmit}
+            disabled={loading}
+            className="w-full flex justify-center items-center gap-2 bg-linear-to-r from-teal-600 to-cyan-600 text-white py-3 rounded-lg cursor-pointer disabled:opacity-70 min-h-12"
+          >
+            {loading && <span className="animate-spin">⏳</span>}
+
+            {loading ? "Analyzing your resume for insights..." : "Continue"}
+          </button>
+
+          {loading && (
+            <p className="text-sm text-slate-600 mt-2">
+              This may take a few seconds...
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
