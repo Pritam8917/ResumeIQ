@@ -99,7 +99,7 @@ export default function Sidebar() {
       >
         {/* Logo */}
         <div className="flex items-center justify-between px-5 py-5 border-b border-slate-200">
-          <div className="flex items-center gap-1 text-2xl font-bold">
+          <div className="flex items-center text-2xl font-bold">
             <span className="bg-linear-to-r from-blue-500 to-teal-500 bg-clip-text text-transparent">
               Resume
             </span>

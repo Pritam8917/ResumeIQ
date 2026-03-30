@@ -24,7 +24,7 @@ export default function Navbar() {
     <nav className="w-full bg-[#f3f4f6] border-b border-gray-200 shadow-sm sticky top-0 z-50">
       <div className="max-w-8xl mx-auto md:px-15 px-7 py-3 flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center gap-2 text-xl font-semibold cursor-pointer" onClick={()=>router.push("/")}>
+        <div className="flex items-center text-xl font-semibold cursor-pointer" onClick={()=>router.push("/")}>
           <span className="bg-linear-to-r from-blue-500 to-teal-500 bg-clip-text text-transparent">
             Resume
           </span>

@@ -22,32 +22,94 @@ export default function Dashboard() {
   const data = useResumeStore((s) => s.data);
   const [visibleCount, setVisibleCount] = useState(6);
 
-  if (!data) {
-    return (
-      <div className="flex flex-col items-center justify-center h-[70vh] gap-6 bg-linear-to-br from-slate-50 to-white">
-        <div className="relative">
-          <div className="w-16 h-16 rounded-full bg-teal-100 flex items-center justify-center animate-pulse">
-            <Brain className="text-teal-600" size={28} />
-          </div>
+if (!data) {
+  return (
+    <div className="space-y-6 md:space-y-8 ml-0 md:ml-8 bg-slate-50 p-4 md:p-6 rounded-xl animate-pulse">
 
-          <div className="absolute inset-0 rounded-full border-4 border-teal-500 border-t-transparent animate-spin"></div>
+      {/* WELCOME */}
+      <div className="border rounded-2xl p-6 bg-white">
+        <div className="h-5 w-40 bg-slate-300 rounded mb-2"></div>
+        <div className="h-4 w-60 bg-slate-200 rounded"></div>
+      </div>
+
+      {/* ANALYTICS CARDS */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-9">
+        {[1, 2, 3].map((_, i) => (
+          <div key={i} className="border rounded-2xl p-6 bg-white space-y-3">
+            <div className="h-4 w-24 bg-slate-300 rounded"></div>
+            <div className="h-8 w-16 bg-slate-300 rounded"></div>
+            <div className="h-3 w-20 bg-slate-200 rounded"></div>
+          </div>
+        ))}
+      </div>
+
+      {/* CHARTS */}
+      <div className="grid lg:grid-cols-2 gap-6">
+        <div className="h-64 bg-slate-300 rounded-xl"></div>
+        <div className="h-64 bg-slate-300 rounded-xl"></div>
+      </div>
+
+      {/* INSIGHTS */}
+      <div className="grid lg:grid-cols-2 gap-6">
+        
+        {/* SKILLS */}
+        <div className="bg-white rounded-xl p-6 border space-y-4">
+          <div className="h-5 w-40 bg-slate-300 rounded"></div>
+
+          {[1, 2, 3, 4].map((_, i) => (
+            <div key={i} className="flex justify-between items-center">
+              <div className="h-4 w-32 bg-slate-200 rounded"></div>
+              <div className="h-6 w-16 bg-slate-300 rounded-full"></div>
+            </div>
+          ))}
         </div>
-        <div className="text-center space-y-2">
-          <h2 className="text-lg font-semibold text-slate-800">
-            Analyzing Your Resume
-          </h2>
-          <p className="text-sm text-slate-500 animate-pulse">
-            AI is reviewing your skills, experience, and job fit...
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 bg-teal-500 rounded-full animate-bounce"></span>
-          <span className="w-2 h-2 bg-teal-500 rounded-full animate-bounce delay-150"></span>
-          <span className="w-2 h-2 bg-teal-500 rounded-full animate-bounce delay-300"></span>
+
+        {/* JOBS */}
+        <div className="bg-white rounded-xl p-6 border space-y-4">
+          <div className="h-5 w-40 bg-slate-300 rounded"></div>
+
+          {[1, 2].map((_, i) => (
+            <div key={i} className="border rounded-xl p-4 space-y-3">
+              <div className="flex justify-between">
+                <div className="space-y-2">
+                  <div className="h-4 w-32 bg-slate-300 rounded"></div>
+                  <div className="h-3 w-24 bg-slate-200 rounded"></div>
+                </div>
+                <div className="h-6 w-16 bg-slate-300 rounded-full"></div>
+              </div>
+
+              <div className="h-2 w-full bg-slate-200 rounded"></div>
+              <div className="h-3 w-full bg-slate-200 rounded"></div>
+            </div>
+          ))}
         </div>
       </div>
-    );
-  }
+
+      {/* ACTIVITY */}
+      <div className="bg-white rounded-xl p-6 space-y-3">
+        <div className="h-5 w-40 bg-slate-300 rounded"></div>
+
+        {[1, 2, 3].map((_, i) => (
+          <div key={i} className="h-4 w-60 bg-slate-200 rounded"></div>
+        ))}
+      </div>
+
+      {/* TOOLS */}
+      <div className="bg-white rounded-xl p-6 space-y-4">
+        <div className="h-5 w-40 bg-slate-300 rounded"></div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map((_, i) => (
+            <div key={i} className="border p-4 rounded-lg space-y-2">
+              <div className="h-6 w-6 bg-slate-300 rounded mx-auto"></div>
+              <div className="h-3 w-20 bg-slate-200 rounded mx-auto"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
   const allSkills = [
     ...(data.skill_gaps?.missing || []).map((s) => ({
@@ -75,7 +137,7 @@ export default function Dashboard() {
   const previewJobs = data.job_recommendations?.slice(0, 2);
 
   return (
-    <div className="space-y-6 md:space-y-8 ml-0 md:ml-8 bg-slate-50 p-4 md:p-6 rounded-xl">
+    <div className="space-y-6 md:space-y-8 ml-0 md:ml-8 bg-slate-50  md:p-6 rounded-xl">
       {/* WELCOME */}
       <div className="bg-linear-to-r from-teal-50 via-white to-indigo-50 border border-slate-200 rounded-2xl p-6">
         <h2 className="text-lg font-semibold text-slate-800">

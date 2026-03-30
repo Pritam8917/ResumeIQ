@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 import { useResumeStore } from "@/store/resumeStore";
 import { extractTextFromPDF } from "@/lib/pdf";
 import { analyzeResume } from "@/lib/analyze";
+import { useState, useEffect } from "react";
 
 export default function UploadResumeModal({ isOpen, onClose }) {
   const router = useRouter();
@@ -21,6 +21,15 @@ export default function UploadResumeModal({ isOpen, onClose }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [agree, setAgree] = useState(false);
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => setShow(true), 10); // trigger animation
+    } else {
+      setShow(false);
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -80,7 +89,10 @@ export default function UploadResumeModal({ isOpen, onClose }) {
 
       // Store globally
       setUser(user);
-      setData(aiResult);
+      setData({
+        ...aiResult,
+        created_at: new Date().toISOString(),
+      });
 
       //  Redirect
       router.push("/dashboard-content/dashboard");
@@ -93,11 +105,24 @@ export default function UploadResumeModal({ isOpen, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-      <div className="relative w-full max-w-md bg-white rounded-2xl shadow-xl px-7 py-8 space-y-4">
+    <div
+      className={`fixed inset-0 flex items-center justify-center z-50 transition-all duration-300 ${
+        show ? "bg-black/40 backdrop-blur-sm opacity-100" : "opacity-0"
+      }`}
+    >
+      <div
+        className={`relative w-full max-w-md bg-white rounded-2xl shadow-xl px-7 py-8 space-y-4 transform transition-all duration-300 ${
+          show
+            ? "opacity-100 scale-100 translate-y-0"
+            : "opacity-0 scale-95 translate-y-4"
+        }`}
+      >
         {/* Close */}
         <button
-          onClick={onClose}
+          onClick={() => {
+            setShow(false);
+            setTimeout(onClose, 300); // wait for animation
+          }}
           className="absolute top-6 right-5 text-gray-500 font-bold cursor-pointer hover:text-gray-700"
         >
           ✕

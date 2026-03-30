@@ -2,52 +2,93 @@
 
 import { useState } from "react";
 import { Search, MapPin, Briefcase } from "lucide-react";
-import { Star, Zap, Target, Grid, Funnel, Brain } from "lucide-react";
+import { Star, Zap, Target, Grid, Funnel } from "lucide-react";
 import { useResumeStore } from "@/store/resumeStore";
 export default function JobsPage() {
   const [query, setQuery] = useState("");
   const [minMatch, setMinMatch] = useState(0);
   const data = useResumeStore((s) => s.data);
+
   if (!data) {
     return (
-      <div className="flex flex-col items-center justify-center h-[70vh] gap-6 bg-linear-to-br from-slate-50 to-white">
-        {/* Animated Logo / Icon */}
-        <div className="relative">
-          <div className="w-16 h-16 rounded-full bg-teal-100 flex items-center justify-center animate-pulse">
-            <Brain className="text-teal-600" size={28} />
+      <div className="space-y-6 animate-pulse">
+        {/* HEADER */}
+        <div className="md:px-6 pt-3">
+          <div className="border rounded-2xl p-6 bg-white space-y-4 flex flex-col md:flex-row md:items-center md:justify-between gap-6 shadow-sm">
+            <div className="space-y-2">
+              <div className="h-6 w-48 bg-slate-300 rounded"></div>
+              <div className="h-4 w-72 bg-slate-200 rounded"></div>
+            </div>
+
+            <div className="flex gap-4 mt-4">
+              {[1, 2, 3].map((_, i) => (
+                <div
+                  key={i}
+                  className="bg-slate-200 px-4 py-2 rounded-xl space-y-2"
+                >
+                  <div className="h-4 w-10 bg-slate-300 rounded"></div>
+                  <div className="h-3 w-16 bg-slate-200 rounded"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* MAIN */}
+        <div className="flex flex-col lg:flex-row gap-10 md:pl-8 pb-10 pr-3">
+          {/* SIDEBAR */}
+          <div className="w-full lg:w-85 bg-white border rounded-2xl p-5 space-y-6">
+            <div className="h-5 w-32 bg-slate-300 rounded"></div>
+
+            <div className="h-10 w-full bg-slate-200 rounded"></div>
+
+            {[1, 2, 3, 4].map((_, i) => (
+              <div key={i} className="h-10 w-full bg-slate-200 rounded"></div>
+            ))}
+
+            <div className="h-16 w-full bg-slate-200 rounded"></div>
           </div>
 
-          {/* Spinning Ring */}
-          <div className="absolute inset-0 rounded-full border-4 border-teal-500 border-t-transparent animate-spin"></div>
-        </div>
+          {/* JOB LIST */}
+          <div className="flex-1 space-y-6">
+            {/* TOP BAR */}
+            <div className="flex justify-between items-center">
+              <div className="space-y-2">
+                <div className="h-6 w-40 bg-slate-300 rounded"></div>
+                <div className="h-4 w-32 bg-slate-200 rounded"></div>
+              </div>
 
-        {/* Heading */}
-        <div className="text-center space-y-2">
-          <h2 className="text-lg font-semibold text-slate-800">
-            Analyzing Your Resume
-          </h2>
+              <div className="h-8 w-32 bg-slate-300 rounded-full"></div>
+            </div>
 
-          <p className="text-sm text-slate-500 animate-pulse">
-            AI is reviewing your skills, experience, and job fit...
-          </p>
-        </div>
+            {/* JOB CARDS */}
+            {[1, 2, 3, 4].map((_, i) => (
+              <div
+                key={i}
+                className="bg-white border rounded-2xl p-5 space-y-4"
+              >
+                <div className="flex justify-between">
+                  <div className="space-y-2">
+                    <div className="h-4 w-40 bg-slate-300 rounded"></div>
+                    <div className="h-3 w-24 bg-slate-200 rounded"></div>
+                  </div>
+                  <div className="h-6 w-16 bg-slate-300 rounded-full"></div>
+                </div>
 
-        {/* Progress Steps */}
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 bg-teal-500 rounded-full animate-bounce"></span>
-          <span className="w-2 h-2 bg-teal-500 rounded-full animate-bounce delay-150"></span>
-          <span className="w-2 h-2 bg-teal-500 rounded-full animate-bounce delay-300"></span>
+                <div className="h-3 w-60 bg-slate-200 rounded"></div>
+
+                <div className="h-2 w-full bg-slate-200 rounded"></div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );
   }
   const jobs = data.job_recommendations || [];
 
-  const filteredJobs = jobs.filter(
-    (job) =>
-      job.role.toLowerCase().includes(query.toLowerCase()) &&
-      job.match_percentage >= minMatch,
-  );
+  const filteredJobs = jobs.filter((job) => job.role.toLowerCase().includes(query.toLowerCase()) && job.match_percentage >= minMatch );
+
   const bestMatch = Math.max(...jobs.map((j) => j.match_percentage));
   const avgMatch = Math.round(
     jobs.reduce((a, b) => a + b.match_percentage, 0) / jobs.length,

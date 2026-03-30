@@ -7,46 +7,81 @@ import {
   TrendingUp,
   AlertCircle,
 } from "lucide-react";
-// import { useState } from "react";
+import { useState } from "react";
 import { useResumeStore } from "@/store/resumeStore";
 
 export default function TechnicalArsenal() {
   const data = useResumeStore((s) => s.data);
+  const [search, setSearch] = useState("");
   if (!data) {
     return (
-      <div className="flex flex-col items-center justify-center h-[70vh] gap-6 bg-linear-to-br from-slate-50 to-white">
-        {/* Animated Logo / Icon */}
-        <div className="relative">
-          <div className="w-16 h-16 rounded-full bg-teal-100 flex items-center justify-center animate-pulse">
-            <Brain className="text-teal-600" size={28} />
+      <div className="space-y-8 border border-slate-200 rounded-xl p-6 bg-white shadow-md md:ml-8 animate-pulse">
+        {/* HEADER */}
+        <div className="flex justify-between items-start border rounded-xl p-6">
+          <div className="space-y-2">
+            <div className="h-6 w-48 bg-slate-300 rounded"></div>
+            <div className="h-4 w-72 bg-slate-200 rounded"></div>
           </div>
 
-          {/* Spinning Ring */}
-          <div className="absolute inset-0 rounded-full border-4 border-teal-500 border-t-transparent animate-spin"></div>
+          <div className="h-8 w-24 bg-slate-300 rounded-full"></div>
         </div>
 
-        {/* Heading */}
-        <div className="text-center space-y-2">
-          <h2 className="text-lg font-semibold text-slate-800">
-            Analyzing Your Resume
-          </h2>
-
-          <p className="text-sm text-slate-500 animate-pulse">
-            AI is reviewing your skills, experience, and job fit...
-          </p>
+        {/* STATS */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map((_, i) => (
+            <div
+              key={i}
+              className="bg-slate-100 border rounded-xl p-4 space-y-2"
+            >
+              <div className="h-6 w-10 bg-slate-300 rounded"></div>
+              <div className="h-3 w-20 bg-slate-200 rounded"></div>
+            </div>
+          ))}
         </div>
 
-        {/* Progress Steps */}
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 bg-teal-500 rounded-full animate-bounce"></span>
-          <span className="w-2 h-2 bg-teal-500 rounded-full animate-bounce delay-150"></span>
-          <span className="w-2 h-2 bg-teal-500 rounded-full animate-bounce delay-300"></span>
+        {/* SEARCH */}
+        <div className="flex gap-4">
+          <div className="w-full h-10 bg-slate-300 rounded-lg"></div>
+        </div>
+
+        {/* SKILL CARDS */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((_, i) => (
+            <div key={i} className="border rounded-xl overflow-hidden">
+              {/* HEADER */}
+              <div className="p-4 flex justify-between items-center bg-slate-300">
+                <div className="space-y-2">
+                  <div className="h-4 w-24 bg-slate-200 rounded"></div>
+                  <div className="h-3 w-16 bg-slate-200 rounded"></div>
+                </div>
+                <div className="h-5 w-10 bg-slate-200 rounded"></div>
+              </div>
+
+              {/* CONTENT */}
+              <div className="p-4 space-y-3">
+                <div className="h-3 w-40 bg-slate-200 rounded"></div>
+
+                <div className="h-2 w-full bg-slate-200 rounded"></div>
+
+                <div className="h-3 w-full bg-slate-200 rounded"></div>
+                <div className="h-3 w-3/4 bg-slate-200 rounded"></div>
+
+                <div className="h-12 w-full bg-slate-200 rounded"></div>
+
+                <div className="h-10 w-full bg-slate-200 rounded"></div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     );
   }
 
   const skills = data.technical_arsenal || [];
+
+  const filteredSkills = skills.filter((skill) =>
+    skill.name.toLowerCase().includes(search.toLowerCase()),
+  );
 
   return (
     <div className="space-y-8 border border-slate-200 rounded-xl p-6  bg-white shadow-md md:ml-8">
@@ -127,33 +162,24 @@ export default function TechnicalArsenal() {
 
       {/* SEARCH */}
 
-      <div className="flex gap-4">
-        <div className="flex items-center gap-2 border border-slate-200 rounded-lg px-3 py-2 w-full  bg-gray-100">
+      <div className="flex gap-3">
+        {/* INPUT */}
+        <div className="flex items-center gap-2 border border-slate-200 rounded-lg px-3 py-2 w-full bg-gray-100">
           <Search size={16} className="text-slate-600" />
 
           <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             placeholder="Search skills..."
-            className="outline-none text-sm w-full text-slate-600 focus:text-slate-800"
+            className="outline-none text-sm w-full text-slate-600 focus:text-slate-800 bg-transparent"
           />
         </div>
-
-        {/* <button className="bg-teal-600 text-white px-4 py-2 rounded-lg text-sm">
-          All
-        </button>
-
-        <button className="border border-slate-200 px-4 py-2 rounded-lg text-sm text-gray-400">
-          Ready
-        </button>
-
-        <button className="border border-slate-200 px-4 py-2 rounded-lg text-sm text-gray-400">
-          Developing
-        </button> */}
       </div>
 
       {/* SKILL CARDS */}
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {skills.map((skill, i) => (
+        {filteredSkills.map((skill, i) => (
           <div
             key={skill.id || i}
             className="border border-slate-200 rounded-xl overflow-hidden bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
@@ -228,8 +254,9 @@ export default function TechnicalArsenal() {
               {/* AI INSIGHT */}
               <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
                 <p className="text-xs text-slate-600">
-                  <span className="font-bold">⚡ AI Confidence:</span> {skill.aiInsight?.confidence || "N/A"}{" "}
-                  { `- ${skill.aiInsight.reason}`}
+                  <span className="font-bold">⚡ AI Confidence:</span>{" "}
+                  {skill.aiInsight?.confidence || "N/A"}{" "}
+                  {`- ${skill.aiInsight.reason}`}
                 </p>
               </div>
 
@@ -245,6 +272,35 @@ export default function TechnicalArsenal() {
             </div>
           </div>
         ))}
+        {filteredSkills.length === 0 && (
+          <div className="flex flex-col items-center justify-center text-center mt-7 border border-dashed border-slate-300 rounded-xl p-8 bg-slate-50 w-full">
+            {/* ICON */}
+            <div className="w-14 h-14 flex items-center justify-center rounded-full bg-white shadow-sm mb-4">
+              🔍
+            </div>
+
+            {/* TITLE */}
+            <h3 className="text-base font-semibold text-slate-800">
+              No skills found
+            </h3>
+
+            {/* MESSAGE */}
+            <p className="text-sm text-slate-500 mt-1">
+              We couldn’t find anything matching{" "}
+              <span className="font-medium text-slate-700">
+                &quot;{search}&quot;
+              </span>
+            </p>
+
+            {/* ACTION */}
+            <button
+              onClick={() => setSearch("")}
+              className="mt-4 px-4 py-2 text-sm bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition cursor-pointer"
+            >
+              Clear Search
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
