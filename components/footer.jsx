@@ -6,87 +6,107 @@ import { Github, Linkedin, Twitter } from "lucide-react";
 export default function Footer() {
   return (
     <footer className="w-full border-t bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 py-14 grid-cols-3 grid md:grid-cols-5 gap-6">
-        {/* Brand */}
-        <div>
-          <h2 className="text-xl font-bold text-gray-900">
-            {" "}
-            <span className="bg-linear-to-r from-blue-500 to-teal-500 bg-clip-text text-transparent">
-              Resume
-            </span>
-            <span className="bg-linear-to-r from-cyan-500 to-blue-600 bg-clip-text text-transparent">
-              IQ
-            </span>
-          </h2>
-          <p className="mt-4 text-gray-600 text-sm leading-relaxed">
-            AI-powered resume analyzer that helps you optimize your resume,
-            improve ATS score, and get better job opportunities.
-          </p>
-        </div>
+      <div className="max-w-7xl mx-auto px-4 py-16 space-y-14">
 
-        {/* Product */}
-        <div className="ml-6">
-          <h3 className="font-semibold text-gray-900 mb-4">Product</h3>
-          <ul className="space-y-3 text-gray-600 text-sm ">
-            <li className="hover:text-gray-900">
-              <Link href="#how-it-works">How It Works</Link>
-            </li>
-            <li className="hover:text-gray-900">
-              <Link href="#what-you-get">What You Get</Link>
-            </li>
-          </ul>
-        </div>
+        {/* 🔹 MAIN GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
 
-        {/* Resources */}
-        <div className="ml-5">
-          <h3 className="font-semibold text-gray-900 mb-4">Resources</h3>
-          <ul className="space-y-3 text-gray-600 text-sm">
-            <li className="hover:text-gray-900">
-              <Link href="#faq">FAQ</Link>
-            </li>
-            <li className="hover:text-gray-900">
-              <Link href="#">Contact</Link>
-            </li>
-          </ul>
-        </div>
-        {/* Legal */}
-        <div>
-          <h3 className="font-semibold text-gray-900 mb-4">Legal</h3>
-          <ul className="space-y-3 text-gray-600 text-sm">
-            <li className="hover:text-gray-900">
-              <Link href="#">Privacy Policy</Link>
-            </li>
-            <li className="hover:text-gray-900">
-              <Link href="#">Terms of Service</Link>
-            </li>
-          </ul>
-        </div>
+          {/* BRAND */}
+          <div>
+            <h2 className="text-xl font-bold text-gray-900">
+              <span className="bg-linear-to-r from-blue-500 to-teal-500 bg-clip-text text-transparent">
+                Resume
+              </span>
+              <span className="bg-linear-to-r from-cyan-500 to-blue-600 bg-clip-text text-transparent">
+                IQ
+              </span>
+            </h2>
 
-        {/* Social */}
-        <div>
-          <h3 className="font-semibold text-gray-900 mb-4">Connect</h3>
-          <div className="flex gap-4 text-gray-600">
-            <Link href="#">
-              <Github size={20} />
-            </Link>
-            <Link href="#">
-              <Linkedin size={20} />
-            </Link>
-            <Link href="#">
-              <Twitter size={20} />
-            </Link>
+            <p className="mt-4 text-gray-600 text-sm leading-relaxed">
+              AI-powered resume analyzer that helps you optimize your resume,
+              improve ATS compatibility, identify skill gaps, and land better
+              job opportunities.
+            </p>
+
+            {/* SOCIAL */}
+            <div className="flex gap-3 mt-5">
+              {[Github, Linkedin, Twitter].map((Icon, i) => (
+                <div
+                  key={i}
+                  className="p-2 rounded-lg bg-white border hover:bg-gray-100 transition cursor-pointer"
+                >
+                  <Icon size={18} className="text-gray-600" />
+                </div>
+              ))}
+            </div>
           </div>
 
-          <p className="mt-4 text-sm text-gray-500">
-            Stay updated with new features and improvements.
-          </p>
+          {/* LINKS */}
+          <div className="grid grid-cols-2 gap-8 md:col-span-2">
+
+            {/* LEFT */}
+            <div className="space-y-8">
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-3">Product</h3>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="hover:text-black transition">
+                    <Link href="#">How It Works</Link>
+                  </li>
+                  <li className="hover:text-black transition">
+                    <Link href="#">Features</Link>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-3">Resources</h3>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="hover:text-black transition">
+                    <Link href="#">FAQ</Link>
+                  </li>
+                  <li className="hover:text-black transition">
+                    <Link href="#">Contact</Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/* RIGHT */}
+            <div className="space-y-8">
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-3">Legal</h3>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="hover:text-black transition">
+                    <Link href="#">Privacy Policy</Link>
+                  </li>
+                  <li className="hover:text-black transition">
+                    <Link href="#">Terms of Service</Link>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-3">Company</h3>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="hover:text-black transition">
+                    <Link href="#">About</Link>
+                  </li>
+                  <li className="hover:text-black transition">
+                    <Link href="#">Careers</Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
 
-      {/* Bottom */}
-      <div className="px-19">
-        <div className="max-w-7xl mx-auto border-t border-gray-300 py-6 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} ResumeIQ. All rights reserved.
+      {/* 🔻 BOTTOM */}
+      <div className="border-t border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 gap-3">
+          <p>© {new Date().getFullYear()} ResumeIQ. All rights reserved.</p>
+
         </div>
       </div>
     </footer>
