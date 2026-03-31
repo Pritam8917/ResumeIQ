@@ -60,7 +60,11 @@ export default function UploadResumeModal({ isOpen, onClose }) {
       const user = data.user;
       if (!user) throw new Error("Authentication failed");
       // Unique file path
-      const filePath = `${user.id}/${Date.now()}_${file.name}`;
+      const cleanFileName = file.name
+        .replace(/\s+/g, "_") // replace spaces
+        .replace(/[\[\]]/g, ""); // remove [ ]
+
+      const filePath = `${user.id}/${Date.now()}_${cleanFileName}`;
 
       // Upload to Supabase Storage
       const { error: uploadError } = await supabase.storage
