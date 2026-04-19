@@ -59,7 +59,8 @@ export default function UploadResumeModal({ isOpen, onClose }) {
 
       const user = data.user;
       if (!user) throw new Error("Authentication failed");
-      // Unique file path
+
+      // clean file name to avoid issues
       const cleanFileName = file.name
         .replace(/\s+/g, "_") // replace spaces
         .replace(/[\[\]]/g, ""); // remove [ ]
@@ -125,9 +126,25 @@ export default function UploadResumeModal({ isOpen, onClose }) {
         <button
           onClick={() => {
             setShow(false);
-            setTimeout(onClose, 300); // wait for animation
+            setTimeout(onClose, 300);
           }}
-          className="absolute top-6 right-5 text-gray-500 font-bold cursor-pointer hover:text-gray-700"
+          className="
+    absolute top-5 right-5
+    w-10 h-10 flex items-center justify-center
+    rounded-full
+    bg-white/80 backdrop-blur-md
+    border border-gray-200
+    text-gray-500
+    shadow-sm
+    transition-all duration-200
+
+    hover:bg-gray-100
+    hover:text-gray-800
+    hover:shadow-md
+    hover:scale-105
+
+    active:scale-95 cursor-pointer
+  "
         >
           ✕
         </button>

@@ -12,7 +12,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="w-full py-16 md:py-24 px-6 md:px-12 lg:px-20 bg-linear-to-b from-white to-blue-50">
+    <section className="w-full py-16 md:py-20 px-6 md:px-12 lg:px-20 bg-linear-to-b from-white to-blue-50">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center">
         {/* LEFT CONTENT */}
         <motion.div
@@ -200,7 +200,7 @@ export default function Hero() {
               <p className="font-semibold text-gray-800">Market Insights</p>
 
               <span className="border border-gray-200 px-3 py-1 rounded-full text-xs text-gray-500">
-                Premium
+                coming soon
               </span>
             </div>
 
