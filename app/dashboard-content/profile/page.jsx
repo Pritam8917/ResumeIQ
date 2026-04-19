@@ -14,7 +14,7 @@ if (!data && !user) {
     <div className="max-w-6xl mx-auto px-4 py-10 space-y-10 animate-pulse">
 
       {/* HERO SKELETON */}
-      <div className="rounded-2xl p-6 bg-gradient-to-br from-blue-100 via-indigo-100 to-cyan-100">
+      <div className="rounded-2xl p-6 bg-linear-to-br from-blue-100 via-indigo-100 to-cyan-100">
         <div className="flex justify-between items-center">
           
           <div className="flex items-center gap-4">
