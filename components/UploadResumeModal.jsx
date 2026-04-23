@@ -17,7 +17,7 @@ export default function UploadResumeModal({ isOpen, onClose }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [file, setFile] = useState(null);
-
+  const [aiResult, setAIResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [agree, setAgree] = useState(false);
@@ -78,16 +78,23 @@ export default function UploadResumeModal({ isOpen, onClose }) {
       const text = await extractTextFromPDF(file);
 
       // AI analysis
-      const aiResult = await analyzeResume(text);
+      const result = await analyzeResume(text);
 
-      if (!aiResult) throw new Error("AI analysis failed");
+      // ❗STOP if error
+      if (result?.error) {
+        setAIResult(result); // show error UI
+        setLoading(false);
+        return; // NO router.push
+      }
+
+      setAIResult(result);
 
       // Save to DB
       const { error: dbError } = await supabase.from("resumes").insert({
         user_id: user.id,
         file_path: filePath,
-        score: aiResult.score,
-        analysis: aiResult,
+        score: result.score,
+        analysis: result,
       });
 
       if (dbError) throw dbError;
@@ -253,17 +260,37 @@ export default function UploadResumeModal({ isOpen, onClose }) {
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="w-full flex justify-center items-center gap-2 bg-linear-to-r from-teal-600 to-cyan-600 text-white py-3 rounded-lg cursor-pointer disabled:opacity-70 min-h-12"
+            className="w-full flex justify-center items-center gap-2 
+    bg-linear-to-r from-teal-600 to-cyan-600 
+    text-white py-3 rounded-lg cursor-pointer 
+    disabled:opacity-70 min-h-12 transition-all duration-200"
           >
             {loading && <span className="animate-spin">⏳</span>}
 
-            {loading ? "Analyzing your resume for insights..." : "Continue"}
+            {loading
+              ? "Analyzing Resume..."
+              : aiResult?.error
+                ? "Retry Analysis"
+                : "Analyze Resume"}
           </button>
 
+          {/* Status Message */}
           {loading && (
-            <p className="text-sm text-slate-600 mt-2">
-              This may take a few seconds...
+            <p className="text-sm text-slate-600 mt-2 animate-pulse">
+              🔍 AI is analyzing your resume for insights...
             </p>
+          )}
+
+          {/* Error Message */}
+          {aiResult?.error && !loading && (
+            <div className="mt-3 text-center">
+              <p className="text-sm text-red-500 font-medium">
+                ⚠️ AI is currently under high demand
+              </p>
+              <p className="text-xs text-gray-500">
+                Please try again in a few seconds.
+              </p>
+            </div>
           )}
         </div>
       </div>

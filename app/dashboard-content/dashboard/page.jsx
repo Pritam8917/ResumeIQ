@@ -134,7 +134,7 @@ if (!data) {
 
   const visibleSkills = allSkills.slice(0, visibleCount);
 
-  const previewJobs = data.job_recommendations?.slice(0, 2);
+  const previewJobs = data.job_recommendations?.slice(0, 2)|| [];
 
   return (
     <div className="space-y-6 md:space-y-8 ml-0 md:ml-8 bg-slate-50  md:p-6 rounded-xl">
