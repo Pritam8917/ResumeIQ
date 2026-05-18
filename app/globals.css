@@ -49,3 +49,13 @@ html {
   background-size: 1000px 100%;
   animation: shimmer 1.5s infinite linear;
 }
+/* Hide scrollbar */
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

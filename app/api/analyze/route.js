@@ -7,7 +7,7 @@ export async function POST(req) {
     const { text } = await req.json();
 
     const response = await genAI.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3-flash-preview",
       contents: resumePrompt(text),
     });
 

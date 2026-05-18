@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-title: "ResumeIQ - Smart AI Resume Analysis & Career Optimization",
+title: "ResumeIQ - Free AI Resume Analysis & Interview Preparation",
 description:
   "Boost your career with ResumeIQ. Analyze resumes, get ATS scores, optimize content, and receive AI-powered insights to land your dream job faster.",
 };

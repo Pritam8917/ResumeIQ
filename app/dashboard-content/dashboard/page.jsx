@@ -5,364 +5,570 @@ import {
   Brain,
   Briefcase,
   TrendingUp,
-  Clock,
   AlertCircle,
   CheckCircle,
   FileText,
   User,
   Wrench,
 } from "lucide-react";
+
 import { useResumeStore } from "@/store/resumeStore";
-import SkillDonutChart from "@/components/charts/SkillDonutChart";
-import JobBarChart from "@/components/charts/JobBarChart";
 import { useState } from "react";
 
 export default function Dashboard() {
   const router = useRouter();
   const data = useResumeStore((s) => s.data);
+
   const [visibleCount, setVisibleCount] = useState(6);
 
-if (!data) {
-  return (
-    <div className="space-y-6 md:space-y-8 ml-0 md:ml-8 bg-slate-50 p-4 md:p-6 rounded-xl animate-pulse">
+  if (!data) {
+    return (
+      <div className="relative min-h-screen overflow-hidden">
+        {/* BACKGROUND */}
 
-      {/* WELCOME */}
-      <div className="border rounded-2xl p-6 bg-white">
-        <div className="h-5 w-40 bg-slate-300 rounded mb-2"></div>
-        <div className="h-4 w-60 bg-slate-200 rounded"></div>
-      </div>
+        <div className="fixed inset-0 -z-10 bg-[#0B1120]">
+          <div className="absolute top-0 left-1/3 h-100 w-100 rounded-full bg-violet-600/5 blur-3xl" />
 
-      {/* ANALYTICS CARDS */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-9">
-        {[1, 2, 3].map((_, i) => (
-          <div key={i} className="border rounded-2xl p-6 bg-white space-y-3">
-            <div className="h-4 w-24 bg-slate-300 rounded"></div>
-            <div className="h-8 w-16 bg-slate-300 rounded"></div>
-            <div className="h-3 w-20 bg-slate-200 rounded"></div>
-          </div>
-        ))}
-      </div>
-
-      {/* CHARTS */}
-      <div className="grid lg:grid-cols-2 gap-6">
-        <div className="h-64 bg-slate-300 rounded-xl"></div>
-        <div className="h-64 bg-slate-300 rounded-xl"></div>
-      </div>
-
-      {/* INSIGHTS */}
-      <div className="grid lg:grid-cols-2 gap-6">
-        
-        {/* SKILLS */}
-        <div className="bg-white rounded-xl p-6 border space-y-4">
-          <div className="h-5 w-40 bg-slate-300 rounded"></div>
-
-          {[1, 2, 3, 4].map((_, i) => (
-            <div key={i} className="flex justify-between items-center">
-              <div className="h-4 w-32 bg-slate-200 rounded"></div>
-              <div className="h-6 w-16 bg-slate-300 rounded-full"></div>
-            </div>
-          ))}
+          <div className="absolute bottom-0 right-1/4 h-75 w-75 rounded-full bg-cyan-500/5 blur-3xl" />
         </div>
 
-        {/* JOBS */}
-        <div className="bg-white rounded-xl p-6 border space-y-4">
-          <div className="h-5 w-40 bg-slate-300 rounded"></div>
+        <div className="space-y-6 animate-pulse">
+          {/* HERO */}
 
-          {[1, 2].map((_, i) => (
-            <div key={i} className="border rounded-xl p-4 space-y-3">
-              <div className="flex justify-between">
-                <div className="space-y-2">
-                  <div className="h-4 w-32 bg-slate-300 rounded"></div>
-                  <div className="h-3 w-24 bg-slate-200 rounded"></div>
+          <div className="relative overflow-hidden rounded-3xl border border-white/3 bg-linear-to-br from-[#111827] via-[#0F172A] to-[#1A1B3A] p-6 md:p-8">
+            <div className="h-6 w-36 rounded-full bg-white/10" />
+
+            <div className="mt-6 space-y-3">
+              <div className="h-10 w-full max-w-2xl rounded-2xl bg-white/10" />
+
+              <div className="h-10 w-[80%] rounded-2xl bg-white/5" />
+            </div>
+
+            <div className="mt-6 space-y-3">
+              <div className="h-3 w-full max-w-xl rounded-full bg-white/5" />
+
+              <div className="h-3 w-[70%] rounded-full bg-white/5" />
+            </div>
+          </div>
+
+          {/* QUICK ACTIONS */}
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[1, 2, 3, 4].map((_, i) => (
+              <div
+                key={i}
+                className="rounded-2xl border border-white/3 bg-white/3 p-4"
+              >
+                <div className="h-3 w-20 rounded-full bg-white/10" />
+
+                <div className="h-5 w-28 rounded-xl bg-white/10 mt-4" />
+              </div>
+            ))}
+          </div>
+
+          {/* STATS */}
+
+          <div className="grid md:grid-cols-3 gap-5">
+            {[1, 2, 3].map((_, i) => (
+              <div
+                key={i}
+                className="rounded-3xl border border-white/3 bg-white/3 p-5"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="h-3 w-24 rounded-full bg-white/10" />
+
+                  <div className="h-10 w-10 rounded-xl bg-white/10" />
                 </div>
-                <div className="h-6 w-16 bg-slate-300 rounded-full"></div>
+
+                <div className="h-10 w-20 rounded-2xl bg-white/10 mt-6" />
+
+                <div className="h-3 w-24 rounded-full bg-white/5 mt-4" />
+              </div>
+            ))}
+          </div>
+
+          {/* AI INSIGHTS */}
+
+          <div className="rounded-3xl border border-white/3 bg-white/3 p-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="h-5 w-40 rounded-xl bg-white/10" />
+
+                <div className="h-3 w-56 rounded-full bg-white/5 mt-3" />
               </div>
 
-              <div className="h-2 w-full bg-slate-200 rounded"></div>
-              <div className="h-3 w-full bg-slate-200 rounded"></div>
+              <div className="h-8 w-20 rounded-xl bg-white/10" />
             </div>
-          ))}
+
+            <div className="mt-8 space-y-6">
+              {[1, 2, 3].map((_, i) => (
+                <div key={i} className="flex gap-4">
+                  <div className="h-10 w-10 rounded-2xl bg-white/10 shrink-0" />
+
+                  <div className="flex-1 rounded-2xl border border-white/3 bg-white/2 p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="h-4 w-40 rounded-full bg-white/10" />
+
+                      <div className="h-3 w-16 rounded-full bg-white/5" />
+                    </div>
+
+                    <div className="space-y-3 mt-4">
+                      <div className="h-3 w-full rounded-full bg-white/5" />
+
+                      <div className="h-3 w-[80%] rounded-full bg-white/5" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* SKILLS + JOBS */}
+
+          <div className="grid lg:grid-cols-2 gap-5">
+            {[1, 2].map((_, i) => (
+              <div
+                key={i}
+                className="rounded-3xl border border-white/3 bg-white/3 p-5"
+              >
+                <div className="h-5 w-40 rounded-xl bg-white/10" />
+
+                <div className="h-3 w-56 rounded-full bg-white/5 mt-3" />
+
+                <div className="space-y-4 mt-6">
+                  {[1, 2, 3].map((_, j) => (
+                    <div
+                      key={j}
+                      className="rounded-2xl border border-white/3 bg-white/2 p-4"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="h-4 w-32 rounded-full bg-white/10" />
+
+                        <div className="h-5 w-14 rounded-full bg-white/10" />
+                      </div>
+
+                      <div className="space-y-3 mt-4">
+                        <div className="h-3 w-full rounded-full bg-white/5" />
+
+                        <div className="h-3 w-[70%] rounded-full bg-white/5" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* TOOLS */}
+
+          <div className="rounded-3xl border border-white/3 bg-white/3 p-5">
+            <div className="h-5 w-36 rounded-xl bg-white/10" />
+
+            <div className="h-3 w-52 rounded-full bg-white/5 mt-3" />
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+              {[1, 2, 3, 4].map((_, i) => (
+                <div
+                  key={i}
+                  className="rounded-2xl border border-white/3 bg-white/2 p-4"
+                >
+                  <div className="h-10 w-10 rounded-2xl bg-white/10 mx-auto" />
+
+                  <div className="h-3 w-24 rounded-full bg-white/10 mt-4 mx-auto" />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* ACTIVITY */}
-      <div className="bg-white rounded-xl p-6 space-y-3">
-        <div className="h-5 w-40 bg-slate-300 rounded"></div>
-
-        {[1, 2, 3].map((_, i) => (
-          <div key={i} className="h-4 w-60 bg-slate-200 rounded"></div>
-        ))}
-      </div>
-
-      {/* TOOLS */}
-      <div className="bg-white rounded-xl p-6 space-y-4">
-        <div className="h-5 w-40 bg-slate-300 rounded"></div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[1, 2, 3, 4].map((_, i) => (
-            <div key={i} className="border p-4 rounded-lg space-y-2">
-              <div className="h-6 w-6 bg-slate-300 rounded mx-auto"></div>
-              <div className="h-3 w-20 bg-slate-200 rounded mx-auto"></div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
+    );
+  }
 
   const allSkills = [
     ...(data.skill_gaps?.missing || []).map((s) => ({
       name: s,
       status: "Missing",
-      color: "text-red-600",
+      color: "bg-violet-500/10 text-violet-300 border border-violet-500/20",
       priority: 1,
     })),
+
     ...(data.skill_gaps?.improving || []).map((s) => ({
       name: s,
       status: "Improve",
-      color: "text-amber-600",
+      color: "bg-cyan-500/10 text-cyan-300 border border-cyan-500/20",
       priority: 2,
     })),
+
     ...(data.skill_gaps?.strong || []).map((s) => ({
       name: s,
       status: "Strong",
-      color: "text-emerald-600",
+      color: "bg-slate-500/10 text-slate-300 border border-slate-500/20",
       priority: 3,
     })),
   ].sort((a, b) => a.priority - b.priority);
 
   const visibleSkills = allSkills.slice(0, visibleCount);
 
-  const previewJobs = data.job_recommendations?.slice(0, 2)|| [];
-
   return (
-    <div className="space-y-6 md:space-y-8 ml-0 md:ml-8 bg-slate-50  md:p-6 rounded-xl">
-      {/* WELCOME */}
-      <div className="bg-linear-to-r from-teal-50 via-white to-indigo-50 border border-slate-200 rounded-2xl p-6">
-        <h2 className="text-lg font-semibold text-slate-800">
-          Welcome back 👋
-        </h2>
-        <p className="text-sm text-slate-500 mt-1">
-          Here’s your AI-powered career insights.
-        </p>
+    <div className="relative min-h-screen overflow-hidden text-white">
+      {/* BACKGROUND */}
+
+      <div className="fixed inset-0 -z-10 bg-[#0B1120]">
+        <div className="absolute top-0 left-1/3 h-100 w-100 rounded-full bg-violet-600/5 blur-3xl" />
+
+        <div className="absolute bottom-0 right-1/4 h-75 w-75 rounded-full bg-cyan-500/5 blur-3xl" />
       </div>
 
-      {/* ANALYTICS */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-9">
-        {/* SCORE */}
-        <div className="bg-linear-to-br from-teal-50 to-white border border-teal-100 rounded-2xl p-6 shadow-sm">
-          <div className="flex justify-between mb-2">
-            <p className="text-sm text-slate-800 ">Resume Score</p>
-            <TrendingUp className="text-teal-600 " size={18} />
+      <div className="space-y-6">
+        {/* HERO */}
+
+        <div className="relative overflow-hidden rounded-3xl border border-white/3 bg-linear-to-br from-[#111827] via-[#0F172A] to-[#1A1B3A] p-6 md:p-8">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(124,58,237,0.08),transparent_30%)]" />
+
+          <div className="relative z-10">
+            <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/20 bg-violet-500/10 px-3 py-1.5 text-[11px] text-violet-300">
+              ✨ AI Career Dashboard
+            </div>
+
+            <h1 className="mt-5 text-3xl md:text-4xl font-bold tracking-tight leading-tight max-w-2xl">
+              Build a stronger career with AI-powered resume intelligence
+            </h1>
+
+            <p className="mt-4 max-w-xl text-sm text-slate-400 leading-relaxed">
+              Discover missing skills, improve ATS compatibility, explore better
+              job opportunities, and accelerate your career growth with
+              personalized AI insights.
+            </p>
           </div>
-          <h2 className="text-3xl font-bold text-black">{data.score}</h2>
-          <p className="text-xs text-slate-500">{data.grade}</p>
         </div>
 
-        {/* SKILLS */}
-        <div className="bg-linear-to-br from-indigo-50 to-white border border-indigo-100 rounded-2xl p-6 shadow-sm">
-          <div className="flex justify-between mb-2">
-            <p className="text-sm text-slate-800">Skills</p>
-            <Brain className="text-indigo-600" size={18} />
-          </div>
-          <h2 className="text-3xl font-bold text-black">
-            {data.skills_summary?.total}
-          </h2>
-          <p className="text-xs text-slate-500">Detected</p>
-        </div>
+        {/* STATS */}
 
-        {/* JOB MATCH */}
-        <div className="bg-linear-to-br from-orange-50 to-white border border-orange-100 rounded-2xl p-6 shadow-sm">
-          <div className="flex justify-between mb-2">
-            <p className="text-sm text-slate-800">Job Matches</p>
-            <Briefcase className="text-orange-500" size={18} />
-          </div>
-          <h2 className="text-3xl font-bold text-black">
-            {data.total_job_matches}
-          </h2>
-          <p className="text-xs text-slate-400">Recommended</p>
-        </div>
-      </div>
+        <div className="grid md:grid-cols-3 gap-5">
+          {/* CARD */}
 
-      {/* 🔥 NEW: CHART SECTION */}
-      <div className="grid lg:grid-cols-2 gap-6">
-        <SkillDonutChart data={data.skill_gaps} />
-        <JobBarChart jobs={data.job_recommendations} />
-      </div>
-      {/* INSIGHTS */}
-      <div className="grid lg:grid-cols-2 gap-6">
-        {/* SKILL GAPS */}
-        <div className="bg-white rounded-xl p-6 border border-slate-300 shadow-md">
-          <h2 className="font-semibold text-slate-800 mb-4">
-            Skill Gap Insights
-          </h2>
+          <div className="group rounded-3xl border border-white/3 bg-white/3 backdrop-blur-xl p-5 hover:border-violet-500/20 transition-all duration-300">
+            <div className="flex items-center justify-between">
+              <p className="text-slate-400 text-xs">Resume Strength</p>
 
-          <div className="space-y-3">
-            {visibleSkills.map((skill, i) => (
-              <div
-                key={i}
-                className="flex justify-between items-center border border-slate-200 p-3 rounded-xl hover:bg-slate-50 hover:shadow-sm transition"
-              >
-                <span className="font-medium text-gray-500">{skill.name}</span>
-                <span
-                  className={`text-xs px-2 py-1 rounded-full bg-slate-100 border border-slate-200 ${skill.color}`}
-                >
-                  {skill.status}
-                </span>
+              <div className="p-2.5 rounded-xl border border-violet-500/20 bg-violet-500/10">
+                <TrendingUp className="text-violet-400" size={16} />
               </div>
-            ))}
+            </div>
 
-            {/* + More Button */}
-            {visibleCount < allSkills.length && (
-              <button
-                onClick={() => setVisibleCount((prev) => prev + 6)}
-                className="text-sm text-teal-600 font-semibold hover:text-teal-700 transition cursor-pointer"
-              >
-                + Show More
-              </button>
-            )}
+            <h2 className="text-3xl font-bold tracking-tight mt-5">
+              {data.score}
+            </h2>
+
+            <p className="text-violet-300 text-xs mt-2">
+              {data.grade} Performance
+            </p>
+          </div>
+
+          {/* CARD */}
+
+          <div className="group rounded-3xl border border-white/3 bg-white/3 backdrop-blur-xl p-5 hover:border-cyan-500/20 transition-all duration-300">
+            <div className="flex items-center justify-between">
+              <p className="text-slate-400 text-xs">Core Skills</p>
+
+              <div className="p-2.5 rounded-xl border border-cyan-500/20 bg-cyan-500/10">
+                <Brain className="text-cyan-400" size={16} />
+              </div>
+            </div>
+
+            <h2 className="text-3xl font-bold tracking-tight mt-5">
+              {data.skills_summary?.total}
+            </h2>
+
+            <p className="text-cyan-300 text-xs mt-2">AI Analyzed</p>
+          </div>
+
+          {/* CARD */}
+
+          <div className="group rounded-3xl border border-white/3 bg-white/3 backdrop-blur-xl p-5 hover:border-violet-500/20 transition-all duration-300">
+            <div className="flex items-center justify-between">
+              <p className="text-slate-400 text-xs">Career Matches</p>
+
+              <div className="p-2.5 rounded-xl border border-violet-500/20 bg-violet-500/10">
+                <Briefcase className="text-violet-400" size={16} />
+              </div>
+            </div>
+
+            <h2 className="text-3xl font-bold tracking-tight mt-5">
+              {data.total_job_matches}
+            </h2>
+
+            <p className="text-violet-300 text-xs mt-2">Recommended Roles</p>
           </div>
         </div>
 
-        {/* JOBS */}
-        <div className="bg-white rounded-xl p-6 border border-slate-300 shadow-md">
-          <h2 className="font-semibold text-slate-800 mb-4">
-            Recommended Jobs
-          </h2>
+        {/* AI INSIGHTS */}
 
-          <div className="space-y-4">
-            {previewJobs.map((job, i) => (
-              <div
-                key={i}
-                className="border border-slate-200 rounded-xl p-4 hover:bg-slate-50 hover:shadow-sm transition"
-              >
-                <div className="flex justify-between items-start">
-                  {/* LEFT */}
-                  <div>
-                    <h3 className="font-semibold text-gray-800">{job.role}</h3>
+        <div className="rounded-3xl border border-white/3 bg-white/3 backdrop-blur-xl p-5">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-semibold tracking-tight">
+                AI Career Insights
+              </h2>
 
-                    <p className="text-sm text-slate-500">
-                      {job.company || "Unknown Company"}
-                    </p>
+              <p className="text-xs text-slate-400 mt-1">
+                Personalized analysis generated from your resume
+              </p>
+            </div>
 
-                    <div className="flex flex-wrap gap-3 text-xs text-slate-500 mt-2">
-                      <span>📍 {job.location || "Remote"}</span>
-                      <span>💼 {job.type || "N/A"}</span>
-                    </div>
-                  </div>
+            <div className="rounded-xl border border-violet-500/20 bg-violet-500/10 px-3 py-1 text-[11px] text-violet-300">
+              Live AI
+            </div>
+          </div>
 
-                  {/* MATCH BADGE */}
-                  <span
-                    className={`text-xs px-2 py-1 rounded-full font-medium
-              ${
-                job.match_percentage >= 80
-                  ? "bg-green-100 text-green-700"
-                  : job.match_percentage >= 60
-                    ? "bg-teal-100 text-teal-700"
-                    : "bg-orange-100 text-orange-700"
-              }`}
-                  >
-                    {job.match_percentage}% Match
+          <div className="mt-8 space-y-6">
+            {/* ITEM */}
+
+            <div className="flex gap-4">
+              <div className="relative">
+                <div className="h-10 w-10 rounded-2xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center">
+                  <TrendingUp size={16} className="text-violet-400" />
+                </div>
+
+                <div className="absolute top-12 left-1/2 -translate-x-1/2 h-14 w-px bg-white/10" />
+              </div>
+
+              <div className="flex-1 rounded-2xl border border-white/3 bg-white/2 p-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-semibold">
+                    Resume Strength Increased
+                  </h3>
+
+                  <span className="text-[10px] text-slate-500">
+                    AI Analysis
                   </span>
                 </div>
 
-                {/* SKILL COVERAGE BAR */}
-                <div className="mt-3">
-                  <div className="flex justify-between text-xs text-slate-500 mb-1">
-                    <span>Skill Coverage</span>
-                    <span>{job.skill_coverage_percentage || 0}%</span>
-                  </div>
-
-                  <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-linear-to-r from-teal-500 to-cyan-500"
-                      style={{
-                        width: `${job.skill_coverage_percentage || 0}%`,
-                      }}
-                    ></div>
-                  </div>
-                </div>
-
-                {/* REASON (AI Insight) */}
-                <p className="text-xs text-slate-500 mt-3 line-clamp-2">
-                  {job.reason}
+                <p className="text-xs text-slate-400 leading-relaxed mt-2">
+                  Your profile shows strong alignment with modern software
+                  development roles.
                 </p>
               </div>
-            ))}
+            </div>
+
+            {/* ITEM */}
+
+            <div className="flex gap-4">
+              <div className="relative">
+                <div className="h-10 w-10 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
+                  <AlertCircle size={16} className="text-cyan-300" />
+                </div>
+
+                <div className="absolute top-12 left-1/2 -translate-x-1/2 h-14 w-px bg-white/10" />
+              </div>
+
+              <div className="flex-1 rounded-2xl border border-white/3 bg-white/2 p-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-semibold">
+                    Missing Skills Detected
+                  </h3>
+
+                  <span className="text-[10px] text-slate-500">
+                    Recommendation
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {data.skill_gaps?.missing?.slice(0, 5)?.map((skill, i) => (
+                    <span
+                      key={i}
+                      className="rounded-full border border-violet-500/10 bg-violet-500/5 px-3 py-1 text-[10px] text-violet-300"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* ITEM */}
+
+            <div className="flex gap-4">
+              <div>
+                <div className="h-10 w-10 rounded-2xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center">
+                  <CheckCircle size={16} className="text-violet-300" />
+                </div>
+              </div>
+
+              <div className="flex-1 rounded-2xl border border-white/3 bg-white/2 p-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-semibold">
+                    Career Opportunities Found
+                  </h3>
+
+                  <span className="text-[10px] text-slate-500">AI Match</span>
+                </div>
+
+                <p className="text-xs text-slate-400 mt-2">
+                  {data.total_job_matches}+ relevant opportunities available for
+                  your profile.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* SKILLS + JOBS */}
+
+        <div className="grid lg:grid-cols-2 gap-5">
+          {/* SKILLS */}
+
+          <div className="rounded-3xl border border-white/3 bg-white/3 backdrop-blur-xl p-5">
+            <div className="mb-5">
+              <h2 className="text-lg font-semibold tracking-tight">
+                Skill Gap Insights
+              </h2>
+
+              <p className="text-xs text-slate-400 mt-1">
+                Improve these areas for better opportunities
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              {visibleSkills.map((skill, i) => (
+                <div
+                  key={i}
+                  className="flex items-center justify-between rounded-2xl border border-white/3 bg-white/2 p-3 hover:border-violet-500/20 transition-all duration-300"
+                >
+                  <span className="text-sm font-medium text-slate-200">
+                    {skill.name}
+                  </span>
+
+                  <span
+                    className={`text-[10px] px-3 py-1 rounded-full font-semibold tracking-wide ${skill.color}`}
+                  >
+                    {skill.status}
+                  </span>
+                </div>
+              ))}
+
+              {visibleCount < allSkills.length && (
+                <button
+                  onClick={() => setVisibleCount((prev) => prev + 6)}
+                  className="mt-2 text-xs text-violet-300 hover:text-violet-200 transition"
+                >
+                  + Show More Skills
+                </button>
+              )}
+            </div>
           </div>
 
-          {/* VIEW ALL BUTTON */}
-          {data.job_recommendations?.length > 4 && (
+          {/* JOBS */}
+
+          <div className="rounded-3xl border border-white/3 bg-white/3 backdrop-blur-xl p-5">
+            <div className="mb-5">
+              <h2 className="text-lg font-semibold tracking-tight">
+                Recommended Jobs
+              </h2>
+
+              <p className="text-xs text-slate-400 mt-1">
+                Best matched opportunities for you
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              {data.job_recommendations?.slice(0, 3)?.map((job, i) => (
+                <div
+                  key={i}
+                  className="rounded-2xl border border-white/3 bg-white/2 p-4 hover:border-violet-500/20 transition-all duration-300"
+                >
+                  <div className="flex justify-between gap-3">
+                    <div>
+                      <h3 className="text-sm font-semibold">{job.role}</h3>
+
+                      <p className="text-slate-400 text-xs mt-1">
+                        {job.company || "Unknown Company"}
+                      </p>
+
+                      <div className="flex flex-wrap gap-3 text-[11px] text-slate-500 mt-3">
+                        <span>📍 {job.location || "Remote"}</span>
+
+                        <span>💼 {job.type || "Full Time"}</span>
+                      </div>
+                    </div>
+
+                    <div className="h-fit rounded-full px-3 py-1 text-[10px] font-semibold bg-violet-500/10 text-violet-300 border border-violet-500/20">
+                      {job.match_percentage}% Match
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-slate-400 leading-relaxed mt-4">
+                    {job.reason}
+                  </p>
+                </div>
+              ))}
+            </div>
+
             <button
               onClick={() => router.push("/dashboard-content/jobs")}
-              className="mt-4 w-full border border-slate-200 rounded-xl py-2 text-sm font-medium hover:bg-gray-100 transition cursor-pointer text-gray-600"
+              className="mt-5 w-full rounded-2xl border border-violet-500/20 bg-violet-500/10 py-2.5 text-xs font-medium text-violet-200 hover:bg-violet-500/20 transition-all duration-300"
             >
               View All Jobs →
             </button>
-          )}
-        </div>
-      </div>
-
-      {/* ACTIVITY */}
-      <div className="bg-white rounded-xl p-6 shadow-md">
-        <h2 className="font-semibold text-slate-800 mb-4">Recent Activity</h2>
-
-        <div className="space-y-3 text-sm">
-          <div className="flex gap-3 items-center text-gray-600">
-            <Clock className="text-teal-600" size={18} />
-            Resume analyzed successfully
-          </div>
-
-          {data.skill_gaps?.missing?.length > 0 && (
-            <div className="flex gap-3 items-center text-gray-600">
-              <AlertCircle className="text-amber-500" size={18} />
-              Skill gaps detected
-            </div>
-          )}
-
-          <div className="flex gap-3 items-center text-gray-600">
-            <CheckCircle className="text-emerald-600" size={18} />
-            AI insights generated
           </div>
         </div>
-      </div>
 
-      {/* QUICK TOOLS */}
-      <div className="bg-white rounded-xl p-6 shadow-md">
-        <h2 className="font-semibold text-slate-800 mb-4">AI Career Tools</h2>
+        {/* TOOLS */}
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 ">
-          <button
-            className="border p-4 rounded-lg  cursor-pointer"
-            onClick={() => router.push("/dashboard-content/analysis")}
-          >
-            <FileText className="text-teal-600 mx-auto" />
-            <span className="text-gray-600">Resume Analysis</span>
-          </button>
+        <div className="rounded-3xl border border-white/3 bg-white/3 backdrop-blur-xl p-5">
+          <div className="mb-5">
+            <h2 className="text-lg font-semibold tracking-tight">
+              AI Career Tools
+            </h2>
 
-          <button
-            className="border p-4 rounded-lg cursor-pointer"
-            onClick={() => router.push("/dashboard-content/jobs")}
-          >
-            <Briefcase className="text-orange-500 mx-auto" />
-            <span className="text-gray-600">Jobs</span>
-          </button>
+            <p className="text-xs text-slate-400 mt-1">
+              Smart tools for your career growth
+            </p>
+          </div>
 
-          <button
-            className="border p-4 rounded-lg cursor-pointer"
-            onClick={() => router.push("/dashboard-content/technical-arsenal")}
-          >
-            <Wrench className="text-purple-600 mx-auto" />
-            <span className="text-gray-600">Technical Arsenal</span>
-          </button>
-          <button
-            className="border p-4 rounded-lg cursor-pointer"
-            onClick={() => router.push("/dashboard-content/profile")}
-          >
-            <User className="text-purple-600 mx-auto" />
-            <span className="text-gray-600">Profile</span>
-          </button>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <button
+              onClick={() => router.push("/dashboard-content/analysis")}
+              className="group rounded-2xl border border-white/3 bg-white/2 p-4 hover:border-violet-500/20 transition-all duration-300"
+            >
+              <FileText className="mx-auto text-violet-400 group-hover:scale-110 transition-transform duration-300" />
+
+              <p className="mt-3 text-xs font-medium text-slate-300">
+                Resume Analysis
+              </p>
+            </button>
+
+            <button
+              onClick={() => router.push("/dashboard-content/jobs")}
+              className="group rounded-2xl border border-white/3 bg-white/2 p-4 hover:border-cyan-500/20 transition-all duration-300"
+            >
+              <Briefcase className="mx-auto text-cyan-400 group-hover:scale-110 transition-transform duration-300" />
+
+              <p className="mt-3 text-xs font-medium text-slate-300">Jobs</p>
+            </button>
+
+            <button
+              onClick={() =>
+                router.push("/dashboard-content/technical-arsenal")
+              }
+              className="group rounded-2xl border border-white/3 bg-white/2 p-4 hover:border-violet-500/20 transition-all duration-300"
+            >
+              <Wrench className="mx-auto text-violet-400 group-hover:scale-110 transition-transform duration-300" />
+
+              <p className="mt-3 text-xs font-medium text-slate-300">
+                Technical Arsenal
+              </p>
+            </button>
+
+            <button
+              onClick={() => router.push("/dashboard-content/profile")}
+              className="group rounded-2xl border border-white/3 bg-white/2 p-4 hover:border-cyan-500/20 transition-all duration-300"
+            >
+              <User className="mx-auto text-cyan-400 group-hover:scale-110 transition-transform duration-300" />
+
+              <p className="mt-3 text-xs font-medium text-slate-300">Profile</p>
+            </button>
+          </div>
         </div>
       </div>
     </div>

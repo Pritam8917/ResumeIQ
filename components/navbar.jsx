@@ -2,126 +2,218 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowUpRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
-// import { useAuthStore } from "@/store/authStore";
 import UploadResumeModal from "@/components/UploadResumeModal";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const router = useRouter();
-  // const user  = useAuthStore((state) => state.user);
-
-  const [openModal, setOpenModal] = useState(false);
 
   const handleUploadClick = () => {
     setOpenModal(true);
+    setOpen(false);
   };
 
   return (
-    <nav className="w-full bg-[#f3f4f6] border-b border-gray-200 shadow-sm sticky top-0 z-50">
-      <div className="max-w-8xl mx-auto md:px-15 px-7 py-3 flex items-center justify-between">
-        {/* Logo */}
-        <div className="flex items-center text-xl font-semibold cursor-pointer" onClick={()=>router.push("/")}>
-          <span className="bg-linear-to-r from-blue-500 to-teal-500 bg-clip-text text-transparent">
-            Resume
-          </span>
-          <span className="bg-linear-to-r from-cyan-500 to-blue-600 bg-clip-text text-transparent">
-            IQ
-          </span>
-        </div>
+    <>
+      {/* Navbar Wrapper */}
+      <div className="fixed top-5 left-0 w-full z-50 px-4 md:px-8">
+        <nav className="relative mx-auto max-w-8xl">
+          {/* Glow */}
+          <div className="absolute inset-0 bg-linear-to-r from-cyan-500/10 via-transparent to-violet-500/10 blur-3xl rounded-full" />
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-6 text-gray-600 font-semibold text-sm">
-          <Link
-            href="#what-you-get"
-            className="px-4 py-2 bg-gray-200 rounded-full text-gray-600"
-          >
-            What You Get
-          </Link>
+          {/* Main Navbar */}
+          <div className="relative overflow-hidden rounded-full border border-white/10 bg-black/40 backdrop-blur-2xl shadow-[0_8px_40px_rgba(0,0,0,0.35)]">
+            {/* Gradient Border */}
+            <div className="absolute inset-0 rounded-full p-px bg-linear-to-r from-cyan-500/20 via-white/5 to-violet-500/20">
+              <div className="h-full w-full rounded-full bg-[#050816]/90" />
+            </div>
 
-          <Link href="#how-it-works" className="hover:text-blue-300">
-            How It Works
-          </Link>
-
-          <Link href="#faq" className="hover:text-blue-300">
-            FAQ
-          </Link>
-        </div>
-
-        {/* Right Side Desktop */}
-        <div className="hidden md:flex items-center gap-3">
-          <button onClick={handleUploadClick} className="px-5 py-1 rounded-full bg-linear-to-r from-blue-500 via-indigo-500 to-cyan-500 text-white font-semibold hover:opacity-90 transition flex items-center gap-2 shadow-sm cursor-pointer">
-            Get Started →
-          </button>
-        </div>
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setOpen(!open)}
-          className="md:hidden flex items-center justify-center w-10 h-10 rounded-md bg-white border border-gray-200 shadow-sm  hover:bg-gray-50 transition-all duration-300 cursor-pointer"
-        >
-          <motion.div
-            animate={{ rotate: open ? 180 : 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            {open ? (
-              <X size={20} className="text-gray-700" />
-            ) : (
-              <Menu size={20} className="text-gray-700" />
-            )}
-          </motion.div>
-        </button>
-      </div>
-
-      {/* Mobile Menu with Professional Animation */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ type: "spring", stiffness: 260, damping: 25 }}
-            className="md:hidden absolute left-0 top-full w-full px-6 pt-4 pb-6
-      bg-white/80 backdrop-blur-lg border-b border-gray-200 shadow-xl"
-          >
-            <div className="flex flex-col gap-4 text-gray-900 text-sm">
-              <Link
-                href="#what-you-get"
-                className="px-4 py-2 rounded-lg hover:bg-gray-100 transition"onClick={() => setOpen(false)} 
+            <div className="relative z-10 flex items-center justify-between px-5 md:px-7 py-3">
+              {/* Logo */}
+              <div
+                onClick={() => router.push("/")}
+                className="flex items-center cursor-pointer"
               >
-                What You Get
-              </Link>
+                <h1 className="text-2xl font-black tracking-tight">
+                  <span className="bg-linear-to-r from-cyan-400 via-blue-500 to-violet-500 bg-clip-text text-transparent">
+                    Resume
+                  </span>
 
-              <Link
-                href="#how-it-works"
-                className="px-4 py-2 rounded-lg hover:bg-gray-100 transition"onClick={() => setOpen(false)}
-              >
-                How It Works
-              </Link>
+                  <span className="text-white">IQ</span>
+                </h1>
+              </div>
 
-              <Link
-                href="#faq"
-                className="px-4 py-2 rounded-lg hover:bg-gray-100 transition"onClick={() => setOpen(false)}
-              >
-                FAQ
-              </Link>
+              {/* Desktop Menu */}
+              <div className="hidden md:flex items-center gap-2 p-1 rounded-full bg-white/3 border border-white/5">
+                {[
+                  {
+                    href: "#what-you-get",
+                    label: "Features",
+                  },
+                  {
+                    href: "#how-it-works",
+                    label: "How It Works",
+                  },
+                  {
+                    href: "#faq",
+                    label: "FAQ",
+                  },
+                ].map((item, index) => (
+                  <Link
+                    key={index}
+                    href={item.href}
+                    className="px-5 py-2.5 rounded-full text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-300"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
 
-              <div className="flex flex-col gap-3 pt-2">
-                <button className="w-full py-2 rounded-full bg-linear-to-r from-blue-500 via-indigo-500 to-cyan-500 text-white font-semibold shadow-md hover:opacity-90 transition cursor-pointer"
-                onClick={handleUploadClick}>
-                  Get Started →
+              {/* Right Side */}
+              <div className="flex items-center gap-3">
+                {/* CTA */}
+                <button
+                  onClick={handleUploadClick}
+                  className="hidden md:flex group relative overflow-hidden items-center gap-2 px-6 py-2.5 rounded-full bg-linear-to-r from-cyan-500 via-blue-500 to-violet-600 text-white font-semibold shadow-[0_0_30px_rgba(59,130,246,0.35)] hover:shadow-cyan-500/40 transition-all duration-500 cursor-pointer"
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    Get Started
+                    <ArrowUpRight
+                      size={17}
+                      className="group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform duration-300"
+                    />
+                  </span>
+
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </button>
+
+                {/* Mobile Menu */}
+                <motion.button
+                  whileTap={{
+                    scale: 0.92,
+                  }}
+                  onClick={() => setOpen(!open)}
+                  className="md:hidden flex items-center justify-center w-11 h-11 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl text-white cursor-pointer"
+                >
+                  <motion.div
+                    animate={{
+                      rotate: open ? 180 : 0,
+                    }}
+                    transition={{
+                      duration: 0.3,
+                    }}
+                  >
+                    {open ? <X size={20} /> : <Menu size={20} />}
+                  </motion.div>
+                </motion.button>
               </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-            <UploadResumeModal
-              isOpen={openModal}
-              onClose={() => setOpenModal(false)}
-            />
-    </nav>
+          </div>
+
+          {/* Mobile Menu */}
+          <AnimatePresence>
+            {open && (
+              <motion.div
+                initial={{
+                  opacity: 0,
+                  y: -15,
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                exit={{
+                  opacity: 0,
+                  y: -15,
+                }}
+                transition={{
+                  duration: 0.25,
+                }}
+                className="md:hidden mt-4 overflow-hidden rounded-4xl border border-white/10 bg-[#0B1120]/95 backdrop-blur-3xl shadow-[0_20px_80px_rgba(0,0,0,0.45)]"
+              >
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-linear-to-b from-cyan-500/5 to-violet-500/5" />
+
+                <div className="relative z-10 p-5 flex flex-col gap-3">
+                  {[
+                    {
+                      href: "#what-you-get",
+                      label: "Features",
+                    },
+                    {
+                      href: "#how-it-works",
+                      label: "How It Works",
+                    },
+                    {
+                      href: "#faq",
+                      label: "FAQ",
+                    },
+                  ].map((item, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{
+                        opacity: 0,
+                        x: -10,
+                      }}
+                      animate={{
+                        opacity: 1,
+                        x: 0,
+                      }}
+                      transition={{
+                        delay: index * 0.08,
+                      }}
+                    >
+                      <Link
+                        href={item.href}
+                        onClick={() => setOpen(false)}
+                        className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-gray-200 hover:bg-white/10 hover:text-white transition-all duration-300"
+                      >
+                        {item.label}
+                      </Link>
+                    </motion.div>
+                  ))}
+
+                  {/* CTA */}
+                  <motion.button
+                    initial={{
+                      opacity: 0,
+                      y: 10,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+                    transition={{
+                      delay: 0.25,
+                    }}
+                    onClick={handleUploadClick}
+                    className="group mt-2 w-full rounded-2xl bg-linear-to-r from-cyan-500 via-blue-500 to-violet-600 py-4 font-semibold text-white shadow-[0_0_30px_rgba(59,130,246,0.35)] cursor-pointer"
+                  >
+                    <span className="flex items-center justify-center gap-2">
+                      Get Started
+                      <ArrowUpRight
+                        size={16}
+                        className="group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform duration-300"
+                      />
+                    </span>
+                  </motion.button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </nav>
+      </div>
+
+      {/* Modal */}
+      <UploadResumeModal
+        isOpen={openModal}
+        onClose={() => setOpenModal(false)}
+      />
+    </>
   );
 }

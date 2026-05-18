@@ -6,7 +6,11 @@ import { useAuthStore } from "@/store/authStore";
 import { useResumeStore } from "@/store/resumeStore";
 import { extractTextFromPDF } from "@/lib/pdf";
 import { analyzeResume } from "@/lib/analyze";
-import { useState, useEffect } from "react";
+
+import { Upload, X, FileText, ShieldCheck, Sparkles } from "lucide-react";
+
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function UploadResumeModal({ isOpen, onClose }) {
   const router = useRouter();
@@ -21,15 +25,6 @@ export default function UploadResumeModal({ isOpen, onClose }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [agree, setAgree] = useState(false);
-  const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => setShow(true), 10); // trigger animation
-    } else {
-      setShow(false);
-    }
-  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -44,7 +39,6 @@ export default function UploadResumeModal({ isOpen, onClose }) {
     setLoading(true);
 
     try {
-      // AUTH
       let { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -52,44 +46,40 @@ export default function UploadResumeModal({ isOpen, onClose }) {
 
       if (error) {
         const signup = await supabase.auth.signUp({ email, password });
+
         if (signup.error) throw signup.error;
-        // NO NEED to login again
+
         data = signup.data;
       }
 
       const user = data.user;
+
       if (!user) throw new Error("Authentication failed");
 
-      // clean file name to avoid issues
       const cleanFileName = file.name
-        .replace(/\s+/g, "_") // replace spaces
-        .replace(/[\[\]]/g, ""); // remove [ ]
+        .replace(/\s+/g, "_")
+        .replace(/[\[\]]/g, "");
 
       const filePath = `${user.id}/${Date.now()}_${cleanFileName}`;
 
-      // Upload to Supabase Storage
       const { error: uploadError } = await supabase.storage
         .from("resumes")
         .upload(filePath, file);
 
       if (uploadError) throw uploadError;
 
-      // Extract text
       const text = await extractTextFromPDF(file);
 
-      // AI analysis
       const result = await analyzeResume(text);
 
-      // ❗STOP if error
       if (result?.error) {
-        setAIResult(result); // show error UI
+        setAIResult(result);
         setLoading(false);
-        return; // NO router.push
+        return;
       }
 
       setAIResult(result);
 
-      // Save to DB
       const { error: dbError } = await supabase.from("resumes").insert({
         user_id: user.id,
         file_path: filePath,
@@ -99,17 +89,16 @@ export default function UploadResumeModal({ isOpen, onClose }) {
 
       if (dbError) throw dbError;
 
-      // Store globally
       setUser(user);
+
       setData({
-        ...aiResult,
+        ...result,
         created_at: new Date().toISOString(),
       });
 
-      //  Redirect
       router.push("/dashboard-content/dashboard");
     } catch (err) {
-      console.error("FULL ERROR:", err);
+      console.error(err);
       setError(err.message);
     }
 
@@ -117,183 +106,229 @@ export default function UploadResumeModal({ isOpen, onClose }) {
   };
 
   return (
-    <div
-      className={`fixed inset-0 flex items-center justify-center z-50 transition-all duration-300 ${
-        show ? "bg-black/40 backdrop-blur-sm opacity-100" : "opacity-0"
-      }`}
-    >
-      <div
-        className={`relative w-full max-w-md bg-white rounded-2xl shadow-xl px-7 py-8 space-y-4 transform transition-all duration-300 ${
-          show
-            ? "opacity-100 scale-100 translate-y-0"
-            : "opacity-0 scale-95 translate-y-4"
-        }`}
-      >
-        {/* Close */}
-        <button
-          onClick={() => {
-            setShow(false);
-            setTimeout(onClose, 300);
-          }}
-          className="
-    absolute top-5 right-5
-    w-10 h-10 flex items-center justify-center
-    rounded-full
-    bg-white/80 backdrop-blur-md
-    border border-gray-200
-    text-gray-500
-    shadow-sm
-    transition-all duration-200
-
-    hover:bg-gray-100
-    hover:text-gray-800
-    hover:shadow-md
-    hover:scale-105
-
-    active:scale-95 cursor-pointer
-  "
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-xl p-4"
         >
-          ✕
-        </button>
+          {/* Background Glow */}
+          <div className="absolute top-1/4 left-1/4 w-60 h-60 bg-cyan-500/20 blur-[100px] rounded-full" />
 
-        {/* Title */}
-        <h2 className="text-lg font-semibold text-gray-800">Upload Resume</h2>
+          <div className="absolute bottom-1/4 right-1/4 w-60 h-60 bg-violet-500/20 blur-[100px] rounded-full" />
 
-        {/* Terms */}
-        <div className="flex items-center gap-2 text-sm bg-gray-100 p-3 rounded-lg">
-          <input
-            type="checkbox"
-            checked={agree}
-            onChange={() => setAgree(!agree)}
-            className="cursor-pointer"
-          />
-          <span className="text-gray-800">I agree to Terms & Privacy</span>
-        </div>
+          {/* Modal */}
+          <motion.div
+            initial={{
+              opacity: 0,
+              scale: 0.95,
+              y: 20,
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              y: 0,
+            }}
+            exit={{
+              opacity: 0,
+              scale: 0.95,
+              y: 10,
+            }}
+            transition={{
+              duration: 0.3,
+            }}
+            className="relative w-full max-w-md overflow-hidden rounded-[28px] border border-white/10 bg-[#0B1120]/95 backdrop-blur-3xl shadow-[0_20px_80px_rgba(0,0,0,0.55)]"
+          >
+            {/* Gradient Border */}
+            <div className="absolute inset-0 rounded-[28px] p-px bg-linear-to-r from-cyan-500/20 via-blue-500/10 to-violet-500/20">
+              <div className="h-full w-full rounded-[28px] bg-[#0B1120]/95" />
+            </div>
 
-        {/* Email */}
-        <input
-          type="email"
-          placeholder="Enter your email"
-          className="w-full border p-3 rounded-lg text-gray-800"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+            {/* Content */}
+            <div className="relative z-10 p-6">
+              {/* Close */}
+              <button
+                onClick={onClose}
+                className="absolute top-5 right-5 w-9 h-9 rounded-xl border border-white/10 bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-all duration-300 cursor-pointer"
+              >
+                <X size={16} />
+              </button>
 
-        {/* Password */}
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full border p-3 rounded-lg text-gray-800"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        {/* Upload */}
-        <div
-          className="relative border-2 border-dashed border-gray-400 hover:border-cyan-500 transition rounded-xl p-6 text-center bg-gray-50 hover:bg-white cursor-pointer"
-          onDragOver={(e) => e.preventDefault()}
-          onDrop={(e) => {
-            e.preventDefault();
-            const droppedFile = e.dataTransfer.files[0];
-            if (droppedFile) setFile(droppedFile);
-          }}
-        >
-          {/* Hidden Input */}
-          <input
-            type="file"
-            accept=".pdf,.doc,.docx"
-            onChange={(e) => setFile(e.target.files[0])}
-            className="absolute inset-0 opacity-0 cursor-pointer"
-          />
-
-          {!file ? (
-            <>
-              {/* Icon */}
-              <div className="flex justify-center mb-3 text-cyan-600">📄</div>
-
-              {/* Text */}
-              <p className="font-medium text-gray-700">
-                Drag & drop your resume here
-              </p>
-              <p className="text-sm text-gray-500 mt-1">
-                or click to browse files
-              </p>
-
-              <p className="text-xs text-gray-400 mt-2">
-                PDF, DOC, DOCX (Max 5MB)
-              </p>
-            </>
-          ) : (
-            <>
-              {/* File Preview */}
-              <div className="flex items-center justify-between bg-white border rounded-lg px-4 py-2 shadow-sm">
-                <div className="flex items-center gap-2 text-left">
-                  <span className="text-cyan-600">📄</span>
-                  <div>
-                    <p className="text-sm font-medium text-gray-800 truncate max-w-45">
-                      {file.name}
-                    </p>
-                    <p className="text-xs text-gray-400">
-                      {(file.size / 1024).toFixed(1)} KB
-                    </p>
-                  </div>
+              {/* Header */}
+              <div className="mb-5">
+                <div className="w-14 h-14 rounded-2xl bg-linear-to-r from-cyan-500 to-violet-600 flex items-center justify-center shadow-lg mb-4">
+                  <Sparkles className="text-white" size={24} />
                 </div>
 
-                {/* Remove Button */}
-                <button
-                  type="button"
-                  onClick={() => setFile(null)}
-                  className="text-red-500 text-sm hover:underline"
-                >
-                  Remove
-                </button>
+                <h2 className="text-2xl font-bold text-white">Upload Resume</h2>
+
+                <p className="text-gray-400 mt-2 text-sm leading-relaxed">
+                  Get ATS insights, skill analysis, and AI-powered resume
+                  improvements instantly.
+                </p>
               </div>
-            </>
-          )}
-        </div>
 
-        {/* Error */}
-        {error && <p className="text-red-500 text-sm">{error}</p>}
+              {/* Terms */}
+              <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-xl mb-4">
+                <input
+                  type="checkbox"
+                  checked={agree}
+                  onChange={() => setAgree(!agree)}
+                  className="w-4 h-4 accent-cyan-500 cursor-pointer"
+                />
 
-        {/* Button */}
-        <div className="w-full flex flex-col items-center">
-          <button
-            onClick={handleSubmit}
-            disabled={loading}
-            className="w-full flex justify-center items-center gap-2 
-    bg-linear-to-r from-teal-600 to-cyan-600 
-    text-white py-3 rounded-lg cursor-pointer 
-    disabled:opacity-70 min-h-12 transition-all duration-200"
-          >
-            {loading && <span className="animate-spin">⏳</span>}
+                <div className="flex items-center gap-2 text-sm text-gray-300">
+                  <ShieldCheck size={15} className="text-cyan-400" />
 
-            {loading
-              ? "Analyzing Resume..."
-              : aiResult?.error
-                ? "Retry Analysis"
-                : "Analyze Resume"}
-          </button>
+                  <span>I agree to Terms & Privacy</span>
+                </div>
+              </div>
 
-          {/* Status Message */}
-          {loading && (
-            <p className="text-sm text-slate-600 mt-2 animate-pulse">
-              🔍 AI is analyzing your resume for insights...
-            </p>
-          )}
+              {/* Inputs */}
+              <div className="space-y-3">
+                <input
+                  type="email"
+                  placeholder="Email address"
+                  className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3.5 text-white placeholder:text-gray-500 outline-none focus:border-cyan-400/40 focus:bg-white/[0.07] transition-all duration-300"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
 
-          {/* Error Message */}
-          {aiResult?.error && !loading && (
-            <div className="mt-3 text-center">
-              <p className="text-sm text-red-500 font-medium">
-                ⚠️ AI is currently under high demand
-              </p>
-              <p className="text-xs text-gray-500">
-                Please try again in a few seconds.
-              </p>
+                <input
+                  type="password"
+                  placeholder="Password"
+                  className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3.5 text-white placeholder:text-gray-500 outline-none focus:border-cyan-400/40 focus:bg-white/[0.07] transition-all duration-300"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+
+              {/* Upload Area */}
+              <label
+                htmlFor="resume-upload"
+                className="group relative mt-4 block rounded-3xl border-2 border-dashed border-white/10 bg-white/3 hover:bg-white/5 hover:border-cyan-400/30 transition-all duration-300 p-6 text-center cursor-pointer overflow-hidden"
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={(e) => {
+                  e.preventDefault();
+
+                  const droppedFile = e.dataTransfer.files[0];
+
+                  if (droppedFile) setFile(droppedFile);
+                }}
+              >
+                {/* Glow */}
+                <div className="absolute inset-0 bg-linear-to-r from-cyan-500/5 to-violet-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                {/* Hidden Input */}
+                <input
+                  id="resume-upload"
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  onChange={(e) => setFile(e.target.files[0])}
+                  className="hidden"
+                />
+
+                {!file ? (
+                  <div className="relative z-10">
+                    <div className="w-14 h-14 rounded-2xl bg-linear-to-r from-cyan-500 to-violet-600 flex items-center justify-center mx-auto mb-4 shadow-lg">
+                      <Upload className="text-white" size={24} />
+                    </div>
+
+                    <h3 className="text-white font-medium text-base">
+                      Upload your resume
+                    </h3>
+
+                    <p className="text-gray-400 text-sm mt-1">
+                      Drag & drop or click to browse
+                    </p>
+
+                    <p className="text-xs text-gray-500 mt-3">
+                      PDF, DOC, DOCX • Max 5MB
+                    </p>
+                  </div>
+                ) : (
+                  <div className="relative z-10 rounded-2xl border border-white/10 bg-white/5 p-3 flex items-center justify-between">
+                    <div className="flex items-center gap-3 text-left">
+                      <div className="w-11 h-11 rounded-xl bg-linear-to-r from-cyan-500 to-violet-600 flex items-center justify-center">
+                        <FileText className="text-white" size={20} />
+                      </div>
+
+                      <div>
+                        <p className="text-white text-sm font-medium truncate max-w-45">
+                          {file.name}
+                        </p>
+
+                        <p className="text-xs text-gray-500 mt-1">
+                          {(file.size / 1024).toFixed(1)} KB
+                        </p>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setFile(null);
+                      }}
+                      className="text-xs text-red-400 hover:text-red-300 transition-colors duration-300"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
+              </label>
+
+              {/* Error */}
+              {error && (
+                <div className="mt-3 rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                  {error}
+                </div>
+              )}
+
+              {/* Submit */}
+              <button
+                onClick={handleSubmit}
+                disabled={loading}
+                className="relative overflow-hidden mt-5 w-full rounded-2xl bg-linear-to-r from-cyan-500 via-blue-500 to-violet-600 py-3.5 font-semibold text-white shadow-[0_0_30px_rgba(59,130,246,0.35)] hover:shadow-cyan-500/40 transition-all duration-500 disabled:opacity-70 cursor-pointer"
+              >
+                <span className="relative z-10 flex items-center justify-center gap-3">
+                  {loading && (
+                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  )}
+
+                  {loading
+                    ? "Analyzing Resume..."
+                    : aiResult?.error
+                      ? "Retry Analysis"
+                      : "Analyze Resume"}
+                </span>
+              </button>
+
+              {/* Loading */}
+              {loading && (
+                <p className="text-xs text-cyan-300 text-center mt-3 animate-pulse">
+                  AI is analyzing your resume...
+                </p>
+              )}
+
+              {/* AI Error */}
+              {aiResult?.error && !loading && (
+                <div className="mt-4 text-center">
+                  <p className="text-sm text-red-400 font-medium">
+                    AI is currently under high demand
+                  </p>
+
+                  <p className="text-xs text-gray-500 mt-1">
+                    Please try again in a few seconds.
+                  </p>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      </div>
-    </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
