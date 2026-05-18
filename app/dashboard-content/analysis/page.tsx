@@ -145,7 +145,7 @@ export default function ResumeAnalysisPage() {
 
           {/* ================= ROADMAP ================= */}
 
-          <div className="rounded-[32px] border border-white/4 bg-[#0f1724]/95 p-6 md:p-8">
+          <div className="rounded-4xl border border-white/4 bg-[#0f1724]/95 p-6 md:p-8">
             {/* HEADER */}
 
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
@@ -276,7 +276,7 @@ export default function ResumeAnalysisPage() {
     <div className="space-y-6">
       {/* ================= HERO ================= */}
 
-      <div className="relative overflow-hidden rounded-[32px] border border-white/4 bg-gradient-to-br from-[#121826] via-[#161B2E] to-[#1F1B4B] p-6 md:p-7 shadow-[0_20px_80px_rgba(0,0,0,0.45)]">
+      <div className="relative overflow-hidden rounded-4xl border border-white/4 bg-linear-to-br from-[#121826] via-[#161B2E] to-[#1F1B4B] p-6 md:p-7 shadow-[0_20px_80px_rgba(0,0,0,0.45)]">
         {/* GLOW */}
 
         <div className="absolute top-0 right-0 h-72 w-72 bg-cyan-500/10 blur-3xl rounded-full" />
@@ -423,9 +423,9 @@ export default function ResumeAnalysisPage() {
                 <p className="text-[11px] text-cyan-300">{score}%</p>
               </div>
 
-              <div className="h-2 rounded-full overflow-hidden bg-white/[0.04]">
+              <div className="h-2 rounded-full overflow-hidden bg-white/4">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-violet-500"
+                  className="h-full rounded-full bg-linear-to-r from-cyan-400 to-violet-500"
                   style={{
                     width: `${score}%`,
                   }}
@@ -707,7 +707,7 @@ export default function ResumeAnalysisPage() {
                   .map((skill: string, i: number) => (
                     <div
                       key={`${skill}-${i}`}
-                      className="rounded-full border border-red-500/10 bg-red-500/[0.06] px-4 py-2 text-[11px] sm:text-[12px] text-red-300"
+                      className="rounded-full border border-red-500/10 bg-red-500/6 px-4 py-2 text-[11px] sm:text-[12px] text-red-300"
                     >
                       {skill}
                     </div>
