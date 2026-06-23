@@ -127,15 +127,8 @@ export default function FAQ() {
               const active = open === index;
 
               return (
-                <motion.div
+                <div
                   key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{
-                    delay: index * 0.06,
-                    duration: 0.4,
-                  }}
-                  viewport={{ once: true }}
                   className={`group relative overflow-hidden rounded-3xl border transition-all duration-500 ${
                     active
                       ? "border-cyan-400/30 bg-white/[0.07]"
@@ -207,7 +200,7 @@ export default function FAQ() {
                       </motion.div>
                     )}
                   </AnimatePresence>
-                </motion.div>
+                </div>
               );
             })}
           </div>
