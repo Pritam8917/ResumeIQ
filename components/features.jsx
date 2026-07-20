@@ -16,37 +16,38 @@ const features = [
     icon: FileSearch,
     title: "ATS Resume Score",
     desc: "Instantly analyze how well your resume performs with Applicant Tracking Systems used by recruiters.",
-    color: "from-cyan-500 to-blue-500",
+    color: "from-blue-600 to-blue-400",
   },
   {
     icon: Brain,
     title: "Skill Gap Analysis",
     desc: "Discover missing skills required for your target roles and receive suggestions to improve your profile.",
-    color: "from-cyan-400 to-violet-500",
+  
+  color: "from-blue-600 to-blue-400"  ,
   },
   {
     icon: Briefcase,
     title: "Job Recommendations",
     desc: "Get personalized job matches based on your resume, skills, and experience level.",
-    color: "from-violet-500 to-pink-500",
+  color: "from-blue-600 to-blue-400"  ,
   },
   {
     icon: Target,
     title: "Resume Optimization",
     desc: "Receive AI suggestions to improve your resume content, structure, and keywords.",
-    color: "from-green-400 to-emerald-500",
+    color: "from-blue-600 to-blue-400" ,
   },
   {
     icon: TrendingUp,
     title: "Market Insights",
     desc: "Understand hiring trends, demand for skills, and salary expectations for your target role.",
-    color: "from-yellow-400 to-orange-500",
+    color: "from-blue-600 to-blue-400",
   },
   {
     icon: MessageSquare,
     title: "AI Interview Practice",
     desc: "Practice with AI-generated interview questions and receive feedback to improve your answers.",
-    color: "from-rose-400 to-red-500",
+    color: "from-blue-600 to-blue-400",
   },
 ];
 
@@ -54,12 +55,12 @@ export default function WhatYouGet() {
   return (
     <section
       id="what-you-get"
-      className="relative overflow-hidden w-full py-28 px-6 md:px-16 lg:px-24 bg-[#050816] pb-15"
+      className="relative overflow-hidden w-full py-28 px-6 md:px-16 lg:px-24 bg-[#090909] pb-15"
     >
       {/* Background Glow */}
-      <div className="absolute top-0 left-0 w-125 h-125 bg-cyan-500/10 blur-[120px] rounded-full" />
+<div className="absolute top-0 left-0 h-105 w-105 rounded-full bg-blue-500/6 blur-[180px]" />
 
-      <div className="absolute bottom-0 right-0 w-100 h-100 bg-violet-500/10 blur-[120px] rounded-full" />
+<div className="absolute bottom-0 right-0 h-80 w-[320px] rounded-full bg-blue-400/4 blur-[180px]" />
 
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Heading */}
@@ -71,20 +72,24 @@ export default function WhatYouGet() {
           className="text-center mb-20"
         >
           {/* Badge */}
-          <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-cyan-400/20 bg-cyan-500/10 text-cyan-300 text-sm font-semibold backdrop-blur-xl">
+          <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-blue-500/20
+bg-blue-500/10
+text-blue-300 text-sm font-semibold backdrop-blur-xl">
             ✨ WHAT YOU GET
           </span>
 
           {/* Heading */}
           <h2 className="text-4xl md:text-6xl font-extrabold text-white mt-6 leading-tight max-w-5xl mx-auto">
             Everything you need to improve your{" "}
-            <span className="bg-linear-to-r from-cyan-400 via-blue-500 to-violet-500 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-white
+via-blue-200
+to-blue-500 bg-clip-text text-transparent">
               job readiness
             </span>
           </h2>
 
           {/* Description */}
-          <p className="text-gray-400 mt-6 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
+          <p className="text-zinc-400 mt-6 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
             ResumeIQ provides AI-powered insights to help you understand your
             strengths, identify skill gaps, and prepare for interviews with
             confidence.
@@ -102,7 +107,7 @@ export default function WhatYouGet() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="group relative overflow-hidden rounded-[28px] border border-white/5 bg-white/3 backdrop-blur-xl p-6 transition-all duration-300 hover:border-cyan-500/20 hover:bg-white/4.5"
+                className="group relative overflow-hidden rounded-[28px] border border-white/6 bg-[#111113]/80 backdrop-blur-xl p-6 transition-all duration-300 hover:border-cyan-500/20 hover:bg-white/4.5"
               >
                 {/* HEADER */}
 
@@ -119,7 +124,7 @@ export default function WhatYouGet() {
 
                   {/* TAG */}
 
-                  <div className="rounded-full border border-white/5 bg-white/3 px-3 py-1 text-[10px] font-medium text-slate-400">
+                  <div className="rounded-full border border-white/5 bg-blue-500/10 px-3 py-1 text-[10px] font-medium text-blue-300">
                     AI Powered
                   </div>
                 </div>
@@ -127,11 +132,11 @@ export default function WhatYouGet() {
                 {/* CONTENT */}
 
                 <div className="relative z-10 mt-7">
-                  <h3 className="text-lg font-semibold tracking-tight text-white">
+                  <h3 className="text-xl font-semibold tracking-tight text-white">
                     {feature.title}
                   </h3>
 
-                  <p className="mt-3 text-sm leading-7 text-slate-400">
+                  <p className="mt-3 text-sm leading-7 text-zinc-400">
                     {feature.desc}
                   </p>
                 </div>

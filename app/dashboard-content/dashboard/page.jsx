@@ -20,13 +20,14 @@ export default function Dashboard() {
   const data = useResumeStore((s) => s.data);
 
   const [visibleCount, setVisibleCount] = useState(6);
-
+  // Handle the case when data is null or undefined
   if (!data) {
     return (
       <div className="relative min-h-screen overflow-hidden">
         {/* BACKGROUND */}
 
-        <div className="fixed inset-0 -z-10 bg-[#0B1120]">
+        <div className="fixed inset-0 -z-10 bg-[#050816] radial-gradient(circle at top left,#4F46E510,transparent 35%) radial-gradient(circle at bottom right,#06B6D410,transparent 35%)"
+        >
           <div className="absolute top-0 left-1/3 h-100 w-100 rounded-full bg-violet-600/5 blur-3xl" />
 
           <div className="absolute bottom-0 right-1/4 h-75 w-75 rounded-full bg-cyan-500/5 blur-3xl" />

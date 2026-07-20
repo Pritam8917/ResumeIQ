@@ -277,7 +277,7 @@ export default function InterviewPreparationPage() {
               }
             >
               <Play size={18} />
-              Start AI Interview
+              Start Interview
               <ArrowRight size={18} />
             </button>
           </div>

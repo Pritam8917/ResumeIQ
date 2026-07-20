@@ -75,7 +75,7 @@ export default function Sidebar() {
   return (
     <>
       {/* MOBILE TOPBAR */}
-      <div className="md:hidden sticky top-0 z-50 border-b border-white/10 bg-[#050816]/90 backdrop-blur-xl">
+      <div className="md:hidden sticky top-0 z-50 border-b border-white/10 bg-[#09090B]/90 backdrop-blur-xl">
         <div className="flex items-center justify-between px-5 py-4">
           <h1 className="text-2xl font-black tracking-tight">
             <span className="bg-linear-to-r from-cyan-400 via-blue-500 to-violet-500 bg-clip-text text-transparent">
@@ -115,24 +115,18 @@ export default function Sidebar() {
 
       {/* SIDEBAR */}
       <motion.aside
-        initial={{
-          x: -20,
-          opacity: 0,
-        }}
-        animate={{
-          x: 0,
-          opacity: 1,
-        }}
+        initial={{ x: 30, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
         className={`
-          fixed top-0 left-0 h-screen w-72.5
-          bg-[#0B1120]
-          border-r border-white/10
-          z-50 flex flex-col
-          transition-transform duration-300
-
-          ${open ? "translate-x-0" : "-translate-x-full"}
-          md:translate-x-0
-        `}
+    fixed top-0 right-0 md:left-0 md:right-auto
+    h-screen w-72.5
+    bg-[#09090B]
+    border-l border-white/6 md:border-l-0 md:border-r md:border-white/6
+    z-50 flex flex-col
+    transition-transform duration-300
+    ${open ? "translate-x-0" : "translate-x-full"}
+    md:translate-x-0
+  `}
       >
         {/* TOP */}
         <div className="px-6 py-6 border-b border-white/10">
@@ -140,7 +134,7 @@ export default function Sidebar() {
             {/* LOGO */}
             <div>
               <h1 className="text-3xl font-black tracking-tight">
-                <span className="bg-linear-to-r from-cyan-400 via-blue-500 to-violet-500 bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-white via-blue-200 to-blue-500 bg-clip-text text-transparent">
                   Resume
                 </span>
 
@@ -176,12 +170,13 @@ export default function Sidebar() {
                   onClick={() => setOpen(false)}
                   className={`
                     group flex items-center gap-4 px-4 py-3.5 rounded-2xl
-                    transition-all duration-300
+                    transition-all duration-300 group-hover:bg-blue-500/10
+group-hover:text-blue-300
 
                     ${
                       isActive
-                        ? "bg-linear-to-r from-cyan-500/15 to-violet-500/15 border border-cyan-500/20"
-                        : "hover:bg-white/4"
+                        ? "bg-blue-500/10 border border-blue-500/20"
+                        : "hover:bg-[#141416]"
                     }
                   `}
                 >
@@ -192,8 +187,8 @@ export default function Sidebar() {
 
                       ${
                         isActive
-                          ? "bg-linear-to-r from-cyan-500 to-violet-600 text-white"
-                          : "bg-white/5 text-gray-400 group-hover:text-white"
+                          ? "bg-linear-to-r from-blue-600 to-blue-500"
+                          : "bg-[#18181B]"
                       }
                     `}
                   >
@@ -224,16 +219,6 @@ export default function Sidebar() {
 
         {/* BOTTOM */}
         <div className="p-4 border-t border-white/10">
-          {/* USER CARD */}
-          {/* <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 mb-4">
-            <p className="text-sm font-semibold text-white">
-              Resume Intelligence
-            </p>
-
-            <p className="text-xs text-gray-500 mt-1 leading-relaxed">
-              Improve ATS score, optimize skills, and track career growth.
-            </p>
-          </div> */}
 
           {/* LOGOUT */}
           <button

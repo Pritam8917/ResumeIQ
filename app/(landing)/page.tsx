@@ -13,10 +13,15 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative overflow-hidden w-full pt-28 pb-16 sm:pb-20 md:pt-36 md:pb-28 px-4 sm:px-6 md:px-10 lg:px-20 bg-[#050816] text-white">
+    <section
+      className="relative overflow-hidden w-full pt-28 pb-16 sm:pb-20 md:pt-32 md:pb-28 px-4 sm:px-6 md:px-10 lg:px-20 
+bg-[#050505]
+text-white"
+    >
       {/* Background Glow Effects */}
-      <div className="absolute top-0 left-0 w-125 h-125 bg-cyan-500/10 blur-[120px] rounded-full" />
-      <div className="absolute bottom-0 right-0 w-100 h-100 bg-violet-500/10 blur-[120px] rounded-full" />
+      <div className="absolute -top-44 left-1/2 -translate-x-1/2 h-105 w-105 rounded-full bg-blue-500/10 blur-[180px]" />
+
+      <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-blue-400/5 blur-[180px]" />
 
       <div className="relative z-10 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center">
         {/* LEFT CONTENT */}
@@ -27,14 +32,33 @@ export default function Hero() {
           className="text-center md:text-left"
         >
           {/* Badge */}
-          <span className="inline-block bg-cyan-500/10 text-cyan-300 border border-cyan-400/20 backdrop-blur-xl px-4 py-1 rounded-full text-sm mb-6">
+          <span
+            className="
+inline-flex
+items-center
+rounded-full
+border
+border-blue-500/20
+bg-blue-500/10
+px-4
+py-1
+text-sm
+text-blue-300
+backdrop-blur-xl
+mb-3
+"
+          >
             🚀 AI-powered career insights
           </span>
 
           {/* Heading */}
           <h1 className="text-3xl sm:text-4xl lg:text-6xl font-extrabold leading-tight text-white mb-6">
             Understand your
-            <span className="bg-linear-to-r from-cyan-400 via-blue-500 to-violet-500 bg-clip-text text-transparent">
+            <span
+              className="bg-linear-to-r from-white
+via-blue-100
+to-blue-400 bg-clip-text text-transparent"
+            >
               {" "}
               career potential
             </span>{" "}
@@ -57,12 +81,25 @@ export default function Hero() {
           >
             {/* Upload Button */}
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               onClick={handleUploadClick}
-              className="flex items-center justify-center gap-2 bg-linear-to-r from-cyan-500 to-violet-600 text-white px-6 py-3 rounded-xl shadow-[0_0_30px_rgba(59,130,246,0.35)] hover:shadow-cyan-500/40 transition-all duration-300 cursor-pointer font-bold backdrop-blur-xl"
+              className="group flex items-center justify-center gap-2 rounded-xl
+  bg-linear-to-r from-blue-600 to-blue-500
+  px-6 py-3
+  font-semibold text-white
+  shadow-[0_10px_35px_rgba(37,99,235,0.28)]
+  transition-all duration-300
+  hover:from-blue-500
+  hover:to-blue-400
+  hover:shadow-[0_15px_45px_rgba(37,99,235,0.45)]
+  cursor-pointer"
             >
-              Upload Resume <ArrowRight size={18} />
+              Upload Resume
+              <ArrowRight
+                size={18}
+                className="transition-transform duration-300 group-hover:translate-x-1"
+              />
             </motion.button>
 
             {/* Sample Report */}
@@ -99,9 +136,13 @@ export default function Hero() {
           {/* Info Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-5 mt-4">
             {/* Privacy Card */}
-            <motion.div
-              whileHover={{ y: -5 }}
-              className="relative overflow-hidden flex gap-4 items-start bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-2xl shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:border-cyan-400/30 transition-all duration-300"
+            <div
+              className="relative overflow-hidden flex gap-4 items-start bg-[#101012]/80
+border
+border-white/6
+backdrop-blur-3xl
+shadow-[0_20px_60px_rgba(0,0,0,.5)] rounded-2xl p-5 hover:border-blue-500/20
+hover:bg-[#121215] transition-all duration-300"
             >
               <div className="absolute inset-0 bg-linear-to-br from-white/5 to-transparent rounded-2xl" />
 
@@ -116,12 +157,17 @@ export default function Hero() {
                   Your resume is processed to generate your report.
                 </p>
               </div>
-            </motion.div>
+            </div>
 
             {/* Fast Activation Card */}
-            <motion.div
-              whileHover={{ y: -5 }}
-              className="relative overflow-hidden flex gap-4 items-start bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-2xl shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:border-violet-400/30 transition-all duration-300"
+            <div
+              className="relative overflow-hidden flex gap-4 items-start bg-[#101012]/80
+border
+border-white/6
+backdrop-blur-3xl
+shadow-[0_20px_60px_rgba(0,0,0,.5)]
+ rounded-2xl p-5  hover:border-blue-500/20
+hover:bg-[#121215] transition-all duration-300"
             >
               <div className="absolute inset-0 bg-linear-to-br from-white/5 to-transparent rounded-2xl" />
 
@@ -138,7 +184,7 @@ export default function Hero() {
                   Get insights in minutes and unlock deeper tools.
                 </p>
               </div>
-            </motion.div>
+            </div>
           </div>
         </motion.div>
 
@@ -147,124 +193,142 @@ export default function Hero() {
           initial={{ opacity: 0, x: 80 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7 }}
-          className="relative overflow-hidden bg-white/5 border border-white/10 rounded-3xl shadow-[0_20px_80px_rgba(0,0,0,0.45)] backdrop-blur-2xl p-5 sm:p-6 w-full max-w-md md:max-w-none mx-auto"
+          className="relative mx-auto w-full max-w-xl overflow-hidden rounded-[30px] border border-white/5 bg-[#0B0B0E]/90 p-6 shadow-[0_30px_80px_rgba(0,0,0,0.55)] backdrop-blur-3xl"
         >
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-linear-to-br from-white/5 to-transparent rounded-3xl" />
+          {/* Background Glow */}
+          <div className="absolute -right-24 -top-20 h-72 w-72 rounded-full bg-blue-500/10 blur-[140px]" />
 
           <div className="relative z-10">
             {/* Header */}
-            <div className="flex justify-between items-center mb-6">
-              <div className="flex gap-1">
-                <span className="w-2 h-2 bg-gray-500 rounded-full"></span>
-                <span className="w-2 h-2 bg-gray-500 rounded-full"></span>
-                <span className="w-2 h-2 bg-gray-500 rounded-full"></span>
+            <div className="mb-8 flex items-center justify-between">
+              <div className="flex gap-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-zinc-600" />
+                <span className="h-2.5 w-2.5 rounded-full bg-zinc-600" />
+                <span className="h-2.5 w-2.5 rounded-full bg-zinc-600" />
               </div>
 
-              <p className="text-xs sm:text-sm text-gray-400 text-center">
-                Career Intelligence Report
-              </p>
-
-              <span className="text-xs text-gray-500">v1</span>
+              <span className="text-xs uppercase tracking-[0.2em] text-zinc-500">
+                ResumeIQ
+              </span>
             </div>
 
             {/* Resume Score */}
-            <div className="flex justify-between items-start mb-6">
-              <div>
-                <p className="text-sm text-gray-400">Resume Score</p>
+            <div className="mb-8">
+              <p className="text-sm text-zinc-500">Resume Score</p>
 
-                <h2 className="text-4xl sm:text-5xl font-bold bg-linear-to-r from-cyan-400 to-violet-500 bg-clip-text text-transparent">
-                  92
-                </h2>
+              <div className="mt-2 flex items-end justify-between">
+                <div>
+                  <h2 className="bg-linear-to-r from-white to-blue-400 bg-clip-text text-6xl font-black text-transparent">
+                    92
+                  </h2>
 
-                <p className="text-sm text-gray-500">Strong for senior roles</p>
+                  <p className="mt-2 text-sm font-medium text-blue-400">
+                    ★★★★★ Excellent
+                  </p>
+                </div>
+
+                <div className="rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-2 text-sm text-blue-300">
+                  ATS Ready
+                </div>
               </div>
-
-              <button className="border border-white/10 bg-white/5 px-3 py-2 rounded-full text-xs sm:text-sm text-gray-300 backdrop-blur-lg">
-                Top Roles
-              </button>
             </div>
 
-            {/* Role Match */}
-            <div className="border border-white/10 bg-white/5 rounded-2xl p-4 mb-5 backdrop-blur-xl">
-              <div className="flex justify-between mb-2">
-                <p className="font-semibold text-white text-sm sm:text-base">
-                  Principal Architect
-                </p>
+            <div className="mb-8 h-px bg-white/5" />
 
-                <span className="text-xs sm:text-sm text-gray-400">
-                  88% match
-                </span>
+            {/* Best Role */}
+            <div className="mb-8">
+              <div className="mb-4 flex items-center justify-between">
+                <div>
+                  <p className="text-xs uppercase tracking-widest text-zinc-500">
+                    Best Role
+                  </p>
+
+                  <h3 className="mt-1 text-xl font-semibold text-white">
+                    Software Engineer
+                  </h3>
+                </div>
+
+                <span className="font-semibold text-blue-400">92%</span>
               </div>
 
-              {/* Progress */}
-              <div className="w-full bg-white/10 h-2 rounded-full mb-3 overflow-hidden">
+              <div className="mb-4 h-2 overflow-hidden rounded-full bg-white/5">
                 <motion.div
                   initial={{ width: 0 }}
-                  animate={{ width: "88%" }}
+                  animate={{ width: "92%" }}
                   transition={{ duration: 1 }}
-                  className="bg-linear-to-r from-cyan-400 to-violet-500 h-2 rounded-full"
+                  className="h-full rounded-full bg-linear-to-r from-blue-600 to-blue-400"
                 />
               </div>
 
-              <div className="flex gap-2 flex-wrap text-xs text-gray-300">
-                {["Cloud-native", "Platform", "Leadership"].map(
-                  (tag, index) => (
-                    <span
-                      key={index}
-                      className="border border-white/10 bg-white/5 px-3 py-1 rounded-full"
-                    >
-                      {tag}
-                    </span>
-                  ),
-                )}
+              <div className="flex flex-wrap gap-2">
+                {["React", "Next.js", "TypeScript"].map((item) => (
+                  <span
+                    key={item}
+                    className="rounded-full bg-white/4 px-3 py-1 text-xs text-zinc-300"
+                  >
+                    {item}
+                  </span>
+                ))}
               </div>
             </div>
 
-            {/* Market Insights */}
-            <div className="border border-white/10 bg-white/5 rounded-2xl p-4 mb-5 backdrop-blur-xl">
-              <div className="flex justify-between mb-2">
-                <p className="font-semibold text-white">Market Insights</p>
+            <div className="mb-8 h-px bg-white/5" />
 
-                <span className="border border-white/10 bg-white/5 px-3 py-1 rounded-full text-xs text-gray-400">
-                  coming soon
-                </span>
+            {/* Stats */}
+            <div className="mb-8 grid grid-cols-3 gap-4">
+              <div className="rounded-2xl bg-white/3 p-4">
+                <p className="text-xs text-zinc-500">Skill Gaps</p>
+
+                <h3 className="mt-2 text-2xl font-bold text-white">3</h3>
               </div>
 
-              <p className="text-sm text-gray-400">
-                Salary range, demand signals, and role-fit drivers.
-              </p>
+              <div className="rounded-2xl bg-white/3 p-4">
+                <p className="text-xs text-zinc-500">Interview</p>
+
+                <h3 className="mt-2 text-2xl font-bold text-white">86%</h3>
+              </div>
+
+              <div className="rounded-2xl bg-white/3 p-4">
+                <p className="text-xs text-zinc-500">Demand</p>
+
+                <h3 className="mt-2 text-2xl font-bold text-blue-400">High</h3>
+              </div>
             </div>
+
+            <div className="mb-8 h-px bg-white/5" />
 
             {/* AI Interview */}
-            <div className="border border-white/10 bg-white/5 rounded-2xl p-4 mb-5 backdrop-blur-xl">
-              <div className="flex justify-between mb-2">
-                <p className="font-semibold text-white">AI Interview</p>
+            <div className="rounded-3xl border border-white/5 bg-white/[0.03] p-5">
+              <div className="mb-5 flex items-center justify-between">
+                <div>
+                  <p className="text-xs uppercase tracking-widest text-zinc-500">
+                    AI Interview
+                  </p>
 
-                <span className="border border-white/10 bg-white/5 px-3 py-1 rounded-full text-xs text-gray-400">
-                  Text-based
-                </span>
+                  <h3 className="mt-1 text-lg font-semibold text-white">
+                    Personalized Assessment
+                  </h3>
+                </div>
+
+                <div className="rounded-full bg-blue-500/10 px-3 py-1 text-xs text-blue-300">
+                  Adaptive
+                </div>
               </div>
 
-              <p className="text-sm text-gray-400">
-                Your assessment adapts dynamically to your answers.
-              </p>
-            </div>
+              <div className="space-y-3">
+                {[
+                  "Resume-based Questions",
+                  "20 Minute Session",
+                  "Detailed AI Feedback",
+                  "Hiring Readiness Score",
+                ].map((item) => (
+                  <div key={item} className="flex items-center gap-3">
+                    <div className="h-2 w-2 rounded-full bg-blue-400" />
 
-            {/* Buttons */}
-            <div className="grid grid-cols-2 gap-3 text-gray-300">
-              {["Skill gaps", "Salary", "Market"].map((item, index) => (
-                <button
-                  key={index}
-                  className="border border-white/10 bg-white/5 py-2 rounded-full text-sm hover:bg-white/10 transition-all duration-300"
-                >
-                  {item}
-                </button>
-              ))}
-
-              <button className="bg-linear-to-r from-cyan-500 to-violet-600 text-white py-2 rounded-full text-sm hover:scale-105 transition-all duration-300 shadow-lg">
-                Get report
-              </button>
+                    <p className="text-sm text-zinc-300">{item}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </motion.div>

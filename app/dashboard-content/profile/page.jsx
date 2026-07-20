@@ -35,7 +35,8 @@ export default function ProfilePage() {
         .select("*")
         .order("created_at", {
           ascending: false,
-        });
+        })
+        .limit(4);
 
       if (!error) {
         setReports(data || []);

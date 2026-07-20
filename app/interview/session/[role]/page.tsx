@@ -17,6 +17,9 @@ import {
   Play,
   Sparkles,
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
+
 type ReportScore = {
   overallScore: number;
   technicalScore: number;
@@ -29,7 +32,7 @@ export default function InterviewSessionPage() {
   const params = useParams();
   const searchParams = useSearchParams();
   const role = (params.role as string).replaceAll("-", " ");
-
+  const router = useRouter();
   const formattedRole = useMemo(() => {
     return role
       .split(" ")
@@ -55,6 +58,8 @@ export default function InterviewSessionPage() {
   const [report, setReport] = useState<ReportScore | null>(null);
   const [timeLeft, setTimeLeft] = useState(20 * 60);
   const [isPaused, setIsPaused] = useState(false);
+  const [showExitModal, setShowExitModal] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     generateQuestions();
@@ -77,16 +82,28 @@ export default function InterviewSessionPage() {
     return () => clearInterval(timer);
   }, [isPaused, evaluating, report]);
 
-  const generateQuestions = async () => {
-    try {
-      setLoading(true);
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
 
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, []);
+
+  const generateQuestions = async () => {
+    setLoading(true);
+    setError("");
+    setQuestions([]);
+
+    try {
       const response = await fetch("/api/interview/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-
         body: JSON.stringify({
           role: formattedRole,
           difficulty,
@@ -96,11 +113,33 @@ export default function InterviewSessionPage() {
 
       const data = await response.json();
 
-      if (data.success) {
-        setQuestions(data.questions);
+      if (!response.ok) {
+        throw new Error(
+          data.message || "Failed to generate interview questions.",
+        );
       }
-    } catch (error) {
-      console.log(error);
+
+      if (!data.success) {
+        throw new Error(
+          data.message || "Unable to generate interview questions.",
+        );
+      }
+
+      if (!data.questions || data.questions.length === 0) {
+        throw new Error(
+          "No interview questions were generated. Please try again.",
+        );
+      }
+
+      setQuestions(data.questions);
+    } catch (err) {
+      console.error(err);
+
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -320,16 +359,16 @@ export default function InterviewSessionPage() {
 
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <Link
-              href={`/interview/${params.role}`}
-              className="group inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-slate-300 backdrop-blur-xl transition-all duration-300 hover:bg-white/10 hover:text-white"
+            <button
+              onClick={() => setShowExitModal(true)}
+              className="group inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-medium text-slate-300 backdrop-blur-xl transition-all duration-300 hover:bg-white/10 hover:text-white cursor-pointer"
             >
               <ArrowLeft
                 size={16}
                 className="transition-transform duration-300 group-hover:-translate-x-1"
               />
               Back
-            </Link>
+            </button>
 
             <div className="flex items-start sm:items-center gap-4 mt-6">
               {/* ICON */}
@@ -438,15 +477,20 @@ export default function InterviewSessionPage() {
 
             <div className="p-6">
               {loading ? (
-                <div className="flex flex-col items-center justify-center py-28 text-center">
-                  <Loader2
-                    size={36}
-                    className="animate-spin text-emerald-300"
-                  />
+                <div className="mt-6 rounded-2xl border border-blue-500/20 bg-blue-500/10 p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-blue-300/30 border-t-blue-300" />
 
-                  <p className="text-sm text-gray-400 mt-5">
-                    Generating interview questions...
-                  </p>
+                    <div>
+                      <p className="text-sm font-medium text-blue-200">
+                        Generating interview questions...
+                      </p>
+
+                      <p className="text-xs text-blue-300/70">
+                        AI is preparing personalized questions for your role.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <>
@@ -591,6 +635,37 @@ export default function InterviewSessionPage() {
             </div>
           </div>
 
+          {/* continue Interview Modal */}
+          <AnimatePresence>
+            {showExitModal && (
+              <motion.div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md">
+                <div className="w-full max-w-md rounded-3xl bg-[#111113] border border-white/6 p-8">
+                  <h2 className="text-2xl font-bold">Leave Interview?</h2>
+
+                  <p className="mt-4 text-zinc-400">
+                    Your interview is still in progress. Leaving now will
+                    discard your answers.
+                  </p>
+
+                  <div className="mt-8 flex gap-3">
+                    <button
+                      onClick={() => setShowExitModal(false)}
+                      className="flex-1 rounded-xl bg-[#1B1B20] py-3"
+                    >
+                      Continue Interview
+                    </button>
+
+                    <button
+                      onClick={() => router.push(`/interview/${params.role}`)}
+                      className="flex-1 rounded-xl bg-red-500 py-3 text-white"
+                    >
+                      Leave
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
           {/* RIGHT */}
 
           <div className="space-y-6">

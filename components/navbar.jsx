@@ -24,13 +24,20 @@ export default function Navbar() {
       <div className="fixed top-5 left-0 w-full z-50 px-4 md:px-8">
         <nav className="relative mx-auto max-w-8xl">
           {/* Glow */}
-          <div className="absolute inset-0 bg-linear-to-r from-cyan-500/10 via-transparent to-violet-500/10 blur-3xl rounded-full" />
+          <div className="absolute inset-0 rounded-full bg-blue-500/5 blur-3xl" />
 
           {/* Main Navbar */}
-          <div className="relative overflow-hidden rounded-full border border-white/10 bg-black/40 backdrop-blur-2xl shadow-[0_8px_40px_rgba(0,0,0,0.35)]">
+          <div
+            className="relative overflow-hidden rounded-full border bg-[#050505]/80
+border-white/6 backdrop-blur-2xl shadow-[0_8px_40px_rgba(0,0,0,0.35)]"
+          >
             {/* Gradient Border */}
-            <div className="absolute inset-0 rounded-full p-px bg-linear-to-r from-cyan-500/20 via-white/5 to-violet-500/20">
-              <div className="h-full w-full rounded-full bg-[#050816]/90" />
+            <div
+              className="absolute inset-0 rounded-full p-px bg-linear-to-r from-blue-500/15
+via-white/3
+to-blue-500/15"
+            >
+              <div className="h-full w-full rounded-full bg-[#050505]" />
             </div>
 
             <div className="relative z-10 flex items-center justify-between px-5 md:px-7 py-3">
@@ -40,7 +47,11 @@ export default function Navbar() {
                 className="flex items-center cursor-pointer"
               >
                 <h1 className="text-2xl font-black tracking-tight">
-                  <span className="bg-linear-to-r from-cyan-400 via-blue-500 to-violet-500 bg-clip-text text-transparent">
+                  <span
+                    className="bg-linear-to-r from-white
+via-blue-200
+to-blue-500 bg-clip-text text-transparent"
+                  >
                     Resume
                   </span>
 
@@ -49,7 +60,8 @@ export default function Navbar() {
               </div>
 
               {/* Desktop Menu */}
-              <div className="hidden md:flex items-center gap-2 p-1 rounded-full bg-white/3 border border-white/5">
+              <div className="hidden md:flex items-center gap-2 p-1 rounded-full bg-white/2
+border-white/5 border">
                 {[
                   {
                     href: "#what-you-get",
@@ -67,7 +79,9 @@ export default function Navbar() {
                   <Link
                     key={index}
                     href={item.href}
-                    className="px-5 py-2.5 rounded-full text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-300"
+                    className="px-5 py-2.5 rounded-full text-sm font-medium text-zinc-400
+hover:text-white
+hover:bg-white/5 transition-all duration-300"
                   >
                     {item.label}
                   </Link>
@@ -79,7 +93,8 @@ export default function Navbar() {
                 {/* CTA */}
                 <button
                   onClick={handleUploadClick}
-                  className="hidden md:flex group relative overflow-hidden items-center gap-2 px-6 py-2.5 rounded-full bg-linear-to-r from-cyan-500 via-blue-500 to-violet-600 text-white font-semibold shadow-[0_0_30px_rgba(59,130,246,0.35)] hover:shadow-cyan-500/40 transition-all duration-500 cursor-pointer"
+                  className="hidden md:flex group relative overflow-hidden items-center gap-2 px-6 py-2.5 rounded-full bg-linear-to-r from-[#2563EB]
+to-[#3B82F6] text-white font-semibold shadow-[0_10px_35px_rgba(37,99,235,.25)] hover:shadow-[0_15px_45px_rgba(37,99,235,.45)] transition-all duration-500 cursor-pointer"
                 >
                   <span className="relative z-10 flex items-center gap-2">
                     Get Started
@@ -98,7 +113,8 @@ export default function Navbar() {
                     scale: 0.92,
                   }}
                   onClick={() => setOpen(!open)}
-                  className="md:hidden flex items-center justify-center w-11 h-11 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl text-white cursor-pointer"
+                  className="md:hidden flex items-center justify-center w-11 h-11 rounded-full border bg-white/3
+border-white/6 backdrop-blur-xl text-white cursor-pointer"
                 >
                   <motion.div
                     animate={{
@@ -134,10 +150,11 @@ export default function Navbar() {
                 transition={{
                   duration: 0.25,
                 }}
-                className="md:hidden mt-4 overflow-hidden rounded-4xl border border-white/10 bg-[#0B1120]/95 backdrop-blur-3xl shadow-[0_20px_80px_rgba(0,0,0,0.45)]"
+                className="md:hidden mt-4 overflow-hidden rounded-4xl border border-white/10 bg-[#09090B]/95 backdrop-blur-3xl shadow-[0_20px_80px_rgba(0,0,0,0.45)]"
               >
                 {/* Overlay */}
-                <div className="absolute inset-0 bg-linear-to-b from-cyan-500/5 to-violet-500/5" />
+                <div className="absolute inset-0 bg-linear-to-b from-blue-500/5
+to-transparent" />
 
                 <div className="relative z-10 p-5 flex flex-col gap-3">
                   {[
@@ -171,7 +188,9 @@ export default function Navbar() {
                       <Link
                         href={item.href}
                         onClick={() => setOpen(false)}
-                        className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-gray-200 hover:bg-white/10 hover:text-white transition-all duration-300"
+                        className="flex items-center justify-between rounded-2xl border bg-white/3
+border-white/5 px-5 py-3 text-gray-200 hover:bg-white/6
+hover:border-blue-500/15 transition-all duration-300"
                       >
                         {item.label}
                       </Link>
@@ -192,7 +211,8 @@ export default function Navbar() {
                       delay: 0.25,
                     }}
                     onClick={handleUploadClick}
-                    className="group mt-2 w-full rounded-2xl bg-linear-to-r from-cyan-500 via-blue-500 to-violet-600 py-4 font-semibold text-white shadow-[0_0_30px_rgba(59,130,246,0.35)] cursor-pointer"
+                    className="group mt-2 w-full rounded-2xl bg-linear-to-r from-[#2563EB]
+to-[#3B82F6] py-3 font-semibold text-white shadow-[0_0_30px_rgba(59,130,246,0.35)] cursor-pointer"
                   >
                     <span className="flex items-center justify-center gap-2">
                       Get Started

@@ -59,10 +59,13 @@ export default function HowItWorks() {
 
   return (
     <section
-      className="w-full py-26 px-6 md:px-16 lg:px-24 bg-[#070B14]"
+      className="relative overflow-hidden w-full py-28 px-6 md:px-16 lg:px-24 bg-[#050505]"
       id="how-it-works"
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="absolute -top-40 -left-40 h-105 w-105 rounded-full bg-blue-500/6 blur-[180px]" />
+
+      <div className="absolute -bottom-40 -right-40 h-87.5 w-87.5 rounded-full bg-blue-400/5 blur-[180px]" />
+      <div className="relative z-10 max-w-7xl mx-auto">
         {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -71,19 +74,27 @@ export default function HowItWorks() {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <span className="inline-flex px-5 py-2 rounded-full bg-cyan-500/10 border border-cyan-400/20 text-cyan-300 font-semibold text-sm backdrop-blur-xl">
+          <span
+            className="inline-flex px-5 py-2 rounded-full bg-blue-500/10
+border-blue-500/20
+text-blue-300 font-semibold text-sm backdrop-blur-xl"
+          >
             HOW IT WORKS
           </span>
 
           <h2 className="text-4xl md:text-5xl font-extrabold text-white mt-6 leading-tight">
             Simple Steps to
-            <span className="bg-linear-to-r from-cyan-400 to-violet-500 bg-clip-text text-transparent">
+            <span
+              className="bg-linear-to-r from-white
+via-blue-200
+to-blue-500 bg-clip-text text-transparent"
+            >
               {" "}
               Improve Your Resume
             </span>
           </h2>
 
-          <p className="text-gray-400 mt-5 max-w-2xl mx-auto text-base md:text-lg">
+          <p className="text-zinc-400 mt-5 max-w-2xl mx-auto text-base md:text-lg">
             ResumeIQ uses AI to analyze your resume, identify missing skills,
             and help you optimize your profile for better job opportunities.
           </p>
@@ -97,7 +108,10 @@ export default function HowItWorks() {
             whileInView={{ height: "100%" }}
             transition={{ duration: 1 }}
             viewport={{ once: true }}
-            className="absolute left-6 top-0 w-0.5 bg-linear-to-b from-cyan-500/50 to-violet-500/50"
+            className="absolute left-6 top-0 w-0.5 bg-linear-to-b
+from-blue-500/30
+via-blue-500/15
+to-transparent"
           />
 
           {steps.map((step, index) => {
@@ -118,7 +132,6 @@ export default function HowItWorks() {
               >
                 {/* Icon */}
                 <motion.div
-                  whileHover={!isComingSoon ? { scale: 1.08 } : {}}
                   className={`w-12 h-12 rounded-2xl bg-linear-to-r ${step.color} p-px z-10 shadow-lg`}
                 >
                   <div className="w-full h-full rounded-2xl bg-[#0B1120] flex items-center justify-center">
@@ -127,9 +140,11 @@ export default function HowItWorks() {
                 </motion.div>
 
                 {/* Card */}
-                <motion.div
-                  whileHover={!isComingSoon ? { y: -4 } : {}}
-                  className="relative w-full rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 transition-all duration-300 hover:border-cyan-400/20 hover:bg-white/[0.07] hover:shadow-[0_8px_40px_rgba(0,0,0,0.3)]"
+                <div
+                  className="relative w-full rounded-3xl border border-white/6
+bg-[#111113]/80 backdrop-blur-xl p-6 transition-all duration-300 hover:border-blue-500/20
+hover:bg-[#151518]
+hover:shadow-[0_20px_60px_rgba(37,99,235,.12)]"
                 >
                   {/* Coming Soon Badge */}
                   {isComingSoon && (
@@ -139,19 +154,21 @@ export default function HowItWorks() {
 
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-400"></span>
                       </span>
-
                       Coming Soon
                     </span>
                   )}
-
-                  <h3 className="text-xl font-semibold text-white mb-3">
+                  <div className="absolute right-6 top-6 text-5xl font-black text-white/3">
+                    {String(index + 1).padStart(2, "0")}
+                  </div>
+                  <h3 className="text-xl font-semibold tracking-tight text-white mb-3">
                     {step.title}
                   </h3>
 
                   <p className="text-gray-400 leading-relaxed text-sm md:text-base">
                     {step.desc}
                   </p>
-                </motion.div>
+                </div>
+                <div className="absolute bottom-0 left-0 h-0.5 w-full bg-linear-to-r from-transparent via-blue-500/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               </motion.div>
             );
           })}
