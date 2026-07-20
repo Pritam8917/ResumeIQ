@@ -53,72 +53,131 @@ export default function UploadResumeModal({ isOpen, onClose }) {
 
   const handleSubmit = async () => {
     setError("");
-
-    if (!agree)
-      return setError("Please accept Terms & Privacy Policy to continue.");
-    if (!email || !password)
-      return setError("Please enter your email and password.");
-    if (!file) return setError("Please upload a resume.");
-
     setLoading(true);
 
     try {
+      // Validation
+      if (!agree) {
+        throw new Error("Please accept the Terms & Privacy Policy.");
+      }
+
+      if (!email || !password) {
+        throw new Error("Please enter your email and password.");
+      }
+
+      if (!file) {
+        throw new Error("Please upload a resume.");
+      }
+
+      // Authentication
       let { data, error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (authError) {
-        const signup = await supabase.auth.signUp({ email, password });
-        if (signup.error) throw signup.error;
+        const signup = await supabase.auth.signUp({
+          email,
+          password,
+        });
+
+        if (signup.error) {
+          throw new Error(signup.error.message);
+        }
+
         data = signup.data;
       }
 
       const user = data.user;
-      if (!user) throw new Error("Authentication failed");
 
+      if (!user) {
+        throw new Error("Authentication failed.");
+      }
+
+      // Upload Resume
       const cleanFileName = file.name
         .replace(/\s+/g, "_")
         .replace(/[\[\]]/g, "");
 
       const filePath = `${user.id}/${Date.now()}_${cleanFileName}`;
 
-      const { error: uploadError } = await supabase.storage
-        .from("resumes")
-        .upload(filePath, file);
+      // Upload to Supabase Storage and extract text from PDF in parallel
+      let uploadResult;
+      let text;
 
-      if (uploadError) throw uploadError;
+      try {
+        [uploadResult, text] = await Promise.all([
+          supabase.storage.from("resumes").upload(filePath, file),
+          extractTextFromPDF(file),
+        ]);
+      } catch (error) {
+        console.error("Parallel operation failed:", error);
 
-      const text = await extractTextFromPDF(file);
-      const result = await analyzeResume(text);
-
-      if (result?.error) {
-        setAIResult(result);
-        setLoading(false);
-        return;
+        throw new Error(
+          "Failed to process your resume. Please ensure it is a valid PDF and try again.",
+        );
       }
 
-      setAIResult(result);
+      if (uploadResult.error) {
+        console.error("Supabase Upload Error:", uploadResult.error);
 
+        throw new Error(
+          uploadResult.error.message || "Failed to upload your resume.",
+        );
+      }
+
+      if (!text || !text.trim()) {
+        throw new Error(
+          "No readable text was found in your resume. Please upload a text-based PDF.",
+        );
+      }
+
+      // AI Analysis
+      const result = await analyzeResume(text);
+
+      if (result.error) {
+        throw new Error(
+          result.message || "AI analysis failed. Please try again.",
+        );
+      }
+
+      // Save to DB
       const { error: dbError } = await supabase.from("resumes").insert({
         user_id: user.id,
         file_path: filePath,
-        score: result.score,
-        analysis: result,
+        score: result.data.score,
+        analysis: result.data,
       });
 
-      if (dbError) throw dbError;
+      if (dbError) {
+        throw new Error("Failed to save analysis.");
+      }
 
+      setAIResult(result.data);
       setUser(user);
+
       setData({
-        ...result,
+        ...result.data,
         created_at: new Date().toISOString(),
       });
 
       router.push("/dashboard-content/dashboard");
     } catch (err) {
       console.error(err);
-      setError(err.message || "An error occurred during submission.");
+
+      if (err.message.includes("Invalid login credentials")) {
+        setError("Incorrect email or password.");
+      } else if (err.message.includes("Email not confirmed")) {
+        setError("Please verify your email before signing in.");
+      } else if (err.message.includes("Failed to upload")) {
+        setError("Resume upload failed. Please try again.");
+      } else if (err.message.includes("AI")) {
+        setError(
+          "Our AI is currently busy. Please try again in a few moments.",
+        );
+      } else {
+        setError(err.message || "Something went wrong. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -359,7 +418,7 @@ export default function UploadResumeModal({ isOpen, onClose }) {
                   <button
                     onClick={handleSubmit}
                     disabled={loading}
-                    className="w-full rounded-xl bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold text-xs sm:text-sm py-3 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-blue-600/25 active:scale-[0.99]"
+                    className="w-full rounded-xl bg-linear-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold text-xs sm:text-sm py-3 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-blue-600/25 active:scale-[0.99]"
                   >
                     {loading ? (
                       <>
